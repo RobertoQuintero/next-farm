@@ -1,0 +1,55 @@
+
+.formContainer{
+  width: 270px;
+  display: flex;
+  flex-direction: column;
+  gap:.5rem;
+}
+
+.formTitle{
+  font-weight:bold;
+  text-align:center;
+  padding:1rem;
+  font-size:1.3rem;
+}
+.buttonGroup{
+  display:none;
+}
+.flexPhone{
+  display: flex;
+  gap:1rem;
+}
+
+.errorMessage{
+  text-align: center;
+  color: red;
+  font-size: .8rem;
+}
+
+.userName {
+  color: #000;
+  padding-right: .5rem;
+  font-size: 14px;
+}
+.menuLink{
+  font-size: 14px;
+  display: inline-block;
+  padding: .5rem;
+  border-radius: 3px;
+  transition: .3s;
+}
+.menuLink:hover{
+  background-color: #000;
+  color:#fff;
+}
+
+@media screen and (min-width:600px) {
+  .formContainer{
+    width: 350px;
+  }
+
+  .buttonGroup{
+    display: block;
+  }
+  
+}
