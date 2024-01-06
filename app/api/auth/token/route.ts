@@ -1,5 +1,5 @@
 import db from "@/database/connection";
-import { UserWeb } from "@/interfaces";
+import { ICompany } from "@/interfaces";
 import { createJWT, isValidToken, serverError } from "@/utils";
 import { cookies } from "next/headers";
 
@@ -20,7 +20,7 @@ export const GET = async (req: Request) => {
   let email = "";
   try {
     const jwtPayload = await isValidToken(token.value),
-      jsonPayload = JSON.parse(jwtPayload) as { idRole: number; email: string };
+      jsonPayload = JSON.parse(jwtPayload) as { id_role: number; email: string };
     email = jsonPayload.email;
   } catch (error) {
     console.log({ error });
@@ -37,7 +37,7 @@ export const GET = async (req: Request) => {
 
   try {
     const response = await db.query(`
-      SELECT * FROM segWEB.Users WHERE email='${email}'
+      SELECT * FROM RH.Companies WHERE email='${email}'
     `);
 
     if (!response.length) {
@@ -46,15 +46,14 @@ export const GET = async (req: Request) => {
         data: "No existe un usuario con ese correo",
       });
     }
-    const token = await createJWT(response[0].idRole, email);
+    const token = await createJWT(response[0].id_role, email);
     const {
       created_at,
       updated_at,
       password: pass,
-      passwordHash,
       status,
       ...rest
-    } = response[0] as UserWeb;
+    } = response[0] as ICompany;
 
     return Response.json(
       {

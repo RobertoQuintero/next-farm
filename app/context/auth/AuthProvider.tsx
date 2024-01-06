@@ -4,7 +4,7 @@ import { AuthContext } from './AuthContext';
 import { authReducer } from './authReducer'
 import Cookies from 'js-cookie'
 import { ICompany, IState } from '@/interfaces';
-import { getAuthRequest, postAuthRequest } from './authRequest';
+import { getAuthRequest, postAuthRequest, validateTokenRequest } from './authRequest';
 
 interface Props{
   children:JSX.Element|JSX.Element[]
@@ -20,7 +20,7 @@ export interface AuthState{
 }
 
 const Auth_INITIAL_STATE:AuthState={
-  authLoading:false,
+  authLoading:true,
   logged:false,
   company:undefined,
   authError:undefined,
@@ -34,6 +34,23 @@ export const AuthProvider = ({children}:Props) => {
   useEffect(() => {
     getResources()
   }, [])
+
+  useEffect(() => {
+    checkToken()
+  }, [])
+
+  const checkToken=async()=>{
+    const{ok,data}= await validateTokenRequest()
+    if(ok){
+      dispatch({
+        type:'[auth] - login',
+        payload:data as ICompany
+      })
+    }else{
+      logout()
+    }
+    setIsLoading(false)
+  }
   
   const getResources = async() =>{
     setIsLoading(true)
@@ -53,6 +70,22 @@ export const AuthProvider = ({children}:Props) => {
       type:'[auth] - logout',
       payload:Auth_INITIAL_STATE
     })
+  }
+
+  const loginCompany = async(payload:ICompany):Promise<boolean>=>{
+    setIsLoading(true)
+    const {ok,data}=await postAuthRequest('/auth/login',payload)
+    if(ok){
+      dispatch({
+        type:'[auth] - login',
+        payload:data as ICompany
+      })
+    }
+    else{
+      setError(data as string)
+    }
+    setIsLoading(false)
+    return ok
   }
 
   const setIsLoading = (payload:boolean)=>{
@@ -94,6 +127,7 @@ export const AuthProvider = ({children}:Props) => {
      setIsLoading(false)
      return ok
   };
+
   
   const setCompany = async(payload:ICompany| undefined) =>{
      dispatch({
@@ -107,7 +141,8 @@ export const AuthProvider = ({children}:Props) => {
       ...state,
       logout,
       setShowForm,
-      postCompany
+      postCompany,
+      loginCompany
     }}>
       {children}
     </AuthContext.Provider>

@@ -13,6 +13,7 @@ interface ContextProps{
   logout: () => void;
   setShowForm:(payload:boolean)=>void;
   postCompany: (payload: ICompany) => Promise<boolean>;
+  loginCompany: (payload: ICompany) => Promise<boolean>;
 }
 
 export const AuthContext = createContext({} as ContextProps)

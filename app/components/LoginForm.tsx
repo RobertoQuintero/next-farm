@@ -5,6 +5,7 @@ import { UiContext } from '../context/ui/UiContext'
 import {  useContext } from 'react'
 import { useForm } from "react-hook-form"
 import { AuthContext } from '../context/auth/AuthContext'
+import { ICompany } from '@/interfaces'
 
 interface FormData {
   email:string;
@@ -13,7 +14,7 @@ interface FormData {
 
 export const LoginForm = () => {
   const {uiReset} = useContext(UiContext)
-  const {login,authLoading,error} = useContext(AuthContext)
+  const {loginCompany,authLoading,authError} = useContext(AuthContext)
  
   const {
     register,
@@ -22,7 +23,8 @@ export const LoginForm = () => {
   } = useForm<FormData>()
 
   const onSubmit=async({email,password}:FormData)=>{
-    const ok= await login(email,password)
+    const company={email,password} as ICompany
+    const ok= await loginCompany(company)
     if(ok){
      uiReset()
     //  location.reload()
@@ -57,7 +59,7 @@ export const LoginForm = () => {
         helperText={errors.password?.message}
         />
       <p className={styles.errorMessage}>
-        {error?error:''}
+        {authError?authError:''}
       </p>
       <Button 
           disabled={authLoading}

@@ -46,30 +46,16 @@ export const Navbar = () => {
             <Link className={styles.menuLink} style={style} href='/'>    
                 Inicio
             </Link>
-            <Link className={styles.menuLink} style={style} href='/assist'>    
-                Entradas
-            </Link>
             {
               company
                 ?<>
                   <Link
                     className={styles.menuLink}
                     style={style}
-                    href='/booking'>
-                  Reservaciones
+                    href='/users'>
+                  Usuarios
                 </Link>
-                <Link
-                  className={styles.menuLink}
-                  style={style}
-                  href='/staff'>
-                  Personal
-                </Link>
-                <Link
-                  className={styles.menuLink}
-                  style={style}
-                  href='/cfdi'>
-                  Factura
-                </Link>
+                
                 </>
             :<></>
             }
