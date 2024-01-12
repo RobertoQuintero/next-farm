@@ -20,7 +20,7 @@ const dbSettings:config = {
     cryptoCredentialsDetails:{
       minVersion: 'TLSv1'
     },
-    encrypt: true, // for azure
+    encrypt: false, // for azure
     trustServerCertificate: true, // change to true for local dev / self-signed certs
     
   },

@@ -38,7 +38,7 @@ export const Navbar = () => {
       <AppBar sx={{zIndex:1000}} >
         <Toolbar sx={{ maxWidth:'1200px', width:'100%',margin:'0 auto'}} >
             <Link href='/' className="flexCenter" >
-              <h3>Belisario</h3>
+              <h3>Granjas</h3>
             </Link>
           <Box flex={1}/>
           <Box sx={{display:{xs:'none',sm:'block'}}}
@@ -68,7 +68,7 @@ export const Navbar = () => {
               {
                 company 
                   ? <span className={styles.userName}>
-                      {company?.name?.split(' ')[0]}
+                      {company.id_role===3?'Admin': company?.name?.split(' ')[0]}
                     </span>
                   :<></>
               }

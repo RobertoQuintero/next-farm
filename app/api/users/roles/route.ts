@@ -3,7 +3,7 @@ import db from "@/database/connection";
 export const GET = async(req:Request) =>{
 
   try {
-    const data=await db.query(`SELECT * FROM RH.Users`)
+    const data= await db.query(`SELECT * FROM RH.Roles where status='true'`)
     return Response.json({
       ok:true,
       data
