@@ -267,3 +267,17 @@ background: #d4d4d4;
   justify-content: center;
   align-items: center;
 }
+.error{
+  font-size: 12px;
+  color: red;
+}
+
+.rowCard{
+  border-bottom: 1px solid #eee;
+  padding: 1rem 0 1rem 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+.rowCard:hover{
+  background-color: #eee;
+}

@@ -12,6 +12,7 @@ export interface IUser {
   created_at:      string | Date;
   updated_at:      string | Date;
   status:          boolean;
+  is_active:          boolean;
 }
 
 export interface IJobPosition {

@@ -88,7 +88,7 @@ export const POST = async (req: Request) => {
       '${id_role}',
       '${created_at}',
       '${id_state}',
-      '${is_active}',
+      '${false}',
       '${status}',
       '${updated_at}'
     )
