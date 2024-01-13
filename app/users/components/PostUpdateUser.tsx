@@ -1,14 +1,16 @@
 'use client'
+import { AuthContext } from "@/app/context/auth/AuthContext"
 import { UiContext } from "@/app/context/ui/UiContext"
 import { UsersContext } from "@/app/context/users/UsersContext"
 import { IUser } from "@/interfaces/user"
-import { Button, CircularProgress, MenuItem, TextField } from "@mui/material"
-import { useContext } from "react"
+import { Button, CircularProgress, MenuItem, Switch, TextField } from "@mui/material"
+import { useContext, useState } from "react"
 import { useForm } from "react-hook-form"
 
 export const PostUpdateUser = () => {
   const {toggleModal} = useContext(UiContext)
-  const {user,userLoading,jobPositions,roles} = useContext(UsersContext)
+  const {user,userLoading,jobPositions,roles,postUser,userError} = useContext(UsersContext)
+  const {company} = useContext(AuthContext)
 
   const {
     register,
@@ -26,7 +28,9 @@ export const PostUpdateUser = () => {
     phone:user?user.phone:'',
     password:user?user.password:'',
     status:user?user.status:true,
+    is_active:user?user.status:true
   } as IUser
+  const [checked, setChecked] = useState(values.is_active);
 
   const onSubmit = async(data:IUser) =>{
     const date= new Date()
@@ -37,7 +41,19 @@ export const PostUpdateUser = () => {
     data.id_user=values.id_user
     data.updated_at=date
     data.status=values.status
-    console.log(data)
+    data.is_active=checked
+    data.id_company=company?.id_company!
+    data.img_url=''
+    // console.log(data)
+    // return
+    const ok= await postUser(data)
+    if(ok){
+      toggleModal()
+    }
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked);
   };
 
   return (
@@ -104,7 +120,9 @@ export const PostUpdateUser = () => {
               :<div></div>
             }
           </TextField>
-          <TextField
+          {
+            !user&&<>
+              <TextField
             size="small"
             label='Email'
             fullWidth
@@ -116,8 +134,7 @@ export const PostUpdateUser = () => {
             error={!!errors.email}
             helperText={errors.email?.message}
             />
-
-      <TextField
+        <TextField
           size="small"
           label='Password'
           fullWidth
@@ -128,7 +145,18 @@ export const PostUpdateUser = () => {
           })}
           error={!!errors.password}
           helperText={errors.password?.message}
-           />
+            />
+            </>
+          }
+           <div style={{display:'flex', alignItems:'center',width:'100%',justifyContent:'flex-end'}}>
+              <p>{checked?'Activo':'Inactivo'}</p>
+              <Switch
+                checked={checked}
+                onChange={handleChange}
+                inputProps={{ 'aria-label': 'controlled' }}
+              />
+            </div>
+           {userError?<p className="error">{userError}</p>:<></>}
           <Button 
             size="small"
             type='submit'

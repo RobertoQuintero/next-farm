@@ -8,6 +8,7 @@ type UsersActionType=
         | {type:'[Users] - setError'; payload:string | undefined}
         | {type:'[Users] - setJobPositions'; payload:IJobPosition[]}
         | {type:'[Users] - setRoles'; payload:IRole[]}
+        | {type:'[Users] - setActionString'; payload:string | undefined}
         
         
 export const usersReducer = (state:UsersState,action:UsersActionType):UsersState => {
@@ -46,6 +47,12 @@ export const usersReducer = (state:UsersState,action:UsersActionType):UsersState
       return {
         ...state,
         roles:action.payload
+      }
+
+    case '[Users] - setActionString':
+      return {
+        ...state,
+        actionString:action.payload
       }
 
    

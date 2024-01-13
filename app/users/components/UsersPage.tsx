@@ -2,7 +2,7 @@
 import { Button} from '@mui/material'
 import styles from '../users.module.css'
 import AppModal from '@/app/components/AppModal';
-import { PostUpdateUser } from '.';
+import { PostUpdateUser, UserCard } from '.';
 import { useContext, useEffect } from 'react';
 import { UsersContext } from '@/app/context/users/UsersContext';
 import { EmptyPage, LoadingComponent } from '@/app/components';
@@ -11,18 +11,19 @@ import { AuthContext } from '@/app/context/auth/AuthContext';
 
 const UsersPage = () => {
   const {company} = useContext(AuthContext)
-  const {userLoading,userError,users,setUser,getJobPositions} = useContext(UsersContext)
-  const {toggleModal} = useContext(UiContext)
+  const {userLoading,userError,users,setUser,getJobPositions,actionString,setAction} = useContext(UsersContext)
+  const {toggleModal,isModalOpen} = useContext(UiContext)
 
   useEffect(() => {
     getJobPositions(company?.id_company!)
   }, [])
   
-  if(userLoading){
+  if(userLoading && !isModalOpen){
     return <LoadingComponent/>
   }
   const onAdd = async() =>{
      setUser(undefined)
+     setAction(undefined)
      toggleModal()
   };
 
@@ -38,15 +39,20 @@ const UsersPage = () => {
         >
           Nuevo</Button>
       </div>
-      <div className='pageCardList'>
+      <div style={{paddingTop:'1rem'}}>
           {
-            !users.length
-              ?users.map(u=><p>{u.name}</p>)
+            users.length
+              ?users.map(u=><UserCard user={u} key={u.id_user}/>)
               : <EmptyPage/>
           }
       </div>
       <AppModal>
-        <PostUpdateUser/>
+        {
+          actionString==='EDIT' && <PostUpdateUser/>
+        }
+        {
+          !actionString && <PostUpdateUser/>
+        }
       </AppModal>
     </>
   )

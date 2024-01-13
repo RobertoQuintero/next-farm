@@ -3,7 +3,7 @@ import  { useContext, useEffect, useReducer } from 'react'
 import { UsersContext} from './UsersContext'
 import { usersReducer } from './usersReducer'
 import { IJobPosition, IRole, IUser } from '@/interfaces/user'
-import { getUsersRequest } from './usersRequest'
+import { getUsersRequest, postUsersRequest } from './usersRequest'
 import { AuthContext } from '../auth/AuthContext'
 
 
@@ -18,6 +18,7 @@ export interface UsersState{
   userError:string | undefined;
   jobPositions:IJobPosition[];
   roles:IRole[];
+  actionString:string | undefined;
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -26,7 +27,8 @@ const UI_INITIAL_STATE:UsersState={
   userLoading:false,
   userError:undefined,
   jobPositions:[],
-  roles:[]
+  roles:[],
+  actionString:undefined
 }
 
 export const UsersProvider = ({children}:Props) => {
@@ -64,8 +66,28 @@ export const UsersProvider = ({children}:Props) => {
   };
   
 
-  const postUser = async() =>{
-     
+  const postUser = async(payload:IUser):Promise<boolean> =>{
+    setError(undefined)
+     setIsLoading(true)
+     const {ok,data}= await postUsersRequest('/users/register',payload)
+     if(ok){
+       let newArray=[] as IUser[]
+      if(payload.id_user){
+        newArray=state.users.map(item=>{
+          if(item.id_user===payload.id_user){
+            return data as IUser
+          }
+          return item
+        })
+      }else{
+        newArray=[...state.users,data as IUser]
+      }
+      setUsers(newArray)
+     }else{
+      setError(data as string)
+     }
+     setIsLoading(false)
+     return ok
   };
 
   
@@ -111,13 +133,22 @@ export const UsersProvider = ({children}:Props) => {
      })
   };
 
+  const setAction = (payload:string | undefined) =>{
+     dispatch({
+      type:'[Users] - setActionString',
+      payload
+     })
+  };
+
 
   return (
     <UsersContext.Provider value={{
       ...state,
 
       setUser,
-      getJobPositions
+      getJobPositions,
+      postUser,
+      setAction
       
     }}>
       {children}
