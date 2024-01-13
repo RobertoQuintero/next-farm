@@ -6,7 +6,7 @@ interface Props{
   title:string;
 }
 
-export const CustomMenuLink = ({href,title}:Props) => {
+const CustomMenuLink = ({href,title}:Props) => {
   return (
     <CardActionArea 
       sx={{
@@ -17,3 +17,5 @@ export const CustomMenuLink = ({href,title}:Props) => {
     </CardActionArea>
   )
 }
+
+export default CustomMenuLink

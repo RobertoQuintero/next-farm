@@ -4,10 +4,10 @@ import styles from '../users.module.css'
 import AppModal from '@/app/components/AppModal';
 import { PostUpdateUser } from '.';
 import { useContext, useEffect } from 'react';
-import { UsersContext } from '@/app/context/users/UsersContext';
 import { EmptyPage, LoadingComponent } from '@/app/components';
 import { UiContext } from '@/app/context/ui/UiContext';
 import { AuthContext } from '@/app/context/auth/AuthContext';
+import { UsersContext } from '@/app/context/users/UsersContext';
 
 const UsersPage = () => {
   const {company} = useContext(AuthContext)
@@ -40,8 +40,8 @@ const UsersPage = () => {
       </div>
       <div className='pageCardList'>
           {
-            !users.length
-              ?users.map(u=><p>{u.name}</p>)
+            users.length
+              ?users.map(u=><p key={u.id_user}>{u.name}</p>)
               : <EmptyPage/>
           }
       </div>

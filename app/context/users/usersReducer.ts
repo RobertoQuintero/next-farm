@@ -1,3 +1,4 @@
+'use client'
 import { IJobPosition, IRole, IUser } from '@/interfaces/user'
 import { UsersState } from './UsersProvider'
 
