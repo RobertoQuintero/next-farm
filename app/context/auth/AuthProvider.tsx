@@ -5,6 +5,7 @@ import { authReducer } from './authReducer'
 import Cookies from 'js-cookie'
 import { ICompany, IState } from '@/interfaces';
 import { getAuthRequest, postAuthRequest, validateTokenRequest } from './authRequest';
+import { IUser } from '@/interfaces/user';
 
 interface Props{
   children:JSX.Element|JSX.Element[]
@@ -17,6 +18,8 @@ export interface AuthState{
   authError:string | undefined;
   showForm: boolean;
   states:IState[];
+  companyUser:IUser | undefined;
+  idCompany:number| undefined;
 }
 
 const Auth_INITIAL_STATE:AuthState={
@@ -25,7 +28,9 @@ const Auth_INITIAL_STATE:AuthState={
   company:undefined,
   authError:undefined,
   showForm: false,
-  states:[]
+  states:[],
+  companyUser:undefined,
+  idCompany:undefined
 }
 
 export const AuthProvider = ({children}:Props) => {
@@ -73,8 +78,10 @@ export const AuthProvider = ({children}:Props) => {
   }
 
   const loginCompany = async(payload:ICompany):Promise<boolean>=>{
+    setError(undefined)
     setIsLoading(true)
     const {ok,data}=await postAuthRequest('/auth/login',payload)
+    console.log(data)
     if(ok){
       dispatch({
         type:'[auth] - login',
@@ -87,6 +94,24 @@ export const AuthProvider = ({children}:Props) => {
     setIsLoading(false)
     return ok
   }
+  const loginUser = async(payload:IUser):Promise<boolean>=>{
+    setError(undefined)
+    setIsLoading(true)
+    const {ok,data}=await postAuthRequest('/auth/login',payload)
+    console.log(data)
+    if(ok){
+      dispatch({
+        type:'[auth] - loginUser',
+        payload:data as IUser
+      })
+    }
+    else{
+      setError(data as string)
+    }
+    setIsLoading(false)
+    return ok
+  }
+
 
   const setIsLoading = (payload:boolean)=>{
     dispatch({
@@ -142,7 +167,8 @@ export const AuthProvider = ({children}:Props) => {
       logout,
       setShowForm,
       postCompany,
-      loginCompany
+      loginCompany,
+      loginUser
     }}>
       {children}
     </AuthContext.Provider>

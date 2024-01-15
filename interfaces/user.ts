@@ -13,6 +13,8 @@ export interface IUser {
   updated_at:      string | Date;
   status:          boolean;
   is_active:          boolean;
+  type?:number
+  user_is_active:boolean;
 }
 
 export interface IJobPosition {

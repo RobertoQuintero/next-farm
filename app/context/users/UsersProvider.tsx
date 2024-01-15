@@ -148,7 +148,8 @@ export const UsersProvider = ({children}:Props) => {
       setUser,
       getJobPositions,
       postUser,
-      setAction
+      setAction,
+      setError
       
     }}>
       {children}

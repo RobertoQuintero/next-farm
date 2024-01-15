@@ -19,7 +19,7 @@ const style={
 export const Navbar = () => {
   const router = useRouter()
   const {toggleModal,toggleSideMenu} = useContext(UiContext)
-  const {logged,logout,authLoading,showForm,setShowForm,company} = useContext(AuthContext)
+  const {logged,logout,authLoading,showForm,setShowForm,company,companyUser} = useContext(AuthContext)
   
    
     
@@ -47,8 +47,14 @@ export const Navbar = () => {
                 Inicio
             </Link>
             {
-              company
+              company || companyUser?.id_role==2 || companyUser?.id_role==3
                 ?<>
+                  <Link
+                    className={styles.menuLink}
+                    style={style}
+                    href='/farms'>
+                  Granjas
+                </Link>
                   <Link
                     className={styles.menuLink}
                     style={style}
@@ -70,7 +76,9 @@ export const Navbar = () => {
                   ? <span className={styles.userName}>
                       {company.id_role===3?'Admin': company?.name?.split(' ')[0]}
                     </span>
-                  :<></>
+                  :companyUser
+                    ?<span className={styles.userName}>{companyUser.name.split(' ')[0]}</span>
+                    :<></>
               }
                 <div className={styles.buttonGroup}>
                   {

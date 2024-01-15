@@ -6,6 +6,7 @@ import CustomMenuLink from '../components/CustomMenuLink'
 
 const links=[
   {href:'/users',title:'Usuarios'},
+  {href:'/users/roles',title:'Roles'},
 ]
 const RootLayout = ({children}:{children:ReactNode}) => {
   return (

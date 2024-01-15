@@ -10,18 +10,19 @@ import { AuthContext } from '@/app/context/auth/AuthContext';
 import { UsersContext } from '@/app/context/users/UsersContext';
 
 const UsersPage = () => {
-  const {company} = useContext(AuthContext)
-  const {userLoading,userError,users,setUser,getJobPositions,actionString,setAction} = useContext(UsersContext)
+  const {company,companyUser,idCompany} = useContext(AuthContext)
+  const {userLoading,users,setUser,getJobPositions,actionString,setAction,setError} = useContext(UsersContext)
   const {toggleModal,isModalOpen} = useContext(UiContext)
 
   useEffect(() => {
-    getJobPositions(company?.id_company!)
+    getJobPositions(idCompany!)
   }, [])
   
   if(userLoading && !isModalOpen){
     return <LoadingComponent/>
   }
   const onAdd = async() =>{
+      setError(undefined)
      setUser(undefined)
      setAction(undefined)
      toggleModal()

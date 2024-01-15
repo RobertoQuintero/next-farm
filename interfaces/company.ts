@@ -13,6 +13,7 @@ export interface ICompany {
   password:   string;
   is_active:  boolean;
   id_role:    number;
+  type?:number
 }
 
 

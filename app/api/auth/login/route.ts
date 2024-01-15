@@ -1,22 +1,24 @@
 import db from "@/database/connection";
 import { ICompany } from "@/interfaces";
+import { IUser } from "@/interfaces/user";
 import { createJWT, serverError } from "@/utils";
 import bcrypt from "bcrypt";
 
 export const POST = async (req: Request) => {
   const body = await req.json();
-  const { password, email } = body as { password: string; email: string };
-
+  const { password, email ,type} = body as { password: string; email: string;type:number };
   try {
     const user = await db.query(`
-      SELECT * FROM RH.Companies WHERE email='${email}'
+      SELECT * FROM RH.${type===2?'Companies':'Users'} WHERE email='${email}' and status='true' and is_active='true'
     `);
 
     if (!user.length) {
       return Response.json({
         ok: false,
         data: "No existe un usuario con ese correo",
-      });
+      },
+      { status: 400 }
+      );
     }
 
     const validaPassword = bcrypt.compareSync(password, user[0].password);
@@ -39,12 +41,14 @@ export const POST = async (req: Request) => {
       password: pass,
       status,
       ...rest
-    } = user[0] as ICompany;
+    } = user[0] as ICompany | IUser;
+
+    console.log(rest)
 
     return Response.json(
       {
         ok: true,
-        data: rest,
+        data: rest
       },
       {
         headers: {

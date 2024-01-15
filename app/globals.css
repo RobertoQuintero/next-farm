@@ -281,3 +281,8 @@ background: #d4d4d4;
 .rowCard:hover{
   background-color: #eee;
 }
+
+.onAdd{
+  display: flex;
+  justify-content: flex-end;
+}

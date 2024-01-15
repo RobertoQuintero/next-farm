@@ -111,7 +111,7 @@ export const RegisterForm = () => {
         </div>
         <TextField
           size="small"
-          label='Nivel'
+          label='Estados'
           fullWidth
           value={state}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {

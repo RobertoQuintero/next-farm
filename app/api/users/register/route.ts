@@ -13,12 +13,13 @@ const query =`
       id_role,
       id_job_position,
       status,
-      is_active
+      user_is_active,
+      status
 `
 
 export const POST = async (req: Request) => {
   const body = await req.json();
-  const { name, email, password, id_role,created_at,id_user,status,updated_at,id_job_position,img_url,phone,id_company,is_active} =
+  const { name, email, password, id_role,created_at,id_user,status,updated_at,id_job_position,img_url,phone,id_company,is_active,user_is_active} =
     body as IUser;
 
   try {
@@ -50,13 +51,12 @@ export const POST = async (req: Request) => {
       BEGIN
         UPDATE RH.Users
         SET name='${name}',
-            email='${email}',
             phone='${phone}',
             id_job_position='${id_job_position}',
             img_url='${img_url}',
             id_role='${id_role}',
             status='${status}',
-            is_active='${is_active}',
+            user_is_active='${user_is_active}',
             updated_at='${updated_at}',
             id_company='${id_company}'
           WHERE id_user='${id_user}'
@@ -77,7 +77,7 @@ export const POST = async (req: Request) => {
       created_at,
       updated_at,
       status,
-      is_active
+      user_is_active
     )
     VALUES (
       @const,
@@ -92,7 +92,7 @@ export const POST = async (req: Request) => {
       '${created_at}',
       '${updated_at}',
       '${status}',
-      '${is_active}'
+      '${user_is_active}'
     )
     SELECT ${query} FROM RH.Users WHERE id_user=@const and status='true'
     END

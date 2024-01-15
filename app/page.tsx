@@ -1,14 +1,19 @@
 import { Metadata } from 'next'
+import styles from './page.module.css'
 
 export const metadata: Metadata = {
   title: 'Hibye | Inicio',
   description: 'Hibye Granjas',
 }
 
-export default function Home() {
+const  Home=()=> {
   return (
     <div>
-      Home
+      <div className={styles.banner}>
+        <div className={styles.imageContainer}></div>
+      </div>
     </div>
   )
 }
+
+export default Home

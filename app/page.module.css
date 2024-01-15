@@ -1,0 +1,24 @@
+.banner{
+  width: 100%;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #311965;
+}
+.imageContainer{
+  width: 100%;
+  height: 100%;
+  max-width: 320px;
+  max-height: 320px;
+  background: url('https://scontent.fver2-1.fna.fbcdn.net/v/t39.30808-6/332378893_739612501152363_7343137617266517290_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=9c7eae&_nc_ohc=eGQ51z71OesAX8o9KC7&_nc_ht=scontent.fver2-1.fna&oh=00_AfCFWD3LAtvrLNn82iSD3oxTmtGIl3RTT6br50TDQJuUYw&oe=65A7B0B7');
+  background-size: cover;
+  background-position: center;
+}
+
+@media screen and (min-width:500px) {
+  .imageContainer{
+    max-width: 400px;
+    max-height: 400px;
+  }
+}

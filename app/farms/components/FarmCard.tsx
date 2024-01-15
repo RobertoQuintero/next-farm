@@ -1,27 +1,31 @@
+import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
-import { UsersContext } from '@/app/context/users/UsersContext'
-import { IUser } from '@/interfaces/user'
+import { IFarm } from '@/interfaces/farm'
 import { Button } from '@mui/material'
+import { useRouter } from 'next/navigation'
 import React, { useContext } from 'react'
 interface Props{
-  user:IUser
+  farm:IFarm
 }
 
-export const UserCard = ({user}:Props) => {
-
-  const {setUser,setAction,setError} = useContext(UsersContext)
+export const FarmCard = ({farm}:Props) => {
+  const router = useRouter()
+  const {setFarm,setError} = useContext(FarmsContext)
   const {toggleModal} = useContext(UiContext)
 
   const onClick = (action:string) =>{
-     setError(undefined)
-     setAction(action)
-     setUser(user)
-     toggleModal()
+    setError(undefined)
+    setFarm(farm)
+    if(action==='OPEN'){
+      router.push('users')
+      return
+    }
+    toggleModal()
   };
  
   return (
     <div className='rowCard'>
-      <p>{user.name}</p>
+      <p>{farm.name}</p>
       <div style={{display:'flex', gap:'.5rem'}}>
         <Button 
           size="small"
@@ -35,9 +39,9 @@ export const UserCard = ({user}:Props) => {
           size="small"
           type='submit'
           variant="outlined"
-          onClick={()=>onClick('ACCESS')}  
+          onClick={()=>onClick('OPEN')}  
          >
-         Accesos
+         Ver
         </Button>
       </div>
     </div>

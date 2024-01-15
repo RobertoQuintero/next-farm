@@ -28,9 +28,9 @@ export const PostUpdateUser = () => {
     phone:user?user.phone:'',
     password:user?user.password:'',
     status:user?user.status:true,
-    is_active:user?user.status:true
+    user_is_active:user?user.user_is_active:true
   } as IUser
-  const [checked, setChecked] = useState(values.is_active);
+  const [checked, setChecked] = useState(values.user_is_active);
 
   const onSubmit = async(data:IUser) =>{
     const date= new Date()
@@ -41,7 +41,7 @@ export const PostUpdateUser = () => {
     data.id_user=values.id_user
     data.updated_at=date
     data.status=values.status
-    data.is_active=checked
+    data.user_is_active=checked
     data.id_company=company?.id_company!
     data.img_url=''
     // console.log(data)
