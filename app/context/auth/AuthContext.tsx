@@ -12,12 +12,14 @@ interface ContextProps{
   states:IState[];
   companyUser:IUser | undefined;
   idCompany:number| undefined;
+  user:IUser | undefined;
 
   logout: () => void;
   setShowForm:(payload:boolean)=>void;
   postCompany: (payload: ICompany) => Promise<boolean>;
-  loginCompany: (payload: ICompany) => Promise<boolean>;
-  loginUser: (payload: IUser) => Promise<boolean>;
+  // loginCompany: (payload: ICompany) => Promise<boolean>;
+  login: (payload: IUser) => Promise<boolean>;
+  postUser: (payload: IUser) => Promise<boolean>;
 }
 
 export const AuthContext = createContext({} as ContextProps)

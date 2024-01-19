@@ -19,6 +19,7 @@ export interface AuthState{
   showForm: boolean;
   states:IState[];
   companyUser:IUser | undefined;
+  user:IUser | undefined;
   idCompany:number| undefined;
 }
 
@@ -30,7 +31,8 @@ const Auth_INITIAL_STATE:AuthState={
   showForm: false,
   states:[],
   companyUser:undefined,
-  idCompany:undefined
+  idCompany:undefined,
+  user:undefined,
 }
 
 export const AuthProvider = ({children}:Props) => {
@@ -49,7 +51,7 @@ export const AuthProvider = ({children}:Props) => {
     if(ok){
       dispatch({
         type:'[auth] - login',
-        payload:data as ICompany
+        payload:data as IUser
       })
     }else{
       logout()
@@ -77,31 +79,31 @@ export const AuthProvider = ({children}:Props) => {
     })
   }
 
-  const loginCompany = async(payload:ICompany):Promise<boolean>=>{
+  // const loginCompany = async(payload:ICompany):Promise<boolean>=>{
+  //   setError(undefined)
+  //   setIsLoading(true)
+  //   const {ok,data}=await postAuthRequest('/auth/login',payload)
+  //   console.log(data)
+  //   if(ok){
+  //     dispatch({
+  //       type:'[auth] - login',
+  //       payload:data as ICompany
+  //     })
+  //   }
+  //   else{
+  //     setError(data as string)
+  //   }
+  //   setIsLoading(false)
+  //   return ok
+  // }
+
+  const login = async(payload:IUser):Promise<boolean>=>{
     setError(undefined)
     setIsLoading(true)
     const {ok,data}=await postAuthRequest('/auth/login',payload)
-    console.log(data)
     if(ok){
       dispatch({
         type:'[auth] - login',
-        payload:data as ICompany
-      })
-    }
-    else{
-      setError(data as string)
-    }
-    setIsLoading(false)
-    return ok
-  }
-  const loginUser = async(payload:IUser):Promise<boolean>=>{
-    setError(undefined)
-    setIsLoading(true)
-    const {ok,data}=await postAuthRequest('/auth/login',payload)
-    console.log(data)
-    if(ok){
-      dispatch({
-        type:'[auth] - loginUser',
         payload:data as IUser
       })
     }
@@ -111,6 +113,24 @@ export const AuthProvider = ({children}:Props) => {
     setIsLoading(false)
     return ok
   }
+
+  
+  const postUser = async(payload:IUser):Promise<boolean> =>{
+      setError(undefined)
+      setIsLoading(true)
+       const {ok,data}=await postAuthRequest(`/auth/register`,payload)
+       if(ok){
+        dispatch({
+          type:'[auth] - login',
+          payload:data as IUser
+        })
+       }
+       else{
+        setError(data as string)
+       }
+       setIsLoading(false)
+       return ok
+    };
 
 
   const setIsLoading = (payload:boolean)=>{
@@ -167,8 +187,8 @@ export const AuthProvider = ({children}:Props) => {
       logout,
       setShowForm,
       postCompany,
-      loginCompany,
-      loginUser
+      login,
+      postUser
     }}>
       {children}
     </AuthContext.Provider>

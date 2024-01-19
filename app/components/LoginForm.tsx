@@ -1,45 +1,27 @@
 'use client'
-import { Button, CircularProgress, MenuItem, TextField } from '@mui/material'
+import { Button, CircularProgress,  TextField } from '@mui/material'
 import styles from './components.module.css'
 import { UiContext } from '../context/ui/UiContext'
-import {  useContext, useState } from 'react'
+import {  useContext} from 'react'
 import { useForm } from "react-hook-form"
 import { AuthContext } from '../context/auth/AuthContext'
-import { ICompany } from '@/interfaces'
 import { IUser } from '@/interfaces/user'
 
-interface FormData {
-  email:string;
-  password:string;
-}
-const types=[
-  {id:1,name:'Usuario'},
-  {id:2,name:'Compañía'},
-]
 export const LoginForm = () => {
   const {uiReset} = useContext(UiContext)
-  const {loginCompany,authLoading,authError,loginUser} = useContext(AuthContext)
-  const [type, setType] = useState(1)
+  const {authLoading,authError,login} = useContext(AuthContext)
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>()
+  } = useForm<IUser>()
 
-  const onSubmit=async({email,password}:FormData)=>{
-    const company={email,password,type}
-    if(type===1){
-      const ok= await loginUser(company as IUser)
-      if(ok){
-       uiReset()
-     }
-    }else{
-      const ok= await loginCompany(company as ICompany)
-      if(ok){
-       uiReset()
-     }
-
-    }
+  const onSubmit=async({email,password}:IUser)=>{
+    const user={email,password} as IUser
+    const ok= await login(user )
+    if(ok){
+     uiReset()
+   }
   }
 
   return (
@@ -47,27 +29,6 @@ export const LoginForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       className={styles.formContainer} >
       <p className={styles.formTitle} >Login</p>
-      <TextField
-          size="small"
-          label='Estados'
-          fullWidth
-          value={type}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            setType(+event.target.value);
-          }} 
-          select >
-          {
-            types.length
-            ?types.map(item=>(
-              <MenuItem 
-                key={item.id} 
-                value={item.id}>
-                {item.name}
-              </MenuItem>
-            ))
-            :<div></div>
-          }
-        </TextField>
       <TextField 
         fullWidth
         label='Email'

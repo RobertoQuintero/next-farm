@@ -3,33 +3,36 @@ import { TextField,Button, CircularProgress, MenuItem  } from '@mui/material'
 import styles from './components.module.css'
 import {  useContext, useState } from 'react'
 import { UiContext } from '../context/ui/UiContext'
-import { ICompany } from '@/interfaces'
+import { IUser } from '@/interfaces'
 import { useForm } from 'react-hook-form'
 import { AuthContext } from '../context/auth/AuthContext'
 
 
 export const RegisterForm = () => {
   const {toggleModal} = useContext(UiContext)
-  const {authLoading,authError,states,postCompany} = useContext(AuthContext)
+  const {authLoading,authError,states,postUser} = useContext(AuthContext)
   const [state, setState] = useState(1)
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ICompany>()
+  } = useForm<IUser>()
 
-  const onSubmit=async (data:ICompany)=>{
+  const onSubmit=async (data:IUser)=>{
     const date=new Date()
-    data.id_company=0
+    data.id_user=0
     data.id_state=state
-    data.id_role=3
+    data.id_role=1
     data.is_active=false
     data.status=true
     data.created_at=date
     data.updated_at=date
+    data.id_farm=0
+    data.is_company=true
     console.log(data)
-    const ok=await postCompany(data)
+
+    const ok=await postUser(data)
     if(ok){
       toggleModal()
       // location.reload()
@@ -45,7 +48,7 @@ export const RegisterForm = () => {
         <TextField
           size='small'
           fullWidth
-          label='Nombre Empresa'
+          label='Nombre'
           type="text"
           {...register('name',{
           required:'Este campo es requerido',
@@ -111,7 +114,7 @@ export const RegisterForm = () => {
         </div>
         <TextField
           size="small"
-          label='Estados'
+          label='Estado'
           fullWidth
           value={state}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,29 +1,17 @@
 import db from "@/database/connection";
-import { ICompany } from "@/interfaces";
 import { createJWT } from "../../../../utils";
 import bcrypt from "bcrypt";
+import { IUser } from "@/interfaces/user";
 
-const query =`
-    id_company,
-    name,
-    email,
-    phone,
-    address,
-    zip,
-    id_role,
-    id_state,
-    is_active,
-    status
-`
 
 export const POST = async (req: Request) => {
   const body = await req.json();
-  const { name, email, password, phone, address, zip,id_role,created_at,id_company,id_state,is_active,status,updated_at } =
-    body as ICompany;
+  const { name, email, password, phone, address, zip,id_role,created_at,id_state,is_active,status,updated_at,id_user,img_url,is_company,id_farm } =
+    body as IUser;
 
   try {
     const resp = await db.query(`
-      SELECT email FROM RH.Companies WHERE email='${email}'`);
+      SELECT email FROM RH.Users WHERE email='${email}'`);
 
     if (resp.length) {
       return Response.json(
@@ -43,12 +31,11 @@ export const POST = async (req: Request) => {
 
     const res = (await db.query(`
     DECLARE @const int 
-      SET @const=(SELECT isNull(max(id_company),0)+1  FROM RH.Companies)
-      if ${id_company} > 0
+      SET @const=(SELECT isNull(max(id_user),0)+1  FROM RH.Users)
+      if ${id_user} > 0
       BEGIN
-        UPDATE RH.Companies
+        UPDATE RH.Users
         SET name='${name}',
-            email='${email}',
             phone='${phone}',
             address='${address}',
             zip='${zip}',
@@ -56,14 +43,17 @@ export const POST = async (req: Request) => {
             id_state='${id_state}',
             is_active='${is_active}',
             status='${status}',
-            updated_at='${updated_at}'
-          WHERE id_company='${id_company}'
-          SELECT ${query} FROM RH.Companies WHERE id_company='${id_company}'
+            updated_at='${updated_at}',
+            img_url='${img_url}',
+            id_farm='${id_farm}',
+            is_company='${is_company}'
+          WHERE id_user='${id_user}'
+          SELECT * FROM RH.Users WHERE id_user='${id_user}'
       END
       ELSE
       BEGIN
-    INSERT RH.Companies (
-      id_company,
+    INSERT RH.Users (
+      id_user,
       name,
       email,
       password,
@@ -75,7 +65,10 @@ export const POST = async (req: Request) => {
       id_state,
       is_active,
       status,
-      updated_at
+      updated_at,
+      img_url,
+      is_company,
+      id_farm
     )
     VALUES (
       @const,
@@ -88,16 +81,19 @@ export const POST = async (req: Request) => {
       '${id_role}',
       '${created_at}',
       '${id_state}',
-      '${false}',
+      '${is_active}',
       '${status}',
-      '${updated_at}'
+      '${updated_at}',
+      '${img_url}',
+      '${is_company}',
+      '${id_farm}'
     )
-    SELECT ${query} FROM RH.Companies WHERE id_company=@const;
+    SELECT * FROM RH.Users WHERE id_user=@const
     END
     `)) as unknown;
 
-    const token = await createJWT((res as ICompany[])[0].id_role, email);
-    const user = (res as ICompany[]).map((user) => {
+    const token = await createJWT((res as IUser[])[0].id_role, email);
+    const user = (res as IUser[]).map((user) => {
       const {
         password,
         created_at,

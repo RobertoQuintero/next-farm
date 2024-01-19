@@ -1,15 +1,14 @@
 import db from "@/database/connection";
-import { ICompany } from "@/interfaces";
 import { IUser } from "@/interfaces/user";
 import { createJWT, serverError } from "@/utils";
 import bcrypt from "bcrypt";
 
 export const POST = async (req: Request) => {
   const body = await req.json();
-  const { password, email ,type} = body as { password: string; email: string;type:number };
+  const { password, email } = body as IUser;
   try {
     const user = await db.query(`
-      SELECT * FROM RH.${type===2?'Companies':'Users'} WHERE email='${email}' and status='true' and is_active='true'
+      SELECT * FROM RH.Users WHERE email='${email}' and status='true' 
     `);
 
     if (!user.length) {
@@ -41,9 +40,7 @@ export const POST = async (req: Request) => {
       password: pass,
       status,
       ...rest
-    } = user[0] as ICompany | IUser;
-
-    console.log(rest)
+    } = user[0] as  IUser;
 
     return Response.json(
       {

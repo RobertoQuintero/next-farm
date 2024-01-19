@@ -3,7 +3,7 @@ import { AuthState } from './AuthProvider'
 import { IUser } from '@/interfaces/user'
 
 type AuthActionType=
-          {type:'[auth] - login',payload:ICompany | undefined}
+          {type:'[auth] - login',payload:IUser | undefined}
          |{type:'[auth] - loginUser',payload:IUser | undefined}
          |{type:'[auth] - logout',payload:AuthState}
          |{type:'[auth] - isLoading',payload:boolean}
@@ -19,22 +19,9 @@ export const authReducer = (state:AuthState,action:AuthActionType):AuthState => 
       return {
         ...state,
         logged:true,
-        company:action.payload,
-        companyUser:undefined,
-        authError:undefined,
-        idCompany:action.payload?.id_company
+        user:action.payload,
+        authError:undefined, 
       }
-
-    case '[auth] - loginUser':
-      return {
-        ...state,
-        logged:true,
-        company:undefined,
-        companyUser:action.payload,
-        authError:undefined,
-        idCompany:action.payload?.id_company
-      }
-    
     case '[auth] - logout':
       return {
         ...state,

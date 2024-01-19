@@ -1,21 +1,23 @@
 
 export interface IUser {
-  id_user:         number;
-  id_company:      number;
-  name:            string;
-  email:           string;
-  phone:           string;
-  img_url:         string;
-  password:        string;
-  id_role:         number;
-  id_job_position: number;
-  created_at:      string | Date;
-  updated_at:      string | Date;
-  status:          boolean;
-  is_active:          boolean;
-  type?:number
-  user_is_active:boolean;
+  id_user:    number;
+  name:       string;
+  email:      string;
+  phone:      string;
+  img_url:    string;
+  password:   string;
+  id_role:    number;
+  created_at: string | Date;
+  updated_at: string | Date;
+  status:     boolean;
+  is_active:  boolean;
+  is_company: boolean;
+  zip:        string;
+  address:    string;
+  id_state:   number;
+  id_farm:   number;
 }
+
 
 export interface IJobPosition {
   id_job_position: number;

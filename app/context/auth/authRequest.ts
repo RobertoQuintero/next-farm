@@ -9,6 +9,7 @@ interface AuthResponse {
       | string
       | IState[]
       | IUser
+      | IUser[]
 }
 
 export const getAuthRequest = async (url: string): Promise<AuthResponse> => {
@@ -26,9 +27,9 @@ export const getAuthRequest = async (url: string): Promise<AuthResponse> => {
   return response;
 };
 
-export const postAuthRequest = async (
+export const postAuthRequest = async <T>(
   url: string,
-  data:ICompany |IUser
+  data:T
   ): Promise<AuthResponse> => {
   let response = {} as AuthResponse;
   await belisarioApi

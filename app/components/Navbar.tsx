@@ -19,10 +19,8 @@ const style={
 export const Navbar = () => {
   const router = useRouter()
   const {toggleModal,toggleSideMenu} = useContext(UiContext)
-  const {logged,logout,authLoading,showForm,setShowForm,company,companyUser} = useContext(AuthContext)
+  const {logged,logout,authLoading,showForm,setShowForm,company,companyUser,user} = useContext(AuthContext)
   
-   
-    
   const onLogout=()=>{ 
     logout()
     router.replace('/')
@@ -47,7 +45,7 @@ export const Navbar = () => {
                 Inicio
             </Link>
             {
-              company || companyUser?.id_role==2 || companyUser?.id_role==3
+              user
                 ?<>
                   <Link
                     className={styles.menuLink}
@@ -72,13 +70,11 @@ export const Navbar = () => {
               ? <CircularProgress size='1rem'/>
               : <>
               {
-                company 
-                  ? <span className={styles.userName}>
-                      {company.id_role===3?'Admin': company?.name?.split(' ')[0]}
-                    </span>
-                  :companyUser
-                    ?<span className={styles.userName}>{companyUser.name.split(' ')[0]}</span>
-                    :<></>
+                user 
+                ? <span className={styles.userName}>
+                    {user?.name?.split(' ')[0]}
+                  </span>
+                :<></>
               }
                 <div className={styles.buttonGroup}>
                   {
