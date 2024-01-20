@@ -1,4 +1,5 @@
 import belisarioApi from "@/database/apis";
+import { IPig, IPigType, IRace, IStage, IUbication } from "@/interfaces";
 import { IFarm } from "@/interfaces/farm";
 
 interface FarmsResponse{
@@ -6,6 +7,12 @@ interface FarmsResponse{
   data: IFarm[]
       | IFarm
       | string
+      | IUbication[]
+      | IStage[]
+      | IRace[]
+      | IPigType[]
+      | IPig[]
+      | IPig
 }
 
 export const getFarmsRequest = async (url: string): Promise<FarmsResponse> => {
@@ -23,9 +30,9 @@ export const getFarmsRequest = async (url: string): Promise<FarmsResponse> => {
   return response;
 };
 
-export const postFarmsRequest = async (
+export const postFarmsRequest = async <T>(
   url: string,
-  data:IFarm
+  data:T
   ): Promise<FarmsResponse> => {
   let response = {} as FarmsResponse;
   await belisarioApi

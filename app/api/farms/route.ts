@@ -22,7 +22,7 @@ export const GET = async(req:Request) =>{
 
 export const POST = async(req:Request) =>{
   const body = await req.json();
-  const {address,id_company,id_farm,name,phone,status,zip,created_at }= body as IFarm;
+  const {address,id_user,id_farm,name,phone,status,zip,created_at }= body as IFarm;
 
   try {
 
@@ -37,7 +37,7 @@ export const POST = async(req:Request) =>{
           address='${address}',
           status='${status}',
           zip='${zip}',
-          id_company='${id_company}'
+          id_user='${id_user}'
       WHERE id_farm='${id_farm}'
       SELECT * FROM RH.Farms WHERE id_farm='${id_farm}'
     END
@@ -45,7 +45,7 @@ export const POST = async(req:Request) =>{
     BEGIN
       INSERT RH.Farms (
         id_farm,
-        id_company,
+        id_user,
         name,
         address,
         phone,
@@ -55,7 +55,7 @@ export const POST = async(req:Request) =>{
       )
       VALUES (
         @const,
-        '${id_company}',
+        '${id_user}',
         '${name}',
         '${address}',
         '${phone}',

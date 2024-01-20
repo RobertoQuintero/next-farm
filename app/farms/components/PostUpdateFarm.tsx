@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form"
 export const PostUpdateFarm = () => {
   const {toggleModal} = useContext(UiContext)
   const {farm,farmsLoading,postFarm,farmsError} = useContext(FarmsContext)
-  const {company} = useContext(AuthContext)
+  const {company,user} = useContext(AuthContext)
 
   const {
     register,
@@ -25,7 +25,7 @@ export const PostUpdateFarm = () => {
     id_farm:farm?farm.id_farm:0,
     name:farm?farm.name:'',
     address:farm?farm.address:'',
-    id_company:farm?farm.id_company:company?.id_company,
+    id_user:farm?farm.id_user:user?.id_user,
     zip:farm?farm.zip:'',
     phone:farm?farm.phone:'',
     status:farm?farm.status:true,
@@ -37,11 +37,8 @@ export const PostUpdateFarm = () => {
 
     data.id_farm=values.id_farm
     data.created_at=new Date()
-    data.id_company=values.id_company
+    data.id_user=values.id_user
     data.status=checked
-
-    // console.log(data)
-    // return
     
     const ok= await postFarm(data)
     if(ok){

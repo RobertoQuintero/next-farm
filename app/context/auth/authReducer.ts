@@ -11,6 +11,7 @@ type AuthActionType=
          |{type:'[auth] - setShowForm',payload:boolean}
          |{type:'[auth] - setStates',payload:IState[]}
          |{type:'[auth] - setCompany',payload:ICompany | undefined}
+         |{type:'[auth] - setIdFarm',payload:number | undefined}
         
 export const authReducer = (state:AuthState,action:AuthActionType):AuthState => {
   
@@ -21,6 +22,7 @@ export const authReducer = (state:AuthState,action:AuthActionType):AuthState => 
         logged:true,
         user:action.payload,
         authError:undefined, 
+        idFarm:action.payload?.id_farm
       }
     case '[auth] - logout':
       return {
@@ -56,6 +58,11 @@ export const authReducer = (state:AuthState,action:AuthActionType):AuthState => 
         company:action.payload,
         logged:true,
         authError:undefined
+      }
+    case '[auth] - setIdFarm':
+      return {
+        ...state,
+        idFarm:action.payload
       }
 
     default:

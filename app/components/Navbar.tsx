@@ -53,12 +53,12 @@ export const Navbar = () => {
                     href='/farms'>
                   Granjas
                 </Link>
-                  <Link
+                  {/* <Link
                     className={styles.menuLink}
                     style={style}
                     href='/users'>
                   Usuarios
-                </Link>
+                </Link> */}
                 
                 </>
             :<></>

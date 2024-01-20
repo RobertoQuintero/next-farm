@@ -1,3 +1,4 @@
+import { AuthContext } from '@/app/context/auth/AuthContext'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { IFarm } from '@/interfaces/farm'
@@ -10,14 +11,16 @@ interface Props{
 
 export const FarmCard = ({farm}:Props) => {
   const router = useRouter()
+  const {setIdFarm} = useContext(AuthContext)
   const {setFarm,setError} = useContext(FarmsContext)
   const {toggleModal} = useContext(UiContext)
 
   const onClick = (action:string) =>{
     setError(undefined)
     setFarm(farm)
+    setIdFarm(farm.id_farm)
     if(action==='OPEN'){
-      router.push('users')
+      router.push('/farms/custom')
       return
     }
     toggleModal()

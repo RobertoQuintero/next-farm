@@ -30,7 +30,7 @@ const FarmsPage = () => {
       </div>
       <div style={{paddingTop:'1rem'}}>
           {
-            farms.length
+            farms?.length
               ?farms.map(f=><FarmCard farm={f} key={f.id_farm}/>)
               : <EmptyPage/>
           }

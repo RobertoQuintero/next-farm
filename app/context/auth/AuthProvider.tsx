@@ -21,6 +21,7 @@ export interface AuthState{
   companyUser:IUser | undefined;
   user:IUser | undefined;
   idCompany:number| undefined;
+  idFarm: number | undefined;
 }
 
 const Auth_INITIAL_STATE:AuthState={
@@ -33,6 +34,7 @@ const Auth_INITIAL_STATE:AuthState={
   companyUser:undefined,
   idCompany:undefined,
   user:undefined,
+  idFarm: undefined
 }
 
 export const AuthProvider = ({children}:Props) => {
@@ -79,23 +81,6 @@ export const AuthProvider = ({children}:Props) => {
     })
   }
 
-  // const loginCompany = async(payload:ICompany):Promise<boolean>=>{
-  //   setError(undefined)
-  //   setIsLoading(true)
-  //   const {ok,data}=await postAuthRequest('/auth/login',payload)
-  //   console.log(data)
-  //   if(ok){
-  //     dispatch({
-  //       type:'[auth] - login',
-  //       payload:data as ICompany
-  //     })
-  //   }
-  //   else{
-  //     setError(data as string)
-  //   }
-  //   setIsLoading(false)
-  //   return ok
-  // }
 
   const login = async(payload:IUser):Promise<boolean>=>{
     setError(undefined)
@@ -181,6 +166,13 @@ export const AuthProvider = ({children}:Props) => {
      })
   };
 
+  const setIdFarm =(payload:number | undefined) =>{
+     dispatch({
+      type:'[auth] - setIdFarm',
+      payload
+     })
+  };
+
   return (
     <AuthContext.Provider value={{
       ...state,
@@ -188,7 +180,8 @@ export const AuthProvider = ({children}:Props) => {
       setShowForm,
       postCompany,
       login,
-      postUser
+      postUser,
+      setIdFarm
     }}>
       {children}
     </AuthContext.Provider>

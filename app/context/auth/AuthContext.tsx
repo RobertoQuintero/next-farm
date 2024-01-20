@@ -13,6 +13,7 @@ interface ContextProps{
   companyUser:IUser | undefined;
   idCompany:number| undefined;
   user:IUser | undefined;
+  idFarm: number | undefined;
 
   logout: () => void;
   setShowForm:(payload:boolean)=>void;
@@ -20,6 +21,7 @@ interface ContextProps{
   // loginCompany: (payload: ICompany) => Promise<boolean>;
   login: (payload: IUser) => Promise<boolean>;
   postUser: (payload: IUser) => Promise<boolean>;
+  setIdFarm: (payload: number | undefined) =>void;
 }
 
 export const AuthContext = createContext({} as ContextProps)

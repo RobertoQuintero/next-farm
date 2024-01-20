@@ -30,12 +30,11 @@ export const RegisterForm = () => {
     data.updated_at=date
     data.id_farm=0
     data.is_company=true
-    console.log(data)
 
     const ok=await postUser(data)
     if(ok){
       toggleModal()
-      // location.reload()
+
     }
   }
 
