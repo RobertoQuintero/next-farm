@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+// import { isValidToken } from "./utils";
 
 
 export async function middleware(request: NextRequest) {
+  let token = request.cookies.get("jwt") as unknown;
   if (request.nextUrl.pathname.startsWith("/users")) {
-    let token = request.cookies.get("jwt") as unknown;
     if (!token) {
       return NextResponse.redirect(new URL("/", request.url));
     }
@@ -12,14 +13,19 @@ export async function middleware(request: NextRequest) {
     // const email = await isValidToken(token as string);
   }
 
-  if (request.nextUrl.pathname.startsWith("/farm")) {
-    let token = request.cookies.get("jwt") as unknown;
+  if (request.nextUrl.pathname==="/farms") {
+
+   
     if (!token) {
       return NextResponse.redirect(new URL("/", request.url));
+    }else{
+      // let id_role = request.cookies.get("id_role");
+      // if(id_role?.value!=='1'){
+      //   return NextResponse.redirect(new URL("/farms/custom", request.url));
+      // }
     }
-
-    // const email = await isValidToken(token as string);
   }
+
 
 
   // if (request.nextUrl.pathname.startsWith("/dashboard")) {

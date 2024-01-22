@@ -1,10 +1,10 @@
 'use client'
-import  { useContext, useEffect, useReducer } from 'react'
+import  {  useEffect, useReducer } from 'react'
 import { UsersContext} from './UsersContext'
 import { usersReducer } from './usersReducer'
 import { IJobPosition, IRole, IUser } from '@/interfaces/user'
 import { getUsersRequest, postUsersRequest } from './usersRequest'
-import { AuthContext } from '../auth/AuthContext'
+import { returnArray } from '../auth/authRequest'
 
 
 interface Props{
@@ -40,11 +40,9 @@ export const UsersProvider = ({children}:Props) => {
   const getResources = async() =>{
     setIsLoading(true)
      Promise.all([
-      getUsersRequest('/users'),
       getUsersRequest('/users/roles'),
      ]).then((resp)=>{
-      setUsers(resp[0].data as IUser[])
-      setRoles(resp[1].data as IRole[])
+      setRoles(resp[0].data as IRole[])
       setIsLoading(false)
      })
      .catch(error=>{
@@ -54,16 +52,19 @@ export const UsersProvider = ({children}:Props) => {
      })
   };
 
-  const getJobPositions = async(id:number) =>{
-     setIsLoading(true)
-     const {ok,data}= await getUsersRequest(`/users/job_positions?id_company=${id}`)
-     if(ok){
-      setJobPositions(data as IJobPosition[])
-     }else{
-      setError(data as string)
-     }
-     setIsLoading(false)
-  };
+  
+  const getUsers = async(payload:number) =>{
+      setIsLoading(true)
+       const {ok,data}=await getUsersRequest(`/users?idFarm=${payload}`)
+       if(ok){
+        setUsers(data as IUser[])
+       }
+       else{
+        setError(data as string)
+       }
+       setIsLoading(false)
+    };
+
   
 
   const postUser = async(payload:IUser):Promise<boolean> =>{
@@ -71,18 +72,7 @@ export const UsersProvider = ({children}:Props) => {
      setIsLoading(true)
      const {ok,data}= await postUsersRequest('/users/register',payload)
      if(ok){
-       let newArray=[] as IUser[]
-      if(payload.id_user){
-        newArray=state.users.map(item=>{
-          if(item.id_user===payload.id_user){
-            return data as IUser
-          }
-          return item
-        })
-      }else{
-        newArray=[...state.users,data as IUser]
-      }
-      setUsers(newArray)
+      setUsers(returnArray(payload,data as IUser,state.users,'id_user'))
      }else{
       setError(data as string)
      }
@@ -119,12 +109,6 @@ export const UsersProvider = ({children}:Props) => {
      })
   };
 
-  const setJobPositions = (payload:IJobPosition[]) =>{
-     dispatch({
-      type:'[Users] - setJobPositions',
-      payload
-     })
-  };
 
   const setRoles = (payload:IRole[]) =>{
      dispatch({
@@ -146,10 +130,10 @@ export const UsersProvider = ({children}:Props) => {
       ...state,
 
       setUser,
-      getJobPositions,
       postUser,
       setAction,
-      setError
+      setError,
+      getUsers
       
     }}>
       {children}

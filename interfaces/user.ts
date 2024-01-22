@@ -31,3 +31,18 @@ export interface IRole {
   description: string;
   status:      boolean;
 }
+
+export interface IAccess {
+  id_access:   number;
+  description: string;
+  status:      boolean;
+}
+
+export interface IRoleAccess {
+  id_role_access: number;
+  id_role:        number;
+  id_access:      number;
+  status:         boolean;
+  id_farm:        number;
+  name:string;
+}

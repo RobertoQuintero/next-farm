@@ -1,12 +1,11 @@
 'use client'
-import  { useEffect, useReducer } from 'react'
+import  {  useEffect, useReducer } from 'react'
 import { FarmsContext} from './FarmsContext'
 import { usersReducer } from './farmsReducer'
 import { IFarm } from '@/interfaces/farm'
 import { getFarmsRequest, postFarmsRequest } from './farmsRequest'
 import { returnArray } from '../auth/authRequest'
-import { IUbication, IStage, IPigType, IRace, IPig } from '@/interfaces'
-
+import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess } from '@/interfaces'
 
 interface Props{
   children:JSX.Element|JSX.Element[]
@@ -24,6 +23,13 @@ export interface UsersState{
   pigs:IPig[];
   pig:IPig | undefined;
   idFarm: number | undefined;
+  farmAction:string | undefined;
+  roles:IRole[];
+  role:IRole | undefined;
+  accessArr:IAccess[];
+  access:IAccess | undefined;
+  roleAccess:IRoleAccess|undefined;
+  rolesAccess:IRoleAccess[];
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -38,6 +44,13 @@ const UI_INITIAL_STATE:UsersState={
   pigs:[],
   pig:undefined,
   idFarm: undefined,
+  farmAction:undefined,
+  roles:[],
+  role: undefined,
+  accessArr:[],
+  access: undefined,
+  roleAccess:undefined,
+  rolesAccess:[]
 }
 
 export const FarmsProvider = ({children}:Props) => {
@@ -54,12 +67,16 @@ export const FarmsProvider = ({children}:Props) => {
       getFarmsRequest('/farms/catalog/pig_types'),
       getFarmsRequest('/farms/catalog/races'),
       getFarmsRequest('/farms/catalog/stages'),
+      getFarmsRequest('/users/roles'),
+      getFarmsRequest('/users/access'),
      ]).then((resp)=>{
       setFarms(resp[0].data as IFarm[])
       setUbications(resp[1].data as IUbication[])
       setPigTypes(resp[2].data as IPigType[])
       setRaces(resp[3].data as IRace[])
       setStages(resp[4].data as IStage[])
+      setRoles(resp[5].data as IRole[])
+      setAccessArr(resp[6].data as IAccess[])
       setIsLoading(false)
      })
      .catch(error=>{
@@ -69,6 +86,30 @@ export const FarmsProvider = ({children}:Props) => {
      })
   };
 
+  
+  const getPigs = async(payload:number) =>{
+      setIsLoading(true)
+       const {ok,data}=await getFarmsRequest(`/farms/pigs?idFarm=${payload}`)
+       if(ok){
+         setPigs(data as IPig[])
+       }
+       else{
+        setError(data as string)
+       }
+       setIsLoading(false)
+    };
+
+  const getRolesAccess = async(payload:number) =>{
+      setIsLoading(true)
+       const {ok,data}=await getFarmsRequest(`/users/role_access?id_role=${payload}`)
+       if(ok){
+         setRolesAccess(data as IRoleAccess[])
+       }
+       else{
+        setError(data as string)
+       }
+       setIsLoading(false)
+    };
 
   const postFarm = async(payload:IFarm):Promise<boolean> =>{
     setError(undefined)
@@ -88,6 +129,18 @@ export const FarmsProvider = ({children}:Props) => {
      const {ok,data}= await postFarmsRequest('/farms/pigs',payload)
      if(ok){
       setPigs(returnArray(payload,data as IPig,state.pigs,'id_pig'))
+     }else{
+      setError(data as string)
+     }
+     setIsLoading(false)
+     return ok
+  };
+  const postRoleAccess = async(payload:IRoleAccess):Promise<boolean> =>{
+    setError(undefined)
+     setIsLoading(true)
+     const {ok,data}= await postFarmsRequest('/users/role_access',payload)
+     if(ok){
+      setRolesAccess(returnArray(payload,data as IRoleAccess,state.rolesAccess,'id_role_access'))
      }else{
       setError(data as string)
      }
@@ -163,6 +216,46 @@ export const FarmsProvider = ({children}:Props) => {
      })
   };
 
+  const setFarmAction = (payload:string | undefined) =>{
+     dispatch({
+      type:'[Farms] - setFarmAction',
+      payload
+     })
+  };
+
+  const setRole = (payload:IRole | undefined) =>{
+     dispatch({
+      type:'[Farms] - setRole',
+      payload
+     })
+  };
+  const setRoles = (payload:IRole[] ) =>{
+     dispatch({
+      type:'[Farms] - setRoles',
+      payload
+     })
+  };
+
+  const setAccessArr = (payload:IAccess[] ) =>{
+     dispatch({
+      type:'[Farms] - setAccessArr',
+      payload
+     })
+  };
+
+  const setRoleAccess = (payload:IRoleAccess | undefined ) =>{
+     dispatch({
+      type:'[Farms] - setRoleAccess',
+      payload
+     })
+  };
+  const setRolesAccess = (payload:IRoleAccess[] ) =>{
+     dispatch({
+      type:'[Farms] - setRolesAccess',
+      payload
+     })
+  };
+
   return (
     <FarmsContext.Provider value={{
       ...state,
@@ -170,8 +263,14 @@ export const FarmsProvider = ({children}:Props) => {
       setFarm,
       postFarm,
       setError,
-      postPig
-      
+      postPig,
+      setPig,
+      getPigs,
+      setFarmAction,
+      setRole,
+      postRoleAccess,
+      getRolesAccess,
+      setRoleAccess
     }}>
       {children}
     </FarmsContext.Provider>

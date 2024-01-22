@@ -3,6 +3,8 @@ import CustomMenuLink from '../../components/CustomMenuLink'
 
 const links=[
   {href:'/farms',title:'Bitácora cerdas'},
+  {href:'/farms/custom/users',title:'Usuarios'},
+  {href:'/farms/custom/roles',title:'Roles'},
 ]
 const RootLayout = ({children}:{children:ReactNode}) => {
   return (

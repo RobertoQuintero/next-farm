@@ -6,18 +6,20 @@ import { PostUpdateUser, UserCard } from '.';
 import { useContext, useEffect } from 'react';
 import { EmptyPage, LoadingComponent } from '@/app/components';
 import { UiContext } from '@/app/context/ui/UiContext';
-import { AuthContext } from '@/app/context/auth/AuthContext';
 import { UsersContext } from '@/app/context/users/UsersContext';
+import { AuthContext } from '@/app/context/auth/AuthContext';
 
 const UsersPage = () => {
-  const {company,companyUser,idCompany} = useContext(AuthContext)
-  const {userLoading,users,setUser,getJobPositions,actionString,setAction,setError} = useContext(UsersContext)
+  const {userLoading,users,setUser,actionString,setAction,setError,getUsers} = useContext(UsersContext)
   const {toggleModal,isModalOpen} = useContext(UiContext)
+  const {idFarm} = useContext(AuthContext)
 
   useEffect(() => {
-    getJobPositions(idCompany!)
+    getUsers(idFarm!)
   }, [])
   
+
+
   if(userLoading && !isModalOpen){
     return <LoadingComponent/>
   }
@@ -27,7 +29,6 @@ const UsersPage = () => {
      setAction(undefined)
      toggleModal()
   };
-
 
   return (
     <>

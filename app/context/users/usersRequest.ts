@@ -25,9 +25,9 @@ export const getUsersRequest = async (url: string): Promise<UsersResponse> => {
   return response;
 };
 
-export const postUsersRequest = async (
+export const postUsersRequest = async <T>(
   url: string,
-  data:IUser
+  data:T
   ): Promise<UsersResponse> => {
   let response = {} as UsersResponse;
   await belisarioApi

@@ -3,23 +3,24 @@ import bcrypt from "bcrypt";
 import { IUser } from "@/interfaces/user";
 
 const query =`
-      id_user,
-      id_company,
-      name,
-      email,
-      phone,
-      img_url,
-      password,
-      id_role,
-      id_job_position,
-      status,
-      user_is_active,
-      status
+        id_user,
+        name,
+        email,
+        id_role,
+        status,
+        img_url,
+        phone,
+        is_active,
+        address,
+        id_farm,
+        id_state,
+        is_company,
+        zip
 `
 
 export const POST = async (req: Request) => {
   const body = await req.json();
-  const { name, email, password, id_role,created_at,id_user,status,updated_at,id_job_position,img_url,phone,id_company,is_active,user_is_active} =
+  const {id_user, name, email, password, id_role,created_at,status,updated_at,img_url,phone,is_active,address,id_farm,id_state,zip} =
     body as IUser;
 
   try {
@@ -51,14 +52,16 @@ export const POST = async (req: Request) => {
       BEGIN
         UPDATE RH.Users
         SET name='${name}',
-            phone='${phone}',
-            id_job_position='${id_job_position}',
-            img_url='${img_url}',
             id_role='${id_role}',
             status='${status}',
-            user_is_active='${user_is_active}',
             updated_at='${updated_at}',
-            id_company='${id_company}'
+            img_url='${img_url}',
+            phone='${phone}',
+            is_active='${is_active}',
+            address='${address}',
+            id_farm='${id_farm}',
+            id_state='${id_state}',
+            zip='${zip}'
           WHERE id_user='${id_user}'
           SELECT ${query} FROM RH.Users WHERE id_user='${id_user}' and status='true'
       END
@@ -66,53 +69,58 @@ export const POST = async (req: Request) => {
       BEGIN
     INSERT RH.Users (
       id_user,
-      id_company,
       name,
       email,
-      phone,
-      img_url,
       password,
       id_role,
-      id_job_position,
       created_at,
-      updated_at,
       status,
-      user_is_active
+      updated_at,
+      img_url,
+      phone,
+      is_active,
+      address,
+      id_farm,
+      id_state,
+      is_company,
+      zip
     )
     VALUES (
       @const,
-      '${id_company}',
       '${name}',
       '${email}',
-      '${phone}',
-      '${img_url}',
       '${passwordHash}',
       '${id_role}',
-      '${id_job_position}',
       '${created_at}',
-      '${updated_at}',
       '${status}',
-      '${user_is_active}'
+      '${updated_at}',
+      '${img_url}',
+      '${phone}',
+      '${is_active}',
+      '${address}',
+      '${id_farm}',
+      '${id_state}',
+      '${false}',
+      '${zip}'
     )
-    SELECT ${query} FROM RH.Users WHERE id_user=@const and status='true'
+    SELECT ${query} FROM RH.Users WHERE id_user=@const
     END
-    `)) as unknown;
+    `)) ;
 
-    const user = (res as IUser[]).map((user) => {
-      const {
-        password,
-        created_at,
-        updated_at,
-        status,
-        ...rest
-      } = user;
-      return rest;
-    });
+    // const user = (res as IUser[]).map((user) => {
+    //   const {
+    //     password,
+    //     created_at,
+    //     updated_at,
+    //     ...rest
+    //   } = user;
+    //   return rest;
+    // });
 
     return Response.json(
       {
         ok: true,
-        data: user[0],
+        data: res[0],
       },
       // {
       //   status: 201,

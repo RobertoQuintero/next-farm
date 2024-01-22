@@ -1,40 +1,32 @@
 
 'use client'
-import { BackButton, EmptyPage, LoadingComponent } from '@/app/components'
+import { BackButton, EmptyPage } from '@/app/components'
 import AppModal from '@/app/components/AppModal'
+import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { Button } from '@mui/material'
 import { useContext, useEffect } from 'react'
-import { PigCard, PostUpdatePig } from '.'
-import { FarmsContext } from '@/app/context/farms/FarmsContext'
-import { AuthContext } from '@/app/context/auth/AuthContext'
+import { PostUpdateAccess, RoleAccessRow } from '.'
 
-const FarmPage = () => {
+const AccessPage = () => {
   const {toggleModal} = useContext(UiContext)
-  const {idFarm} = useContext(AuthContext)
-  const {farmsLoading,pigs,getPigs,setPig} = useContext(FarmsContext)
+  const {rolesAccess,getRolesAccess,role} = useContext(FarmsContext)
 
   useEffect(() => {
-    getPigs(idFarm!)
+    getRolesAccess(role?.id_role!)
   }, [])
   
+
+
   const onAdd = async() =>{
-    setPig(undefined)
      toggleModal()
   };
-
-  if(farmsLoading){
-    return <LoadingComponent/>
-  }
-
-
 
   return (
     <>
      <div className='actionCreateContainer'>
-        <div>
-          <BackButton/>
-        </div>
+        <BackButton/>
+        <div></div>
         <Button 
           onClick={onAdd}
           variant='contained' 
@@ -43,16 +35,16 @@ const FarmPage = () => {
       </div>
       <div>
         {
-          pigs.length
-            ?pigs.map(a=><PigCard pig={a} key={a.id_pig}/>)
+          rolesAccess?.length
+            ?rolesAccess?.map(a=><RoleAccessRow access={a} key={a.id_role_access}/>)
             :<EmptyPage/>
         }
       </div>
       <AppModal>
-        <PostUpdatePig/>
+        <PostUpdateAccess/>
       </AppModal>
     </>
   )
 }
 
-export default FarmPage
+export default AccessPage

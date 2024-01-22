@@ -2,6 +2,23 @@ import db from "@/database/connection";
 import { IUser } from "@/interfaces/user";
 import { createJWT, serverError } from "@/utils";
 import bcrypt from "bcrypt";
+import { cookies } from 'next/headers'
+
+const query =`
+        id_user,
+        name,
+        email,
+        id_role,
+        status,
+        img_url,
+        phone,
+        is_active,
+        address,
+        id_farm,
+        id_state,
+        is_company,
+        zip
+`
 
 export const POST = async (req: Request) => {
   const body = await req.json();
@@ -38,10 +55,11 @@ export const POST = async (req: Request) => {
       created_at,
       updated_at,
       password: pass,
-      status,
       ...rest
     } = user[0] as  IUser;
 
+    cookies().set('id_role', `${user[0].id_role}`)
+    cookies().set('jwt', `${token}`)
     return Response.json(
       {
         ok: true,
@@ -50,7 +68,7 @@ export const POST = async (req: Request) => {
       {
         headers: {
           "content-type": "application/json; charset=utf-8",
-          "Set-Cookie": `jwt=${token}; Max-Age=8640; Path=/`,
+          // "Set-Cookie": `jwt=${token}; Max-Age=8640; Path=/;`,
         },
       }
     );

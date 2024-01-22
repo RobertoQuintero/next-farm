@@ -1,37 +1,29 @@
 'use client'
 import { EmptyPage, LoadingComponent } from '@/app/components'
 import AppModal from '@/app/components/AppModal'
-import { AuthContext } from '@/app/context/auth/AuthContext'
 import { UiContext } from '@/app/context/ui/UiContext'
-import { UsersContext } from '@/app/context/users/UsersContext'
 import { Button } from '@mui/material'
-import styles from '../../users.module.css'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { RoleCard } from './RoleCard'
+import { FarmsContext } from '@/app/context/farms/FarmsContext'
 
 const RolesPage = () => {
-  const {idCompany} = useContext(AuthContext)
-  const {userLoading,setError,roles} = useContext(UsersContext)
+  const {farmsLoading,setError,roles} = useContext(FarmsContext)
   const {toggleModal,isModalOpen} = useContext(UiContext)
 
-  useEffect(() => {
-    // getJobPositions(idCompany!)
-  }, [])
-  
-  if(userLoading && !isModalOpen){
+  if(farmsLoading && !isModalOpen){
     return <LoadingComponent/>
   }
   const onAdd = async() =>{
       setError(undefined)
-    //  setUser(undefined)
-    //  setAction(undefined)
      toggleModal()
   };
 
 
   return (
     <>
-      <div className={styles.onAdd}>
+      <div className='actionCreateContainer'>
+        <div></div>
         <Button
           size='small'
           variant='contained'
@@ -61,3 +53,4 @@ const RolesPage = () => {
 }
 
 export default RolesPage
+

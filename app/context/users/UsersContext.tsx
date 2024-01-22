@@ -13,10 +13,10 @@ interface ContextProps{
 
   //methods
   setUser: (payload: IUser | undefined) => void;
-  getJobPositions: (id: number) => Promise<void>;
   postUser: (payload: IUser) => Promise<boolean>;
   setAction: (payload: string | undefined) => void;
   setError: (payload: string | undefined) => void;
+  getUsers: (payload: number) => Promise<void>
 }
 
 export const UsersContext = createContext({} as ContextProps)

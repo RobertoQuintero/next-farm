@@ -2,8 +2,10 @@ import { IPig } from "@/interfaces";
 import {  getRequestQuery, postRequest } from "@/utils/getRequest";
 
 export const GET = async(req:Request) =>{
+  const {searchParams}= new URL(req.url)
+  const idFarm=searchParams.get('idFarm')
 
-  return await getRequestQuery(`SELECT * FROM MOD.Pigs`)
+  return await getRequestQuery(`SELECT * FROM MOD.Pigs WHERE id_farm=${idFarm}`)
 }
 
 export const POST = async(req:Request) =>{

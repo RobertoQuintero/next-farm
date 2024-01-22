@@ -1,5 +1,5 @@
 'use client'
-import { IPig, IPigType, IRace, IStage,  IUbication } from '@/interfaces';
+import { IAccess, IPig, IPigType, IRace, IRole, IRoleAccess, IStage,  IUbication } from '@/interfaces';
 import { UsersState } from './FarmsProvider'
 import { IFarm } from '@/interfaces/farm';
 
@@ -14,6 +14,13 @@ type UsersActionType=
         | {type:'[Farms] - setRaces'; payload:IRace[] }
         | {type:'[Farms] - setPigs'; payload:IPig[] }
         | {type:'[Farms] - setPig'; payload:IPig | undefined }
+        | {type:'[Farms] - setFarmAction'; payload:string | undefined }
+        | {type:'[Farms] - setRoles'; payload:IRole[] }
+        | {type:'[Farms] - setRole'; payload:IRole | undefined }
+        | {type:'[Farms] - setAccessArr'; payload:IAccess[]  }
+        | {type:'[Farms] - setAccess'; payload:IAccess | undefined }
+        | {type:'[Farms] - setRoleAccess'; payload:IRoleAccess | undefined }
+        | {type:'[Farms] - setRolesAccess'; payload:IRoleAccess[] }
         
         
 export const usersReducer = (state:UsersState,action:UsersActionType):UsersState => {
@@ -74,6 +81,45 @@ export const usersReducer = (state:UsersState,action:UsersActionType):UsersState
       return {
         ...state,
         pig:action.payload
+      }
+  
+    case '[Farms] - setFarmAction':
+      return {
+        ...state,
+        farmAction:action.payload
+      }
+    case '[Farms] - setRoles':
+      return {
+        ...state,
+        roles:action.payload
+      }
+
+    case '[Farms] - setRole':
+      return {
+        ...state,
+        role:action.payload
+      }
+
+    case '[Farms] - setAccessArr':
+      return {
+        ...state,
+        accessArr:action.payload
+      }
+
+    case '[Farms] - setAccess':
+      return {
+        ...state,
+        access:action.payload
+      }
+    case '[Farms] - setRolesAccess':
+      return {
+        ...state,
+        rolesAccess:action.payload
+      }
+    case '[Farms] - setRoleAccess':
+      return {
+        ...state,
+        roleAccess:action.payload
       }
   
 
