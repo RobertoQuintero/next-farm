@@ -18,14 +18,14 @@ export const PostUpdatePig = () => {
 
   const values={
     id_pig:pig?pig.id_pig:0,
-    id_pig_type:pig?pig.id_pig_type:pigTypes[0].id_pig_type,
+    id_pig_type:pig?pig.id_pig_type:pigTypes[2].id_pig_type,
     id_ubication:pig?pig.id_ubication:ubications[0].id_ubication,
     id_race:pig?pig.id_race:races[0].id_race,
     code:pig?pig.code:'',
     start_date:pig?new Date(pig.start_date):new Date(),
     visible:pig?pig.visible:true,
     id_farm:pig?pig.id_farm:idFarm,
-    id_stage:pig?pig.id_stage:stages[0].id_stage,
+    id_stage:pig?pig.id_stage:stages[8].id_stage,
     status:pig?pig.status:true,
   } as IPig
 

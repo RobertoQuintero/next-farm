@@ -274,7 +274,7 @@ background: #d4d4d4;
 
 .rowCard{
   border-bottom: 1px solid #eee;
-  padding: 1rem 0 1rem 1rem;
+  padding:.3rem .5rem;
   display: flex;
   justify-content: space-between;
 }
@@ -285,4 +285,38 @@ background: #d4d4d4;
 .onAdd{
   display: flex;
   justify-content: flex-end;
+}
+
+.pigData{
+  display:flex;
+  font-size:13px;
+  align-items:center;
+  flex-grow: 1;
+}
+.pigDataHeader{
+  padding-left: .5rem;
+  font-weight: bold;
+}
+.pigData > p {
+  width: 100px;
+}
+.pigData p:nth-child(3){
+  width: 130px;
+}
+.pigData p:nth-child(1){
+  width: 70px;
+}
+
+.rowButton{
+  font-weight:bold;
+  padding:0 .3rem;
+  background-color:transparent;
+   border:none;
+   cursor: pointer;
+   border-radius: 3px;
+   transition: .3s;
+   text-transform: capitalize;
+}
+.rowButton:hover{
+  background-color: #fff;
 }

@@ -1,21 +1,20 @@
-'use client'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { Button, CircularProgress } from '@mui/material'
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 
 interface Props{
   onDelete: ()=>void
+  loading?:boolean;
+  error?:string
 }
 
-export const DeleteComponent = ({onDelete}:Props) => {
+export const DeleteComponent = ({onDelete,loading=false,error=undefined}:Props) => {
   const {toggleModal} = useContext(UiContext)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | undefined>(undefined)
 
   return (
     <>
     {
-      isLoading
+      loading
         ?<CircularProgress/>
         :<div style={{width:270}}>
             <p style={{textAlign:'center', color:'red',paddingBottom:'1rem',fontWeight:'bold'}}>Confirmar Borrar</p>

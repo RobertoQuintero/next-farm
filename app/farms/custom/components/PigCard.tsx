@@ -1,8 +1,9 @@
 import { FarmsContext } from "@/app/context/farms/FarmsContext"
 import { UiContext } from "@/app/context/ui/UiContext"
 import { IPig } from "@/interfaces"
-import { Button } from "@mui/material"
 import { useContext } from "react"
+import { RowButton } from "."
+import { useRouter } from "next/navigation"
 
 interface Props {
   pig:IPig
@@ -11,31 +12,32 @@ interface Props {
 export const PigCard = ({pig}:Props) => {
   const {setFarmAction,setPig} = useContext(FarmsContext)
   const {toggleModal} = useContext(UiContext)
+  const router= useRouter()
 
   const onClick = async(action:string) =>{
     setPig(pig)
-     setFarmAction(action)
-     toggleModal()
+    if(action==='EDIT'||action==='DELETE'){
+      setFarmAction(action)
+      toggleModal()
+    }else{
+      setFarmAction(undefined)
+      router.push(`/farms/custom/${action}`)
+    }
   };
 
   return (
     <div className="rowCard">
-      <div>
+      <div className="pigData">
         <p>{pig.code}</p>
+        <p>{pig.pig_ubication}</p>
+        <p>{pig.pig_race}</p>
+        <p>{pig.pig_stage}</p>
       </div>
-      <div style={{display:'flex', gap:'.5rem'}}>
-        <Button 
-          size="small"
-          onClick={()=>onClick('EDIT')}
-         >
-         Editar
-        </Button>
-        <Button 
-          size="small"
-          onClick={()=>onClick('OPEN')}  
-         >
-         Ver
-        </Button>
+      <div style={{display:'flex', gap:'.2rem',paddingRight:'.5rem'}}>
+        <RowButton onClick={()=>onClick('EDIT')} label="editar"/>
+        <RowButton onClick={()=>onClick('tasks')} label="tareas"/>
+        <RowButton onClick={()=>onClick('births')} label="partos"/>
+        <RowButton onClick={()=>onClick('DELETE')} label="borrar"/>
       </div>
     </div>
   )
