@@ -6,6 +6,7 @@ import Cookies from 'js-cookie'
 import { ICompany, IState } from '@/interfaces';
 import { getAuthRequest, postAuthRequest, validateTokenRequest } from './authRequest';
 import { IUser } from '@/interfaces/user';
+import { useRouter } from 'next/navigation';
 
 interface Props{
   children:JSX.Element|JSX.Element[]
@@ -39,13 +40,18 @@ const Auth_INITIAL_STATE:AuthState={
 
 export const AuthProvider = ({children}:Props) => {
   const [state, dispatch] = useReducer(authReducer, Auth_INITIAL_STATE)
-
+  const router= useRouter()
   useEffect(() => {
     getResources()
   }, [])
 
   useEffect(() => {
     checkToken()
+    if(state.logged){
+      if(!state.user?.is_active){
+        router.replace('/')
+      }
+    }
   }, [])
 
   const checkToken=async()=>{
@@ -181,7 +187,8 @@ export const AuthProvider = ({children}:Props) => {
       postCompany,
       login,
       postUser,
-      setIdFarm
+      setIdFarm,
+      checkToken
     }}>
       {children}
     </AuthContext.Provider>

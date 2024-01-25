@@ -17,6 +17,7 @@ interface ContextProps{
   setAction: (payload: string | undefined) => void;
   setError: (payload: string | undefined) => void;
   getUsers: (payload: number) => Promise<void>
+  postUserPassword: (payload: IUser) => Promise<boolean>
 }
 
 export const UsersContext = createContext({} as ContextProps)

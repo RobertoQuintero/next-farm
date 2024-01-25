@@ -2,10 +2,11 @@ import React from 'react'
 interface Props{
   onClick:()=>void;
   label:string;
+  color?:string
 }
 
-export const RowButton = ({onClick,label}:Props) => {
+export const RowButton = ({onClick,label,color='#000'}:Props) => {
   return (
-    <button className="rowButton" onClick={onClick}>{label.toLowerCase()}</button>
+    <button style={{color}} className="rowButton" onClick={onClick}>{label.toLowerCase()}</button>
   )
 }

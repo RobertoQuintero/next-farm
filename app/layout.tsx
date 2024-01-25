@@ -14,18 +14,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <ThemeRegistry >
-        <UiProvider>
-          <AuthProvider>
-            <body className={inter.className}>
-              <Navbar/>
-              <main className='mainStyle'>
-                {children}
-              </main>
-            </body>
-          </AuthProvider>
-        </UiProvider>
-      </ThemeRegistry>
+      <AuthProvider>
+        <ThemeRegistry >
+          <UiProvider>
+              <body className={inter.className}>
+                <Navbar/>
+                <main className='mainStyle'>
+                  {children}
+                </main>
+              </body>
+          </UiProvider>
+        </ThemeRegistry>
+      </AuthProvider>
     </html>
   )
 }

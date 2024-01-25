@@ -1,11 +1,13 @@
 'use client'
-import  {  useEffect, useReducer } from 'react'
+import  {  useContext, useEffect, useReducer } from 'react'
 import { FarmsContext} from './FarmsContext'
 import { usersReducer } from './farmsReducer'
 import { IFarm } from '@/interfaces/farm'
 import { getFarmsRequest, postFarmsRequest } from './farmsRequest'
 import { returnArray } from '../auth/authRequest'
 import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess } from '@/interfaces'
+import { AuthContext } from '../auth/AuthContext'
+import { useRouter } from 'next/navigation'
 
 interface Props{
   children:JSX.Element|JSX.Element[]
@@ -55,10 +57,18 @@ const UI_INITIAL_STATE:UsersState={
 
 export const FarmsProvider = ({children}:Props) => {
   const [state, dispatch] = useReducer(usersReducer, UI_INITIAL_STATE)
+  const {logged,user} = useContext(AuthContext)
+  const router= useRouter()
   useEffect(() => {
-    getResources()
+   if(logged){
+      if(!user?.is_active){
+         router.replace('/')
+      }else{
+         getResources()
+      }
+   }
   }, [])
-
+ 
   const getResources = async() =>{
     setIsLoading(true)
      Promise.all([

@@ -16,11 +16,13 @@ const FarmPage = () => {
   const {farmsLoading,pigs,getPigs,setPig,setFarmAction,farmAction,farmsError,pig,postPig} = useContext(FarmsContext)
 
   useEffect(() => {
-    getPigs(idFarm!)
+    let id= idFarm
+    if(!idFarm){
+     id= Number(localStorage.getItem('id_farm'))
+    }
+    getPigs(id!)
   }, [])
   
-
-
   if(farmsLoading && !isModalOpen){
     return <LoadingComponent/>
   }

@@ -2,23 +2,34 @@
 import { Button} from '@mui/material'
 import styles from '../users.module.css'
 import AppModal from '@/app/components/AppModal';
-import { PostUpdateUser, UserCard } from '.';
+import { PostPassword, PostUpdateUser, UserCard } from '.';
 import { useContext, useEffect } from 'react';
-import { EmptyPage, LoadingComponent } from '@/app/components';
+import { DeleteComponent, EmptyPage, LoadingComponent } from '@/app/components';
 import { UiContext } from '@/app/context/ui/UiContext';
 import { UsersContext } from '@/app/context/users/UsersContext';
 import { AuthContext } from '@/app/context/auth/AuthContext';
+import { IUser } from '@/interfaces';
 
 const UsersPage = () => {
-  const {userLoading,users,setUser,actionString,setAction,setError,getUsers} = useContext(UsersContext)
+  const {userLoading,users,setUser,actionString,setAction,setError,getUsers,userError,user,postUser} = useContext(UsersContext)
   const {toggleModal,isModalOpen} = useContext(UiContext)
   const {idFarm} = useContext(AuthContext)
 
   useEffect(() => {
-    getUsers(idFarm!)
+    let id= idFarm
+    if(!idFarm){
+     id= Number(localStorage.getItem('id_farm'))
+    }
+    getUsers(id!) 
   }, [])
   
-
+  const onDelete = async() =>{
+     const newUser={...user,status:false} as IUser
+     const ok= await postUser(newUser)
+    if(ok){
+      toggleModal()
+    }
+  };
 
   if(userLoading && !isModalOpen){
     return <LoadingComponent/>
@@ -43,17 +54,20 @@ const UsersPage = () => {
       </div>
       <div style={{paddingTop:'1rem'}}>
           {
-            users.length
-              ?users.map(u=><UserCard user={u} key={u.id_user}/>)
+            users.filter(u=>u.status).length
+              ?users.filter(u=>u.status).map(u=><UserCard user={u} key={u.id_user}/>)
               : <EmptyPage/>
           }
       </div>
       <AppModal>
         {
-          actionString==='EDIT' && <PostUpdateUser/>
+          actionString==='EDIT' || actionString===undefined ?<PostUpdateUser/>:<></>
         }
         {
-          !actionString && <PostUpdateUser/>
+          actionString==='DELETE' ? <DeleteComponent onDelete={onDelete} loading={userLoading} error={userError}/>:<></>
+        }
+        {
+          actionString==='PASSWORD'?<PostPassword/>:<></>
         }
       </AppModal>
     </>

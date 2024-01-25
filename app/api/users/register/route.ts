@@ -63,7 +63,7 @@ export const POST = async (req: Request) => {
             id_state='${id_state}',
             zip='${zip}'
           WHERE id_user='${id_user}'
-          SELECT ${query} FROM RH.Users WHERE id_user='${id_user}' and status='true'
+          SELECT ${query} FROM RH.Users WHERE id_user='${id_user}'
       END
       ELSE
       BEGIN

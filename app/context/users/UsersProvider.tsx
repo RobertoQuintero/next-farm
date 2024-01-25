@@ -79,6 +79,18 @@ export const UsersProvider = ({children}:Props) => {
      setIsLoading(false)
      return ok
   };
+  const postUserPassword = async(payload:IUser):Promise<boolean> =>{
+    setError(undefined)
+     setIsLoading(true)
+     const {ok,data}= await postUsersRequest('/users/password',payload)
+     if(ok){
+      console.log(data)
+     }else{
+      setError(data as string)
+     }
+     setIsLoading(false)
+     return ok
+  };
 
   
   const setUsers = (payload:IUser[]) =>{
@@ -133,8 +145,8 @@ export const UsersProvider = ({children}:Props) => {
       postUser,
       setAction,
       setError,
-      getUsers
-      
+      getUsers,
+      postUserPassword      
     }}>
       {children}
     </UsersContext.Provider>

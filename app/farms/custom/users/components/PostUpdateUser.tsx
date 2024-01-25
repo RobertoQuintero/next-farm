@@ -85,25 +85,6 @@ export const PostUpdateUser = () => {
           error={!!errors.phone}
           helperText={errors.phone?.message}
            />
-          {/* <TextField
-            size="small"
-            label='Puesto'
-            fullWidth
-            defaultValue={values.id_job_position}
-            {...register('id_job_position')} 
-            select >
-            {
-              jobPositions.length
-              ?jobPositions.map(item=>(
-                <MenuItem 
-                  key={item.id_job_position} 
-                  value={item.id_job_position}>
-                  {item.description}
-                </MenuItem>
-              ))
-              :<div></div>
-            }
-          </TextField> */}
           <TextField
             size="small"
             label='Rol'

@@ -20,6 +20,7 @@ export const FarmCard = ({farm}:Props) => {
     setFarm(farm)
     setIdFarm(farm.id_farm)
     if(action==='OPEN'){
+      localStorage.setItem('id_farm',farm.id_farm.toString())
       router.push('/farms/custom')
       return
     }
