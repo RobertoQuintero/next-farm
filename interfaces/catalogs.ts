@@ -27,3 +27,23 @@ export interface IStage {
   order:       number;
   status:      boolean;
 }
+
+export interface IUbication {
+  id_ubication: number;
+  id_pig_type:  number;
+  description:  string;
+  status:       boolean;
+  id_farm:      number;
+}
+
+export interface ITask {
+  id_task:      number;
+  id_task_type: number;
+  id_stage:     number;
+  description:  string;
+  status:       boolean;
+  created_at:   string | Date;
+  updated_at:   string | Date;
+  days:         number;
+  id_pig_type:  number;
+}

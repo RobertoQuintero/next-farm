@@ -24,13 +24,13 @@ const RolesPage = () => {
     <>
       <div className='actionCreateContainer'>
         <div></div>
-        <Button
+        {/* <Button
           size='small'
           variant='contained'
           color='success'
           onClick={onAdd}
         >
-          Nuevo</Button>
+          Nuevo</Button> */}
       </div>
       <div style={{paddingTop:'1rem'}}>
           {

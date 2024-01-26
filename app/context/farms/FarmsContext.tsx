@@ -1,7 +1,7 @@
 'use client'
-import { IPig, IPigType, IRace, IStage, IUbication } from '@/interfaces'
+import { IPig, IPigType, IRace, IStage, ITask, IUbication } from '@/interfaces'
 import { IFarm } from '@/interfaces/farm'
-import { IAccess, IJobPosition, IRole, IRoleAccess, IUser } from '@/interfaces/user'
+import { IAccess,  IRole, IRoleAccess } from '@/interfaces/user'
 import { createContext } from 'react'
 
 interface ContextProps{
@@ -10,6 +10,9 @@ interface ContextProps{
   farmsLoading:boolean;
   farmsError:string | undefined;
   ubications:IUbication[];
+  ubication:IUbication | undefined;
+  tasks:ITask[]
+  task:ITask | undefined;
   stages:IStage[];
   pigTypes:IPigType[];
   races:IRace[];
@@ -23,6 +26,7 @@ interface ContextProps{
   access:IAccess | undefined
   roleAccess:IRoleAccess|undefined;
   rolesAccess:IRoleAccess[];
+  
 
   //methods
   setFarm: (payload: IFarm | undefined) => void;

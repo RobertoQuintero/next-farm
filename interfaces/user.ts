@@ -46,3 +46,9 @@ export interface IRoleAccess {
   id_farm:        number;
   name:string;
 }
+
+export interface IUserAccess {
+  id_role_access: number;
+  id_access:      number;
+  description:    string;
+}

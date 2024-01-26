@@ -5,7 +5,7 @@ import { authReducer } from './authReducer'
 import Cookies from 'js-cookie'
 import { ICompany, IState } from '@/interfaces';
 import { getAuthRequest, postAuthRequest, validateTokenRequest } from './authRequest';
-import { IUser } from '@/interfaces/user';
+import { IUser, IUserAccess } from '@/interfaces/user';
 import { useRouter } from 'next/navigation';
 
 interface Props{
@@ -15,27 +15,25 @@ interface Props{
 export interface AuthState{
   authLoading:boolean;
   logged: boolean;
-  company:ICompany | undefined;
   authError:string | undefined;
   showForm: boolean;
   states:IState[];
-  companyUser:IUser | undefined;
   user:IUser | undefined;
-  idCompany:number| undefined;
   idFarm: number | undefined;
+  userAccess:IUserAccess[];
+  accessError:string | undefined;
 }
 
 const Auth_INITIAL_STATE:AuthState={
   authLoading:true,
   logged:false,
-  company:undefined,
   authError:undefined,
   showForm: false,
   states:[],
-  companyUser:undefined,
-  idCompany:undefined,
   user:undefined,
-  idFarm: undefined
+  idFarm: undefined,
+  userAccess:[],
+  accessError:undefined
 }
 
 export const AuthProvider = ({children}:Props) => {
@@ -52,6 +50,7 @@ export const AuthProvider = ({children}:Props) => {
         router.replace('/')
       }
     }
+    setAccessError(undefined)
   }, [])
 
   const checkToken=async()=>{
@@ -61,6 +60,7 @@ export const AuthProvider = ({children}:Props) => {
         type:'[auth] - login',
         payload:data as IUser
       })
+      await getUserAccess(data as IUser)
     }else{
       logout()
     }
@@ -70,14 +70,13 @@ export const AuthProvider = ({children}:Props) => {
   const getResources = async() =>{
     setIsLoading(true)
      Promise.all([
-      getAuthRequest('/auth/states')
+      getAuthRequest('/auth/states'),
      ])
      .then((resp)=>{
       setStates(resp[0].data as IState[])
       setIsLoading(false)
      })
   };
-
 
   const logout = ()=>{
     Cookies.remove('jwt')
@@ -86,7 +85,6 @@ export const AuthProvider = ({children}:Props) => {
       payload:Auth_INITIAL_STATE
     })
   }
-
 
   const login = async(payload:IUser):Promise<boolean>=>{
     setError(undefined)
@@ -97,6 +95,7 @@ export const AuthProvider = ({children}:Props) => {
         type:'[auth] - login',
         payload:data as IUser
       })
+      await getUserAccess(data as IUser)
     }
     else{
       setError(data as string)
@@ -105,7 +104,20 @@ export const AuthProvider = ({children}:Props) => {
     return ok
   }
 
-  
+  const getUserAccess = async(payload:IUser):Promise<boolean>=>{
+    setError(undefined)
+    setIsLoading(true)
+    const {ok,data}=await getAuthRequest(`/users/user_access?id_role=${payload.id_role}&id_farm=${payload.id_farm}`)
+    if(ok){
+      setUserAccess(data as IUserAccess[])
+    }
+    else{
+      setError(data as string)
+    }
+    setIsLoading(false)
+    return ok
+  }
+
   const postUser = async(payload:IUser):Promise<boolean> =>{
       setError(undefined)
       setIsLoading(true)
@@ -122,7 +134,6 @@ export const AuthProvider = ({children}:Props) => {
        setIsLoading(false)
        return ok
     };
-
 
   const setIsLoading = (payload:boolean)=>{
     dispatch({
@@ -152,29 +163,23 @@ export const AuthProvider = ({children}:Props) => {
      })
   };
 
-  const postCompany = async(payload:ICompany):Promise<boolean> =>{
-     setIsLoading(true)
-     const {ok,data}= await postAuthRequest(`/auth/register`,payload)
-     if(ok){
-      setCompany(data as ICompany)
-     }else{
-      setError(data as string)
-     }
-     setIsLoading(false)
-     return ok
-  };
-
-  
-  const setCompany = async(payload:ICompany| undefined) =>{
+  const setIdFarm =(payload:number | undefined) =>{
      dispatch({
-      type:'[auth] - setCompany',
+      type:'[auth] - setIdFarm',
       payload
      })
   };
 
-  const setIdFarm =(payload:number | undefined) =>{
+  const setUserAccess =(payload:IUserAccess[]) =>{
      dispatch({
-      type:'[auth] - setIdFarm',
+      type:'[auth] - setUserAccess',
+      payload
+     })
+  };
+
+  const setAccessError =(payload:string | undefined) =>{
+     dispatch({
+      type:'[auth] - setAccessError',
       payload
      })
   };
@@ -184,11 +189,11 @@ export const AuthProvider = ({children}:Props) => {
       ...state,
       logout,
       setShowForm,
-      postCompany,
       login,
       postUser,
       setIdFarm,
-      checkToken
+      checkToken,
+      setAccessError
     }}>
       {children}
     </AuthContext.Provider>

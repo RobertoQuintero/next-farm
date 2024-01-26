@@ -1,6 +1,5 @@
-
 'use client'
-import { BackButton, DeleteComponent, EmptyPage, LoadingComponent } from '@/app/components'
+import { AccessErrorComponent,  BackToFarms, DeleteComponent, EmptyPage, LoadingComponent } from '@/app/components'
 import AppModal from '@/app/components/AppModal'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { Button } from '@mui/material'
@@ -12,7 +11,7 @@ import { IPig } from '@/interfaces'
 
 const FarmPage = () => {
   const {toggleModal,isModalOpen} = useContext(UiContext)
-  const {idFarm} = useContext(AuthContext)
+  const {idFarm,user} = useContext(AuthContext)
   const {farmsLoading,pigs,getPigs,setPig,setFarmAction,farmAction,farmsError,pig,postPig} = useContext(FarmsContext)
 
   useEffect(() => {
@@ -43,8 +42,9 @@ const FarmPage = () => {
   return (
     <>
      <div className='actionCreateContainer'>
+      <AccessErrorComponent/>
         <div>
-          <BackButton/>
+          {user?.id_role===1&&<BackToFarms/>}
         </div>
         <Button 
           onClick={onAdd}

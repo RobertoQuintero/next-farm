@@ -1,6 +1,6 @@
 import belisarioApi from "@/database/apis";
 import { ICompany, IState } from "@/interfaces";
-import { IUser } from "@/interfaces/user";
+import { IUser, IUserAccess } from "@/interfaces/user";
 import Cookies from "js-cookie";
 
 interface AuthResponse {
@@ -10,6 +10,7 @@ interface AuthResponse {
       | IState[]
       | IUser
       | IUser[]
+      | IUserAccess[]
 }
 
 export const getAuthRequest = async (url: string): Promise<AuthResponse> => {

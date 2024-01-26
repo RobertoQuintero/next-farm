@@ -5,6 +5,17 @@ import { IPig } from '@/interfaces'
 import { Button, CircularProgress, MenuItem, TextField } from '@mui/material'
 import React, { useContext } from 'react'
 import { useForm } from "react-hook-form"
+import { FilterableList } from './FilterTextInput'
+const inputProps = [
+  'Mario',
+  'Maria',
+  'Mariana',
+  'Marina',
+  'Melissa',
+  'Melina',
+  'Mauro',
+  'Malena',
+]
 
 export const PostUpdatePig = () => {
   const {idFarm} = useContext(AuthContext)
@@ -44,6 +55,7 @@ export const PostUpdatePig = () => {
   
   return (
     <form className='Form' onSubmit={handleSubmit(onSubmit)}>
+      {/* <FilterableList data={inputProps}/> */}
       <TextField 
         size="small"
         fullWidth

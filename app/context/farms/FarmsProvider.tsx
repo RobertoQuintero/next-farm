@@ -5,7 +5,7 @@ import { usersReducer } from './farmsReducer'
 import { IFarm } from '@/interfaces/farm'
 import { getFarmsRequest, postFarmsRequest } from './farmsRequest'
 import { returnArray } from '../auth/authRequest'
-import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess } from '@/interfaces'
+import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask } from '@/interfaces'
 import { AuthContext } from '../auth/AuthContext'
 import { useRouter } from 'next/navigation'
 
@@ -19,6 +19,9 @@ export interface UsersState{
   farmsLoading:boolean;
   farmsError:string | undefined;
   ubications:IUbication[];
+  ubication:IUbication | undefined;
+  tasks:ITask[]
+  task:ITask | undefined;
   stages:IStage[];
   pigTypes:IPigType[];
   races:IRace[];
@@ -40,6 +43,9 @@ const UI_INITIAL_STATE:UsersState={
   farmsLoading:false,
   farmsError:undefined,
   ubications:[],
+  ubication: undefined,
+  tasks:[],
+  task:undefined,
   stages:[],
   pigTypes:[],
   races:[],
@@ -57,7 +63,7 @@ const UI_INITIAL_STATE:UsersState={
 
 export const FarmsProvider = ({children}:Props) => {
   const [state, dispatch] = useReducer(usersReducer, UI_INITIAL_STATE)
-  const {logged,user} = useContext(AuthContext)
+  const {logged,user,userAccess,setAccessError} = useContext(AuthContext)
   const router= useRouter()
   useEffect(() => {
    if(logged){
@@ -67,6 +73,7 @@ export const FarmsProvider = ({children}:Props) => {
          getResources()
       }
    }
+   setAccessError(undefined)
   }, [])
  
   const getResources = async() =>{
@@ -96,8 +103,12 @@ export const FarmsProvider = ({children}:Props) => {
      })
   };
 
-  
   const getPigs = async(payload:number) =>{
+   setAccessError(undefined)
+   if(!userAccess.find(u=>u.id_access===4)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return 
+    }
       setIsLoading(true)
        const {ok,data}=await getFarmsRequest(`/farms/pigs?idFarm=${payload}`)
        if(ok){
@@ -110,6 +121,10 @@ export const FarmsProvider = ({children}:Props) => {
     };
 
   const getRolesAccess = async(payload:number) =>{
+   if(!userAccess.find(u=>u.id_access===7)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return 
+    }
       setIsLoading(true)
        const {ok,data}=await getFarmsRequest(`/users/role_access?id_role=${payload}`)
        if(ok){
@@ -134,6 +149,10 @@ export const FarmsProvider = ({children}:Props) => {
      return ok
   };
   const postPig = async(payload:IPig):Promise<boolean> =>{
+   if(!userAccess.find(u=>u.id_access===5)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return true
+    }
     setError(undefined)
      setIsLoading(true)
      const {ok,data}= await postFarmsRequest('/farms/pigs',payload)
@@ -145,7 +164,12 @@ export const FarmsProvider = ({children}:Props) => {
      setIsLoading(false)
      return ok
   };
+
   const postRoleAccess = async(payload:IRoleAccess):Promise<boolean> =>{
+   if(!userAccess.find(u=>u.id_access===8)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return true 
+    }
     setError(undefined)
      setIsLoading(true)
      const {ok,data}= await postFarmsRequest('/users/role_access',payload)
@@ -158,7 +182,6 @@ export const FarmsProvider = ({children}:Props) => {
      return ok
   };
 
-  
   const setFarms = (payload:IFarm[]) =>{
      dispatch({
       type:'[Farms] - setFarms',

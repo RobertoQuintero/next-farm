@@ -4,7 +4,7 @@ import styles from '../users.module.css'
 import AppModal from '@/app/components/AppModal';
 import { PostPassword, PostUpdateUser, UserCard } from '.';
 import { useContext, useEffect } from 'react';
-import { DeleteComponent, EmptyPage, LoadingComponent } from '@/app/components';
+import { AccessErrorComponent, DeleteComponent, EmptyPage, LoadingComponent } from '@/app/components';
 import { UiContext } from '@/app/context/ui/UiContext';
 import { UsersContext } from '@/app/context/users/UsersContext';
 import { AuthContext } from '@/app/context/auth/AuthContext';
@@ -43,7 +43,9 @@ const UsersPage = () => {
 
   return (
     <>
+
       <div className={styles.onAdd}>
+        <AccessErrorComponent/>
         <Button
           size='small'
           variant='contained'

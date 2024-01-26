@@ -1,6 +1,6 @@
-import { ICompany, IState } from '@/interfaces'
+import {  IState } from '@/interfaces'
 import { AuthState } from './AuthProvider'
-import { IUser } from '@/interfaces/user'
+import { IUser, IUserAccess } from '@/interfaces/user'
 
 type AuthActionType=
           {type:'[auth] - login',payload:IUser | undefined}
@@ -10,8 +10,9 @@ type AuthActionType=
          |{type:'[auth] - setError',payload:string | undefined}
          |{type:'[auth] - setShowForm',payload:boolean}
          |{type:'[auth] - setStates',payload:IState[]}
-         |{type:'[auth] - setCompany',payload:ICompany | undefined}
          |{type:'[auth] - setIdFarm',payload:number | undefined}
+         |{type:'[auth] - setUserAccess',payload:IUserAccess[]}
+         |{type:'[auth] - setAccessError',payload:string | undefined}
         
 export const authReducer = (state:AuthState,action:AuthActionType):AuthState => {
   
@@ -52,17 +53,21 @@ export const authReducer = (state:AuthState,action:AuthActionType):AuthState => 
         ...state,
         states:action.payload,
       }
-    case '[auth] - setCompany':
-      return {
-        ...state,
-        company:action.payload,
-        logged:true,
-        authError:undefined
-      }
     case '[auth] - setIdFarm':
       return {
         ...state,
         idFarm:action.payload
+      }
+
+    case '[auth] - setUserAccess':
+      return {
+        ...state,
+        userAccess:action.payload
+      }
+    case '[auth] - setAccessError':
+      return {
+        ...state,
+        accessError:action.payload
       }
 
     default:

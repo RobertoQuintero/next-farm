@@ -1,5 +1,5 @@
 import { IRoleAccess } from "@/interfaces";
-import { getRequest, getRequestQuery, postRequest } from "@/utils/getRequest";
+import {  getRequestQuery, postRequest } from "@/utils/getRequest";
 
 const query=`
         SELECT 

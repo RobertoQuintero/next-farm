@@ -1,10 +1,11 @@
 'use client'
-import  {  useEffect, useReducer } from 'react'
+import  {  useContext, useEffect, useReducer } from 'react'
 import { UsersContext} from './UsersContext'
 import { usersReducer } from './usersReducer'
 import { IJobPosition, IRole, IUser } from '@/interfaces/user'
 import { getUsersRequest, postUsersRequest } from './usersRequest'
 import { returnArray } from '../auth/authRequest'
+import { AuthContext } from '../auth/AuthContext'
 
 
 interface Props{
@@ -33,6 +34,7 @@ const UI_INITIAL_STATE:UsersState={
 
 export const UsersProvider = ({children}:Props) => {
   const [state, dispatch] = useReducer(usersReducer, UI_INITIAL_STATE)
+  const {userAccess,setAccessError,user} = useContext(AuthContext)
   useEffect(() => {
     getResources()
   }, [])
@@ -51,9 +53,14 @@ export const UsersProvider = ({children}:Props) => {
       setIsLoading(false)
      })
   };
-
   
   const getUsers = async(payload:number) =>{
+    setAccessError(undefined)
+      if(!userAccess.find(u=>u.id_access===1)&& user?.id_role!==1){
+        setAccessError('Credenciales inválidas')
+        return
+      }
+      setAccessError(undefined)
       setIsLoading(true)
        const {ok,data}=await getUsersRequest(`/users?idFarm=${payload}`)
        if(ok){
@@ -65,9 +72,11 @@ export const UsersProvider = ({children}:Props) => {
        setIsLoading(false)
     };
 
-  
-
   const postUser = async(payload:IUser):Promise<boolean> =>{
+    if(!userAccess.find(u=>u.id_access===2)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return true
+    }
     setError(undefined)
      setIsLoading(true)
      const {ok,data}= await postUsersRequest('/users/register',payload)
@@ -79,7 +88,12 @@ export const UsersProvider = ({children}:Props) => {
      setIsLoading(false)
      return ok
   };
+
   const postUserPassword = async(payload:IUser):Promise<boolean> =>{
+    if(!userAccess.find(u=>u.id_access===2)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return true
+    }
     setError(undefined)
      setIsLoading(true)
      const {ok,data}= await postUsersRequest('/users/password',payload)
@@ -92,7 +106,6 @@ export const UsersProvider = ({children}:Props) => {
      return ok
   };
 
-  
   const setUsers = (payload:IUser[]) =>{
      dispatch({
       type:'[Users] - setUsers',
@@ -121,7 +134,6 @@ export const UsersProvider = ({children}:Props) => {
      })
   };
 
-
   const setRoles = (payload:IRole[]) =>{
      dispatch({
       type:'[Users] - setRoles',
@@ -135,7 +147,6 @@ export const UsersProvider = ({children}:Props) => {
       payload
      })
   };
-
 
   return (
     <UsersContext.Provider value={{
