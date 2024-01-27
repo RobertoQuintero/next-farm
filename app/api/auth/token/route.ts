@@ -1,5 +1,5 @@
 import db from "@/database/connection";
-import { ICompany } from "@/interfaces";
+import { IUser } from "@/interfaces";
 import { createJWT, isValidToken, serverError } from "@/utils";
 import { cookies } from "next/headers";
 
@@ -48,12 +48,9 @@ export const GET = async (req: Request) => {
     }
     const token = await createJWT(response[0].id_role, email);
     const {
-      created_at,
-      updated_at,
       password: pass,
-      status,
       ...rest
-    } = response[0] as ICompany;
+    } = response[0] as IUser;
 
     return Response.json(
       {

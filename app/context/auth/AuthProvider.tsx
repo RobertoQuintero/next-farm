@@ -3,7 +3,7 @@ import React, { useEffect, useReducer } from 'react'
 import { AuthContext } from './AuthContext';
 import { authReducer } from './authReducer'
 import Cookies from 'js-cookie'
-import { ICompany, IState } from '@/interfaces';
+import { IState } from '@/interfaces';
 import { getAuthRequest, postAuthRequest, validateTokenRequest } from './authRequest';
 import { IUser, IUserAccess } from '@/interfaces/user';
 import { useRouter } from 'next/navigation';

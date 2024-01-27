@@ -1,12 +1,10 @@
 import belisarioApi from "@/database/apis";
-import { ICompany, IState } from "@/interfaces";
-import { IUser, IUserAccess } from "@/interfaces/user";
+import { IUser, IState,IUserAccess } from "@/interfaces";
 import Cookies from "js-cookie";
 
 interface AuthResponse {
   ok: boolean;
-  data: ICompany 
-      | string
+  data:  string
       | IState[]
       | IUser
       | IUser[]
@@ -61,11 +59,10 @@ export const loginRequest = async (
         response = { ok: false, data: error.response.data.data };
       }
     });
-
   return response;
 };
 
-export const registerRequest = async (user: ICompany): Promise<AuthResponse> => {
+export const registerRequest = async (user: IUser): Promise<AuthResponse> => {
   let response = {} as AuthResponse;
 
   await belisarioApi

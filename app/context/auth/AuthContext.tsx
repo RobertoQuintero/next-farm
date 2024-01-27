@@ -1,5 +1,5 @@
 'use client'
-import { ICompany, IState } from '@/interfaces';
+import {  IState } from '@/interfaces';
 import { IUser, IUserAccess } from '@/interfaces/user';
 import { createContext } from 'react'
 

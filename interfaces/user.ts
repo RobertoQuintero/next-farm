@@ -52,3 +52,8 @@ export interface IUserAccess {
   id_access:      number;
   description:    string;
 }
+
+export interface IState {
+  id_state:    number;
+  description: string;
+}

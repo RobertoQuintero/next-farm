@@ -1,4 +1,5 @@
 import db from "@/database/connection";
+import { serverError } from ".";
 
 export const getRequest = async(query:string) =>{
   try {
@@ -8,7 +9,7 @@ export const getRequest = async(query:string) =>{
     console.log({error})
     return Response.json({
       ok:false,
-      data:'Error en el servidor al intentar conectar con la base de datos'
+      data:serverError
     },{ status:500})
   }
 }
@@ -21,7 +22,7 @@ export const getRequestQuery = async(query:string) =>{
     console.log({error})
     return Response.json({
       ok:false,
-      data:'Error en el servidor al intentar conectar con la base de datos'
+      data:serverError
     },{ status:500})
   }
 };
@@ -37,7 +38,7 @@ export const postRequest=async(query:string)=>{
     console.log({error})
     return Response.json({
       ok:false,
-      data:'Error en el servidor al intentar conectar con la base de datos'
+      data:serverError
     },{
       status:500
     })
