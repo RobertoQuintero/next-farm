@@ -19,7 +19,7 @@ const style={
 export const Navbar = () => {
   const router = useRouter()
   const {toggleModal,toggleSideMenu} = useContext(UiContext)
-  const {logged,logout,authLoading,showForm,setShowForm,company,companyUser,user} = useContext(AuthContext)
+  const {logged,logout,authLoading,showForm,setShowForm,user} = useContext(AuthContext)
   
   const onLogout=()=>{ 
     logout()

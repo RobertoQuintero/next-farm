@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form"
 export const PostUpdateFarm = () => {
   const {toggleModal} = useContext(UiContext)
   const {farm,farmsLoading,postFarm,farmsError} = useContext(FarmsContext)
-  const {company,user} = useContext(AuthContext)
+  const {user} = useContext(AuthContext)
 
   const {
     register,
