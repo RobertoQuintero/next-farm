@@ -65,6 +65,7 @@ export const FarmsProvider = ({children}:Props) => {
   const [state, dispatch] = useReducer(usersReducer, UI_INITIAL_STATE)
   const {logged,user,userAccess,setAccessError} = useContext(AuthContext)
   const router= useRouter()
+  
   useEffect(() => {
    if(logged){
       if(!user?.is_active){
@@ -79,7 +80,6 @@ export const FarmsProvider = ({children}:Props) => {
   const getResources = async() =>{
     setIsLoading(true)
      Promise.all([
-      getFarmsRequest('/farms'),
       getFarmsRequest('/farms/catalog/ubications'),
       getFarmsRequest('/farms/catalog/pig_types'),
       getFarmsRequest('/farms/catalog/races'),
@@ -87,13 +87,12 @@ export const FarmsProvider = ({children}:Props) => {
       getFarmsRequest('/users/roles'),
       getFarmsRequest('/users/access'),
      ]).then((resp)=>{
-      setFarms(resp[0].data as IFarm[])
-      setUbications(resp[1].data as IUbication[])
-      setPigTypes(resp[2].data as IPigType[])
-      setRaces(resp[3].data as IRace[])
-      setStages(resp[4].data as IStage[])
-      setRoles(resp[5].data as IRole[])
-      setAccessArr(resp[6].data as IAccess[])
+      setUbications(resp[0].data as IUbication[])
+      setPigTypes(resp[1].data as IPigType[])
+      setRaces(resp[2].data as IRace[])
+      setStages(resp[3].data as IStage[])
+      setRoles(resp[4].data as IRole[])
+      setAccessArr(resp[5].data as IAccess[])
       setIsLoading(false)
      })
      .catch(error=>{
@@ -109,60 +108,42 @@ export const FarmsProvider = ({children}:Props) => {
       setAccessError('Credenciales inválidas')
       return 
     }
-      setIsLoading(true)
-       const {ok,data}=await getFarmsRequest(`/farms/pigs?idFarm=${payload}`)
-       if(ok){
-         setPigs(data as IPig[])
-       }
-       else{
-        setError(data as string)
-       }
-       setIsLoading(false)
+    await getPostLoadingOrError(`/farms/pigs?idFarm=${payload}`,setPigs)
     };
+
+    
+    const getFarm = async(payload:number) =>{
+        setIsLoading(true)
+         const {ok,data}=await getFarmsRequest(`/farms/${payload}`)
+         if(ok){
+            const farm=data as IFarm[]
+            setFarm(farm[0])
+         }
+         else{
+          setError(data as string)
+         }
+         setIsLoading(false)
+      };
+
+  const getFarms = async(payload:number) =>await getPostLoadingOrError(`/farms?id_user=${payload}`,setFarms)
 
   const getRolesAccess = async(payload:number) =>{
    if(!userAccess.find(u=>u.id_access===7)&& user?.id_role!==1){
       setAccessError('Credenciales inválidas')
       return 
     }
-      setIsLoading(true)
-       const {ok,data}=await getFarmsRequest(`/users/role_access?id_role=${payload}`)
-       if(ok){
-         setRolesAccess(data as IRoleAccess[])
-       }
-       else{
-        setError(data as string)
-       }
-       setIsLoading(false)
+    await getPostLoadingOrError(`/users/role_access?id_role=${payload}`,setRolesAccess)
     };
 
-  const postFarm = async(payload:IFarm):Promise<boolean> =>{
-    setError(undefined)
-     setIsLoading(true)
-     const {ok,data}= await postFarmsRequest('/farms',payload)
-     if(ok){
-      setFarms(returnArray(payload,data as IFarm,state.farms,'id_farm'))
-     }else{
-      setError(data as string)
-     }
-     setIsLoading(false)
-     return ok
-  };
+  const postFarm = async(payload:IFarm):Promise<boolean> =>
+  await getPostLoadingOrError('/farms',setFarms,payload,state.farms,'id_farm',true)
+
   const postPig = async(payload:IPig):Promise<boolean> =>{
    if(!userAccess.find(u=>u.id_access===5)&& user?.id_role!==1){
       setAccessError('Credenciales inválidas')
       return true
     }
-    setError(undefined)
-     setIsLoading(true)
-     const {ok,data}= await postFarmsRequest('/farms/pigs',payload)
-     if(ok){
-      setPigs(returnArray(payload,data as IPig,state.pigs,'id_pig'))
-     }else{
-      setError(data as string)
-     }
-     setIsLoading(false)
-     return ok
+    return await getPostLoadingOrError('/farms/pigs',setPigs,payload,state.pigs,'id_pig',true)
   };
 
   const postRoleAccess = async(payload:IRoleAccess):Promise<boolean> =>{
@@ -170,16 +151,7 @@ export const FarmsProvider = ({children}:Props) => {
       setAccessError('Credenciales inválidas')
       return true 
     }
-    setError(undefined)
-     setIsLoading(true)
-     const {ok,data}= await postFarmsRequest('/users/role_access',payload)
-     if(ok){
-      setRolesAccess(returnArray(payload,data as IRoleAccess,state.rolesAccess,'id_role_access'))
-     }else{
-      setError(data as string)
-     }
-     setIsLoading(false)
-     return ok
+    return await getPostLoadingOrError('/users/role_access',setRolesAccess,payload,state.rolesAccess,'id_role_access',true)
   };
 
   const setFarms = (payload:IFarm[]) =>{
@@ -289,6 +261,24 @@ export const FarmsProvider = ({children}:Props) => {
      })
   };
 
+  const getPostLoadingOrError = async<T,K extends keyof T>(
+      endpoint:string,setState:(payload: T[]) => void,payload?:T,state?:T[],id?:K,wich?:boolean
+   ) =>{
+   setError(undefined)
+   setIsLoading(true)
+   const {ok,data}= wich ? await  postFarmsRequest(endpoint,payload): await getFarmsRequest(endpoint)
+   if(ok){
+      wich
+         ?setState(returnArray(payload as object,data as object,state as object[],id as never) as T[])
+         :setState(data as T[])
+   }
+   else{
+    setError(data as string)
+   }
+   setIsLoading(false)
+   return ok
+ };
+
   return (
     <FarmsContext.Provider value={{
       ...state,
@@ -303,7 +293,9 @@ export const FarmsProvider = ({children}:Props) => {
       setRole,
       postRoleAccess,
       getRolesAccess,
-      setRoleAccess
+      setRoleAccess,
+      getFarms,
+      getFarm
     }}>
       {children}
     </FarmsContext.Provider>

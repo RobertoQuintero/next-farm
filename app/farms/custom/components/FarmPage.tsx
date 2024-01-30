@@ -12,15 +12,20 @@ import { IPig } from '@/interfaces'
 const FarmPage = () => {
   const {toggleModal,isModalOpen} = useContext(UiContext)
   const {idFarm,user} = useContext(AuthContext)
-  const {farmsLoading,pigs,getPigs,setPig,setFarmAction,farmAction,farmsError,pig,postPig} = useContext(FarmsContext)
+  const {farmsLoading,pigs,getPigs,setPig,setFarmAction,farmAction,farmsError,pig,postPig,getFarm,farm} = useContext(FarmsContext)
 
   useEffect(() => {
     let id= idFarm
     if(!idFarm){
      id= Number(localStorage.getItem('id_farm'))
     }
+    if(!farm){
+      getFarm(id!)
+      console.log('first')
+    }
     getPigs(id!)
   }, [])
+
   
   if(farmsLoading && !isModalOpen){
     return <LoadingComponent/>
@@ -52,6 +57,7 @@ const FarmPage = () => {
           color='success'
           size='small'>Nuevo</Button>
       </div>
+      <p style={{textAlign:'center',padding:'0 0 1rem 0',fontWeight:'bold'}}>{farm?.name}</p>
       <div>
         <div className="pigData pigDataHeader">
           <p>Número</p>

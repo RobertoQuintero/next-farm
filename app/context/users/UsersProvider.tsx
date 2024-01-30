@@ -61,15 +61,7 @@ export const UsersProvider = ({children}:Props) => {
         return
       }
       setAccessError(undefined)
-      setIsLoading(true)
-       const {ok,data}=await getUsersRequest(`/users?idFarm=${payload}`)
-       if(ok){
-        setUsers(data as IUser[])
-       }
-       else{
-        setError(data as string)
-       }
-       setIsLoading(false)
+      await getPostLoadingOrError(`/users?idFarm=${payload}`,setUsers)
     };
 
   const postUser = async(payload:IUser):Promise<boolean> =>{
@@ -77,16 +69,7 @@ export const UsersProvider = ({children}:Props) => {
       setAccessError('Credenciales inválidas')
       return true
     }
-    setError(undefined)
-     setIsLoading(true)
-     const {ok,data}= await postUsersRequest('/users/register',payload)
-     if(ok){
-      setUsers(returnArray(payload,data as IUser,state.users,'id_user'))
-     }else{
-      setError(data as string)
-     }
-     setIsLoading(false)
-     return ok
+    return await getPostLoadingOrError('/users/register',setUsers,payload,state.users,'id_user',true)
   };
 
   const postUserPassword = async(payload:IUser):Promise<boolean> =>{
@@ -147,6 +130,24 @@ export const UsersProvider = ({children}:Props) => {
       payload
      })
   };
+
+  const getPostLoadingOrError = async<T,K extends keyof T>(
+    endpoint:string,setState:(payload: T[]) => void,payload?:T,state?:T[],id?:K,wich?:boolean
+ ) =>{
+ setError(undefined)
+ setIsLoading(true)
+ const {ok,data}= wich ? await  postUsersRequest(endpoint,payload): await getUsersRequest(endpoint)
+ if(ok){
+    wich
+       ?setState(returnArray(payload as object,data as object,state as object[],id as never) as T[])
+       :setState(data as T[])
+ }
+ else{
+  setError(data as string)
+ }
+ setIsLoading(false)
+ return ok
+};
 
   return (
     <UsersContext.Provider value={{

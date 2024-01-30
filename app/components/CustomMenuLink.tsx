@@ -8,13 +8,15 @@ interface Props{
 
 const CustomMenuLink = ({href,title}:Props) => {
   return (
-    <CardActionArea 
-      sx={{
-        width:'100%',
-        padding:'1rem .5rem',
-        fontWeight:'bold'}}>
-      <Link href={href}>{title}</Link>
-    </CardActionArea>
+    <Link href={href}>
+      <CardActionArea 
+        sx={{
+          width:'100%',
+          padding:'1rem .5rem',
+          fontWeight:'bold'}}>
+        {title}
+      </CardActionArea>
+      </Link>
   )
 }
 
