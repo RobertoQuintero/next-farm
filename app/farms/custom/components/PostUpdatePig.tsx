@@ -3,24 +3,14 @@ import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { IPig } from '@/interfaces'
 import { Button, CircularProgress, MenuItem, TextField } from '@mui/material'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { useForm } from "react-hook-form"
-import { FilterableList } from './FilterTextInput'
-const inputProps = [
-  'Mario',
-  'Maria',
-  'Mariana',
-  'Marina',
-  'Melissa',
-  'Melina',
-  'Mauro',
-  'Malena',
-]
 
 export const PostUpdatePig = () => {
   const {idFarm} = useContext(AuthContext)
   const {toggleModal} = useContext(UiContext)
   const {farmsLoading,ubications,pigTypes,races,stages,pig,postPig} = useContext(FarmsContext)
+
   const {
     register,
     handleSubmit,
@@ -40,19 +30,25 @@ export const PostUpdatePig = () => {
     status:pig?pig.status:true,
   } as IPig
 
+  const [pigType, setPigType] = useState(values.id_pig_type)
+
 
   const onSubmit=async(data:IPig)=>{
+    // console.log(stages)
+    // return
     data.id_pig=values.id_pig
     data.status=values.status
     data.id_farm=values.id_farm
     data.start_date=values.start_date
     data.visible=values.visible
+    data.id_pig_type=pigType
     const ok=await postPig(data)
     if(ok){
       toggleModal()
     }
   }
-  
+
+
   return (
     <form className='Form' onSubmit={handleSubmit(onSubmit)}>
       {/* <FilterableList data={inputProps}/> */}
@@ -72,8 +68,10 @@ export const PostUpdatePig = () => {
           size="small"
           label='Tipo'
           fullWidth
-          defaultValue={values.id_pig_type}
-          {...register('id_pig_type')} 
+          value={pigType}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setPigType(+event.target.value);
+          }}
           select >
           {
             pigTypes.length
@@ -96,7 +94,7 @@ export const PostUpdatePig = () => {
           select >
           {
             stages.length
-            ?stages.map(item=>(
+            ?stages.filter(p=>p.id_pig_type===pigType).map(item=>(
               <MenuItem 
                 key={item.id_stage} 
                 value={item.id_stage}>

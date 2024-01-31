@@ -5,6 +5,7 @@ const links=[
   {href:'/farms/custom',title:'Bitácora cerdas'},
   {href:'/farms/custom/users',title:'Usuarios'},
   {href:'/farms/custom/roles',title:'Roles'},
+  {href:'/farms/custom/ubications',title:'Ubicaciones'},
 ]
 const RootLayout = ({children}:{children:ReactNode}) => {
   return (

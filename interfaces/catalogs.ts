@@ -34,6 +34,9 @@ export interface IUbication {
   description:  string;
   status:       boolean;
   id_farm:      number;
+  pig_type:string;
+  created_at:   string | Date;
+  updated_at:   string | Date;
 }
 
 export interface ITask {

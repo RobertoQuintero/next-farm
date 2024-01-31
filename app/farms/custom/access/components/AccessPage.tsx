@@ -1,4 +1,3 @@
-
 'use client'
 import { AccessErrorComponent, BackButton, DeleteComponent, EmptyPage } from '@/app/components'
 import AppModal from '@/app/components/AppModal'

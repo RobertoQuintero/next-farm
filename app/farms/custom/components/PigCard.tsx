@@ -34,9 +34,9 @@ export const PigCard = ({pig}:Props) => {
         <p>{pig.pig_stage}</p>
       </div>
       <div style={{display:'flex', gap:'.2rem',paddingRight:'.5rem'}}>
-        <RowButton onClick={()=>onClick('EDIT')} label="editar"/>
-        <RowButton onClick={()=>onClick('tasks')} label="tareas"/>
-        <RowButton onClick={()=>onClick('births')} label="partos"/>
+        <RowButton onClick={()=>onClick('EDIT')} label="ver"/>
+        {/* <RowButton onClick={()=>onClick('tasks')} label="tareas"/>
+        <RowButton onClick={()=>onClick('births')} label="partos"/> */}
         <RowButton onClick={()=>onClick('DELETE')} label="borrar"/>
       </div>
     </div>

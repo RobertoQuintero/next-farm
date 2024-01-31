@@ -321,3 +321,21 @@ background: #d4d4d4;
 .rowButton:hover{
   background-color: #fff;
 }
+
+.ubicationRow{
+  display:flex;
+  align-items: center;
+  gap:.5rem;
+  font-size: 14px;
+}
+.uHeader{
+  padding: 0 0 1rem .5rem;
+  font-weight: bold;
+}
+
+.ubicationRow p:first-child{
+  width: 100px;
+}
+.ubicationRow p:nth-child(2){
+  width: 200px;
+}

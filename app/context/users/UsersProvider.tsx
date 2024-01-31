@@ -55,6 +55,7 @@ export const UsersProvider = ({children}:Props) => {
   };
   
   const getUsers = async(payload:number) =>{
+    
     setAccessError(undefined)
       if(!userAccess.find(u=>u.id_access===1)&& user?.id_role!==1){
         setAccessError('Credenciales inválidas')
@@ -134,19 +135,19 @@ export const UsersProvider = ({children}:Props) => {
   const getPostLoadingOrError = async<T,K extends keyof T>(
     endpoint:string,setState:(payload: T[]) => void,payload?:T,state?:T[],id?:K,wich?:boolean
  ) =>{
- setError(undefined)
- setIsLoading(true)
- const {ok,data}= wich ? await  postUsersRequest(endpoint,payload): await getUsersRequest(endpoint)
- if(ok){
-    wich
-       ?setState(returnArray(payload as object,data as object,state as object[],id as never) as T[])
-       :setState(data as T[])
- }
- else{
-  setError(data as string)
- }
- setIsLoading(false)
- return ok
+  setError(undefined)
+  setIsLoading(true)
+  const {ok,data}= wich ? await  postUsersRequest(endpoint,payload): await getUsersRequest(endpoint)
+  if(ok){
+      wich
+        ?setState(returnArray(payload as object,data as object,state as object[],id as never) as T[])
+        :setState(data as T[])
+  }
+  else{
+    setError(data as string)
+  }
+  setIsLoading(false)
+  return ok
 };
 
   return (

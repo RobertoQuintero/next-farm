@@ -3,7 +3,7 @@ import { IAccess, IPig, IPigType, IRace, IRole, IRoleAccess, IStage,  IUbication
 import { UsersState } from './FarmsProvider'
 import { IFarm } from '@/interfaces/farm';
 
-type UsersActionType=
+ type UsersActionType=
           {type:'[Farms] - setFarms';payload:IFarm[]}
         | {type:'[Farms] - setFarm'; payload:IFarm | undefined}
         | {type:'[Farms] - setIsLoading'; payload:boolean}
@@ -21,6 +21,7 @@ type UsersActionType=
         | {type:'[Farms] - setAccess'; payload:IAccess | undefined }
         | {type:'[Farms] - setRoleAccess'; payload:IRoleAccess | undefined }
         | {type:'[Farms] - setRolesAccess'; payload:IRoleAccess[] }
+        | {type:'[Farms] - setUbication'; payload:IUbication | undefined }
         
         
 export const usersReducer = (state:UsersState,action:UsersActionType):UsersState => {
@@ -116,10 +117,17 @@ export const usersReducer = (state:UsersState,action:UsersActionType):UsersState
         ...state,
         rolesAccess:action.payload
       }
+
     case '[Farms] - setRoleAccess':
       return {
         ...state,
         roleAccess:action.payload
+      }
+
+    case '[Farms] - setUbication':
+      return {
+        ...state,
+        ubication:action.payload
       }
   
 

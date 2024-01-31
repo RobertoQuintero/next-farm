@@ -12,7 +12,7 @@ import { IPig } from '@/interfaces'
 const FarmPage = () => {
   const {toggleModal,isModalOpen} = useContext(UiContext)
   const {idFarm,user} = useContext(AuthContext)
-  const {farmsLoading,pigs,getPigs,setPig,setFarmAction,farmAction,farmsError,pig,postPig,getFarm,farm} = useContext(FarmsContext)
+  const {farmsLoading,pigs,getPigs,setPig,setFarmAction,farmAction,farmsError,pig,postPig,getFarm,farm,getUbications} = useContext(FarmsContext)
 
   useEffect(() => {
     let id= idFarm
@@ -25,7 +25,9 @@ const FarmPage = () => {
     }
     getPigs(id!)
   }, [])
-
+  useEffect(() => {
+    getUbications()
+  }, [])
   
   if(farmsLoading && !isModalOpen){
     return <LoadingComponent/>

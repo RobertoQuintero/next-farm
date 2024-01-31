@@ -17,7 +17,8 @@ const query=`
 export const GET = async(req:Request) =>{
   const {searchParams}= new URL(req.url)
     const id_role=searchParams.get('id_role')
-  return await getRequestQuery(`${query} where AR.id_role=${id_role}`)
+    const id_farm=searchParams.get('id_farm')
+  return await getRequestQuery(`${query} where AR.id_role=${id_role} and AR.status='true' and AR.id_farm=${id_farm}`)
 }
 
 export const POST = async(req:Request) =>{

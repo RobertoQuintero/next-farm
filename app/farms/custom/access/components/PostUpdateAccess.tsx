@@ -1,13 +1,13 @@
 import { AuthContext } from '@/app/context/auth/AuthContext'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
-import {  IRoleAccess } from '@/interfaces'
+import {  IAccess, IRoleAccess } from '@/interfaces'
 import { Button, CircularProgress, MenuItem, TextField } from '@mui/material'
 import React, { useContext } from 'react'
 import { useForm } from "react-hook-form"
 
 export const PostUpdateAccess = () => {
-  const {role,roleAccess,accessArr,farmsLoading,postRoleAccess} = useContext(FarmsContext)
+  const {role,roleAccess,accessArr,farmsLoading,postRoleAccess,rolesAccess} = useContext(FarmsContext)
   const {toggleModal} = useContext(UiContext)
   const {idFarm} = useContext(AuthContext)
   const {
@@ -24,13 +24,22 @@ export const PostUpdateAccess = () => {
     id_farm:roleAccess?roleAccess.id_farm:idFarm,
   } as IRoleAccess
 
+  const newRolesAccess = () =>{
+    const array=[] as IAccess[]
+    for (const p of accessArr) {
+      if(!rolesAccess.find(a=>a.id_access===p.id_access)){
+          array.push(p)
+      }
+    }
+    return array
+  };
+
   const onSubmit=async(data:IRoleAccess)=>{
     data.id_role_access=values.id_role_access
     data.id_role=values.id_role
     data.status=values.status
     data.id_farm=values.id_farm
-    console.log(data)
-    // return
+
     const ok = await postRoleAccess(data)
     if(ok){
       toggleModal()
@@ -42,12 +51,12 @@ export const PostUpdateAccess = () => {
           size="small"
           label='Acceso'
           fullWidth
-          defaultValue={values.id_access}
+          defaultValue={newRolesAccess()[0].id_access}
           {...register('id_access')} 
           select >
           {
-            accessArr.length
-            ?accessArr.map(item=>(
+            newRolesAccess().length
+            ?newRolesAccess().map(item=>(
               <MenuItem 
                 key={item.id_access} 
                 value={item.id_access}>

@@ -1,7 +1,7 @@
 'use client'
 import  {  useContext, useEffect, useReducer } from 'react'
 import { FarmsContext} from './FarmsContext'
-import { usersReducer } from './farmsReducer'
+import {  usersReducer } from './farmsReducer'
 import { IFarm } from '@/interfaces/farm'
 import { getFarmsRequest, postFarmsRequest } from './farmsRequest'
 import { returnArray } from '../auth/authRequest'
@@ -63,7 +63,7 @@ const UI_INITIAL_STATE:UsersState={
 
 export const FarmsProvider = ({children}:Props) => {
   const [state, dispatch] = useReducer(usersReducer, UI_INITIAL_STATE)
-  const {logged,user,userAccess,setAccessError} = useContext(AuthContext)
+  const {logged,user,userAccess,setAccessError,idFarm} = useContext(AuthContext)
   const router= useRouter()
   
   useEffect(() => {
@@ -80,19 +80,17 @@ export const FarmsProvider = ({children}:Props) => {
   const getResources = async() =>{
     setIsLoading(true)
      Promise.all([
-      getFarmsRequest('/farms/catalog/ubications'),
       getFarmsRequest('/farms/catalog/pig_types'),
       getFarmsRequest('/farms/catalog/races'),
       getFarmsRequest('/farms/catalog/stages'),
       getFarmsRequest('/users/roles'),
       getFarmsRequest('/users/access'),
      ]).then((resp)=>{
-      setUbications(resp[0].data as IUbication[])
-      setPigTypes(resp[1].data as IPigType[])
-      setRaces(resp[2].data as IRace[])
-      setStages(resp[3].data as IStage[])
-      setRoles(resp[4].data as IRole[])
-      setAccessArr(resp[5].data as IAccess[])
+      setPigTypes(resp[0].data as IPigType[])
+      setRaces(resp[1].data as IRace[])
+      setStages(resp[2].data as IStage[])
+      setRoles(resp[3].data as IRole[])
+      setAccessArr(resp[4].data as IAccess[])
       setIsLoading(false)
      })
      .catch(error=>{
@@ -132,7 +130,15 @@ export const FarmsProvider = ({children}:Props) => {
       setAccessError('Credenciales inválidas')
       return 
     }
-    await getPostLoadingOrError(`/users/role_access?id_role=${payload}`,setRolesAccess)
+    await getPostLoadingOrError(`/users/role_access?id_role=${payload}&id_farm=${idFarm}`,setRolesAccess)
+    };
+
+  const getUbications = async() =>{
+   if(!userAccess.find(u=>u.id_access===9)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return 
+    }
+    await getPostLoadingOrError(`/farms/catalog/ubications?id_farm=${idFarm}`,setUbications)
     };
 
   const postFarm = async(payload:IFarm):Promise<boolean> =>
@@ -153,6 +159,14 @@ export const FarmsProvider = ({children}:Props) => {
     }
     return await getPostLoadingOrError('/users/role_access',setRolesAccess,payload,state.rolesAccess,'id_role_access',true)
   };
+  const postUbication = async(payload:IUbication):Promise<boolean> =>{
+   if(!userAccess.find(u=>u.id_access===10)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return true 
+    }
+    return await getPostLoadingOrError('/farms/catalog/ubications',setUbications,payload,state.ubications,'id_ubication',true)
+  };
+
 
   const setFarms = (payload:IFarm[]) =>{
      dispatch({
@@ -261,6 +275,13 @@ export const FarmsProvider = ({children}:Props) => {
      })
   };
 
+  const setUbication = (payload:IUbication| undefined ) =>{
+     dispatch({
+      type:'[Farms] - setUbication',
+      payload
+     })
+  };
+
   const getPostLoadingOrError = async<T,K extends keyof T>(
       endpoint:string,setState:(payload: T[]) => void,payload?:T,state?:T[],id?:K,wich?:boolean
    ) =>{
@@ -295,7 +316,10 @@ export const FarmsProvider = ({children}:Props) => {
       getRolesAccess,
       setRoleAccess,
       getFarms,
-      getFarm
+      getFarm,
+      getUbications,
+      setUbication,
+      postUbication
     }}>
       {children}
     </FarmsContext.Provider>

@@ -42,6 +42,9 @@ interface ContextProps{
   setRoleAccess: (payload: IRoleAccess | undefined) => void;
   getFarms: (payload: number) => Promise<boolean>;
   getFarm: (payload: number) => Promise<void>;
+  getUbications: () => Promise<void>;
+  setUbication: (payload: IUbication | undefined) => void;
+  postUbication: (payload: IUbication) => Promise<boolean>;
 }
 
 export const FarmsContext = createContext({} as ContextProps)
