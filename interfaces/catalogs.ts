@@ -39,6 +39,7 @@ export interface IUbication {
   updated_at:   string | Date;
 }
 
+
 export interface ITask {
   id_task:      number;
   id_task_type: number;
@@ -49,4 +50,17 @@ export interface ITask {
   updated_at:   string | Date;
   days:         number;
   id_pig_type:  number;
+  stage:        string;
+  pig_type:     string;
+  id_farm:      number;
+  task_type:string;
 }
+
+export interface ITaskType {
+  id_task_type: number;
+  description:  string;
+  status:       boolean;
+  id_farm:      number;
+}
+
+

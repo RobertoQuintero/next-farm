@@ -96,6 +96,7 @@ export const AuthProvider = ({children}:Props) => {
         payload:data as IUser
       })
       await getUserAccess(data as IUser)
+      
     }
     else{
       setError(data as string)

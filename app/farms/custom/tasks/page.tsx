@@ -1,9 +1,12 @@
 import React from 'react'
+import TasksPage from './components/TasksPage'
+import { Metadata } from 'next'
 
-const Tasks = () => {
-  return (
-    <div>Tasks</div>
-  )
+export const metadata: Metadata = {
+  title: 'Hibye | Tareas',
+  description: 'Hibye Granjas',
 }
+
+const Tasks = () => <TasksPage/>
 
 export default Tasks

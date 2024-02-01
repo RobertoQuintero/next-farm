@@ -334,8 +334,11 @@ background: #d4d4d4;
 }
 
 .ubicationRow p:first-child{
-  width: 100px;
+  width: 80px;
 }
 .ubicationRow p:nth-child(2){
-  width: 200px;
+  width: 170px;
+}
+.ubicationRow p:nth-child(3){
+  width: 240px;
 }

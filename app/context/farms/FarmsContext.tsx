@@ -1,5 +1,5 @@
 'use client'
-import { IPig, IPigType, IRace, IStage, ITask, IUbication } from '@/interfaces'
+import { IPig, IPigType, IRace, IStage, ITask, ITaskType, IUbication } from '@/interfaces'
 import { IFarm } from '@/interfaces/farm'
 import { IAccess,  IRole, IRoleAccess } from '@/interfaces/user'
 import { createContext } from 'react'
@@ -26,6 +26,7 @@ interface ContextProps{
   access:IAccess | undefined
   roleAccess:IRoleAccess|undefined;
   rolesAccess:IRoleAccess[];
+  taskTypes:ITaskType[]
   
 
   //methods
@@ -45,6 +46,9 @@ interface ContextProps{
   getUbications: () => Promise<void>;
   setUbication: (payload: IUbication | undefined) => void;
   postUbication: (payload: IUbication) => Promise<boolean>;
+  setTask: (payload: ITask | undefined) => void;
+  postTask: (payload: ITask) => Promise<boolean>;
+
 }
 
 export const FarmsContext = createContext({} as ContextProps)

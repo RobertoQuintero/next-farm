@@ -1,5 +1,5 @@
 'use client'
-import { IAccess, IPig, IPigType, IRace, IRole, IRoleAccess, IStage,  IUbication } from '@/interfaces';
+import { IAccess, IPig, IPigType, IRace, IRole, IRoleAccess, IStage,  ITask,  ITaskType,  IUbication } from '@/interfaces';
 import { UsersState } from './FarmsProvider'
 import { IFarm } from '@/interfaces/farm';
 
@@ -22,6 +22,9 @@ import { IFarm } from '@/interfaces/farm';
         | {type:'[Farms] - setRoleAccess'; payload:IRoleAccess | undefined }
         | {type:'[Farms] - setRolesAccess'; payload:IRoleAccess[] }
         | {type:'[Farms] - setUbication'; payload:IUbication | undefined }
+        | {type:'[Farms] - setTasks'; payload:ITask[] }
+        | {type:'[Farms] - setTask'; payload:ITask | undefined }
+        | {type:'[Farms] - setTaskTypes'; payload:ITaskType[] }
         
         
 export const usersReducer = (state:UsersState,action:UsersActionType):UsersState => {
@@ -128,6 +131,24 @@ export const usersReducer = (state:UsersState,action:UsersActionType):UsersState
       return {
         ...state,
         ubication:action.payload
+      }
+
+    case '[Farms] - setTasks':
+      return {
+        ...state,
+        tasks:action.payload
+      }
+
+    case '[Farms] - setTask':
+      return {
+        ...state,
+        task:action.payload
+      }
+
+    case '[Farms] - setTaskTypes':
+      return {
+        ...state,
+        taskTypes:action.payload
       }
   
 

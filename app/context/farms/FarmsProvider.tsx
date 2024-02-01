@@ -5,7 +5,7 @@ import {  usersReducer } from './farmsReducer'
 import { IFarm } from '@/interfaces/farm'
 import { getFarmsRequest, postFarmsRequest } from './farmsRequest'
 import { returnArray } from '../auth/authRequest'
-import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask } from '@/interfaces'
+import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType } from '@/interfaces'
 import { AuthContext } from '../auth/AuthContext'
 import { useRouter } from 'next/navigation'
 
@@ -35,6 +35,7 @@ export interface UsersState{
   access:IAccess | undefined;
   roleAccess:IRoleAccess|undefined;
   rolesAccess:IRoleAccess[];
+  taskTypes:ITaskType[]
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -58,12 +59,14 @@ const UI_INITIAL_STATE:UsersState={
   accessArr:[],
   access: undefined,
   roleAccess:undefined,
-  rolesAccess:[]
+  rolesAccess:[],
+  taskTypes:[]
 }
 
 export const FarmsProvider = ({children}:Props) => {
   const [state, dispatch] = useReducer(usersReducer, UI_INITIAL_STATE)
   const {logged,user,userAccess,setAccessError,idFarm} = useContext(AuthContext)
+  const id=idFarm||localStorage.getItem('id_farm')
   const router= useRouter()
   
   useEffect(() => {
@@ -73,8 +76,10 @@ export const FarmsProvider = ({children}:Props) => {
       }else{
          getResources()
       }
+      setAccessError(undefined)
+      getUbications()
+      getTasks()
    }
-   setAccessError(undefined)
   }, [])
  
   const getResources = async() =>{
@@ -85,12 +90,14 @@ export const FarmsProvider = ({children}:Props) => {
       getFarmsRequest('/farms/catalog/stages'),
       getFarmsRequest('/users/roles'),
       getFarmsRequest('/users/access'),
+      getFarmsRequest(`/farms/catalog/task_types?id_farm=${id}`),
      ]).then((resp)=>{
       setPigTypes(resp[0].data as IPigType[])
       setRaces(resp[1].data as IRace[])
       setStages(resp[2].data as IStage[])
       setRoles(resp[3].data as IRole[])
       setAccessArr(resp[4].data as IAccess[])
+      setTaskTypes(resp[5].data as ITaskType[])
       setIsLoading(false)
      })
      .catch(error=>{
@@ -138,7 +145,16 @@ export const FarmsProvider = ({children}:Props) => {
       setAccessError('Credenciales inválidas')
       return 
     }
-    await getPostLoadingOrError(`/farms/catalog/ubications?id_farm=${idFarm}`,setUbications)
+    
+    await getPostLoadingOrError(`/farms/catalog/ubications?id_farm=${id}`,setUbications)
+    };
+
+  const getTasks = async() =>{
+   // if(!userAccess.find(u=>u.id_access===9)&& user?.id_role!==1){
+   //    setAccessError('Credenciales inválidas')
+   //    return 
+   //  }
+    await getPostLoadingOrError(`/farms/catalog/tasks?id_farm=${id}`,setTasks)
     };
 
   const postFarm = async(payload:IFarm):Promise<boolean> =>
@@ -165,6 +181,13 @@ export const FarmsProvider = ({children}:Props) => {
       return true 
     }
     return await getPostLoadingOrError('/farms/catalog/ubications',setUbications,payload,state.ubications,'id_ubication',true)
+  };
+  const postTask = async(payload:ITask):Promise<boolean> =>{
+   // if(!userAccess.find(u=>u.id_access===10)&& user?.id_role!==1){
+   //    setAccessError('Credenciales inválidas')
+   //    return true 
+   //  }
+    return await getPostLoadingOrError('/farms/catalog/tasks',setTasks,payload,state.tasks,'id_task',true)
   };
 
 
@@ -282,6 +305,28 @@ export const FarmsProvider = ({children}:Props) => {
      })
   };
 
+  const setTask = (payload:ITask| undefined ) =>{
+     dispatch({
+      type:'[Farms] - setTask',
+      payload
+     })
+  };
+
+  const setTasks = (payload:ITask[] ) =>{
+     dispatch({
+      type:'[Farms] - setTasks',
+      payload
+     })
+  };
+
+  const setTaskTypes = (payload:ITaskType[] ) =>{
+     dispatch({
+      type:'[Farms] - setTaskTypes',
+      payload
+     })
+  };
+
+
   const getPostLoadingOrError = async<T,K extends keyof T>(
       endpoint:string,setState:(payload: T[]) => void,payload?:T,state?:T[],id?:K,wich?:boolean
    ) =>{
@@ -319,7 +364,9 @@ export const FarmsProvider = ({children}:Props) => {
       getFarm,
       getUbications,
       setUbication,
-      postUbication
+      postUbication,
+      setTask,
+      postTask
     }}>
       {children}
     </FarmsContext.Provider>
