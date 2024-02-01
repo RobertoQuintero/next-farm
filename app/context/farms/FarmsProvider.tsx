@@ -150,10 +150,10 @@ export const FarmsProvider = ({children}:Props) => {
     };
 
   const getTasks = async() =>{
-   // if(!userAccess.find(u=>u.id_access===9)&& user?.id_role!==1){
-   //    setAccessError('Credenciales inválidas')
-   //    return 
-   //  }
+   if(!userAccess.find(u=>u.id_access===11)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return 
+    }
     await getPostLoadingOrError(`/farms/catalog/tasks?id_farm=${id}`,setTasks)
     };
 
@@ -182,11 +182,12 @@ export const FarmsProvider = ({children}:Props) => {
     }
     return await getPostLoadingOrError('/farms/catalog/ubications',setUbications,payload,state.ubications,'id_ubication',true)
   };
+
   const postTask = async(payload:ITask):Promise<boolean> =>{
-   // if(!userAccess.find(u=>u.id_access===10)&& user?.id_role!==1){
-   //    setAccessError('Credenciales inválidas')
-   //    return true 
-   //  }
+   if(!userAccess.find(u=>u.id_access===12)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return true 
+    }
     return await getPostLoadingOrError('/farms/catalog/tasks',setTasks,payload,state.tasks,'id_task',true)
   };
 
