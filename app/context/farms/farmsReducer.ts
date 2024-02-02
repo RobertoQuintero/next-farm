@@ -10,6 +10,7 @@ import { IFarm } from '@/interfaces/farm';
         | {type:'[Farms] - setError'; payload:string | undefined}
         | {type:'[Farms] - setUbications'; payload:IUbication[] }
         | {type:'[Farms] - setStages'; payload:IStage[] }
+        | {type:'[Farms] - setStage'; payload:IStage | undefined }
         | {type:'[Farms] - setPigTypes'; payload:IPigType[] }
         | {type:'[Farms] - setRaces'; payload:IRace[] }
         | {type:'[Farms] - setPigs'; payload:IPig[] }
@@ -149,6 +150,12 @@ export const usersReducer = (state:UsersState,action:UsersActionType):UsersState
       return {
         ...state,
         taskTypes:action.payload
+      }
+
+    case '[Farms] - setStage':
+      return {
+        ...state,
+        stage:action.payload
       }
   
 

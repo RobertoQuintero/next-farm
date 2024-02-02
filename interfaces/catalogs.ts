@@ -26,7 +26,12 @@ export interface IStage {
   description: string;
   order:       number;
   status:      boolean;
+  min_weight:  number;
+  max_weight:  number;
+  food_amount: number;
+  id_farm:     number;
 }
+
 
 export interface IUbication {
   id_ubication: number;

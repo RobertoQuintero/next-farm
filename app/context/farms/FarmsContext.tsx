@@ -14,6 +14,7 @@ interface ContextProps{
   tasks:ITask[]
   task:ITask | undefined;
   stages:IStage[];
+  stage:IStage | undefined;
   pigTypes:IPigType[];
   races:IRace[];
   pigs:IPig[];
@@ -48,6 +49,8 @@ interface ContextProps{
   postUbication: (payload: IUbication) => Promise<boolean>;
   setTask: (payload: ITask | undefined) => void;
   postTask: (payload: ITask) => Promise<boolean>;
+  setStage: (payload: IStage | undefined) => void;
+  postStage: (payload: IStage) => Promise<boolean>;
 
 }
 

@@ -91,6 +91,7 @@ export const AuthProvider = ({children}:Props) => {
     setIsLoading(true)
     const {ok,data}=await postAuthRequest('/auth/login',payload)
     if(ok){
+      localStorage.setItem('id_farm',(data as IUser).id_farm.toString())
       dispatch({
         type:'[auth] - login',
         payload:data as IUser

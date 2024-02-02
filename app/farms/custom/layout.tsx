@@ -7,6 +7,7 @@ const links=[
   {href:'/farms/custom/roles',title:'Roles'},
   {href:'/farms/custom/ubications',title:'Ubicaciones'},
   {href:'/farms/custom/tasks',title:'Tareas'},
+  {href:'/farms/custom/stages',title:'Etapas'},
 ]
 const RootLayout = ({children}:{children:ReactNode}) => {
   return (
