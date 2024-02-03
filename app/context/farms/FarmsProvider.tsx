@@ -82,16 +82,17 @@ export const FarmsProvider = ({children}:Props) => {
       }else{
          if(!idFarm){
             setIdFarm(+Cookies.get('id_farm')!)
+         }else{
+            getResources(idFarm!)
+            setAccessError(undefined)
+            getUbications()
+            getTasks()
          }
-         getResources()
-         setAccessError(undefined)
-         getUbications()
-         getTasks()
       }
    }
-  }, [logged])
+  }, [logged,idFarm])
  
-  const getResources = async() =>{
+  const getResources = async(idFarm:number) =>{
     setIsLoading(true)
      Promise.all([
       getFarmsRequest('/farms/catalog/pig_types'),
