@@ -8,6 +8,7 @@ import { PigCard, PostUpdatePig } from '.'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { AuthContext } from '@/app/context/auth/AuthContext'
 import { IPig } from '@/interfaces'
+import Cookie from 'js-cookie'
 
 const FarmPage = () => {
   const {toggleModal,isModalOpen} = useContext(UiContext)
@@ -17,7 +18,7 @@ const FarmPage = () => {
   useEffect(() => {
     let id= idFarm
     if(!idFarm){
-     id= Number(localStorage.getItem('id_farm'))
+     id= Number(Cookie.get('id_farm'))
     }
     if(!farm){
       getFarm(id!)

@@ -68,4 +68,11 @@ export interface ITaskType {
   id_farm:      number;
 }
 
-
+export interface ILossReason {
+  id_loss_reason: number;
+  description:    string;
+  status:         boolean;
+  created_at:     string | Date;
+  updated_at:     string | Date;
+  id_farm:        number;
+}

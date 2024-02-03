@@ -8,6 +8,7 @@ const links=[
   {href:'/farms/custom/ubications',title:'Ubicaciones'},
   {href:'/farms/custom/tasks',title:'Tareas'},
   {href:'/farms/custom/stages',title:'Etapas'},
+  {href:'/farms/custom/loss_reasons',title:'Motivo baja'},
 ]
 const RootLayout = ({children}:{children:ReactNode}) => {
   return (

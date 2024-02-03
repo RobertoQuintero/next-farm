@@ -5,6 +5,7 @@ import { IFarm } from '@/interfaces/farm'
 import { Button } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import React, { useContext } from 'react'
+import Cookies from 'js-cookie'
 interface Props{
   farm:IFarm
 }
@@ -20,7 +21,7 @@ export const FarmCard = ({farm}:Props) => {
     setFarm(farm)
     setIdFarm(farm.id_farm)
     if(action==='OPEN'){
-      localStorage.setItem('id_farm',farm.id_farm.toString())
+      Cookies.set('id_farm',farm.id_farm.toString())
       router.push('/farms/custom')
       return
     }

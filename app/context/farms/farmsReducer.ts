@@ -1,5 +1,5 @@
 'use client'
-import { IAccess, IPig, IPigType, IRace, IRole, IRoleAccess, IStage,  ITask,  ITaskType,  IUbication } from '@/interfaces';
+import { IAccess, ILossReason, IPig, IPigType, IRace, IRole, IRoleAccess, IStage,  ITask,  ITaskType,  IUbication } from '@/interfaces';
 import { UsersState } from './FarmsProvider'
 import { IFarm } from '@/interfaces/farm';
 
@@ -26,6 +26,8 @@ import { IFarm } from '@/interfaces/farm';
         | {type:'[Farms] - setTasks'; payload:ITask[] }
         | {type:'[Farms] - setTask'; payload:ITask | undefined }
         | {type:'[Farms] - setTaskTypes'; payload:ITaskType[] }
+        | {type:'[Farms] - setLossReasons'; payload:ILossReason[] }
+        | {type:'[Farms] - setLossReason'; payload:ILossReason | undefined }
         
         
 export const usersReducer = (state:UsersState,action:UsersActionType):UsersState => {
@@ -156,6 +158,17 @@ export const usersReducer = (state:UsersState,action:UsersActionType):UsersState
       return {
         ...state,
         stage:action.payload
+      }
+    case '[Farms] - setLossReasons':
+      return {
+        ...state,
+        lossReasons:action.payload
+      }
+
+    case '[Farms] - setLossReason':
+      return {
+        ...state,
+        lossReason:action.payload
       }
   
 

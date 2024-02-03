@@ -5,9 +5,10 @@ import {  usersReducer } from './farmsReducer'
 import { IFarm } from '@/interfaces/farm'
 import { getFarmsRequest, postFarmsRequest } from './farmsRequest'
 import { returnArray } from '../auth/authRequest'
-import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType } from '@/interfaces'
+import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason } from '@/interfaces'
 import { AuthContext } from '../auth/AuthContext'
 import { useRouter } from 'next/navigation'
+import Cookies from 'js-cookie'
 
 interface Props{
   children:JSX.Element|JSX.Element[]
@@ -37,6 +38,8 @@ export interface UsersState{
   rolesAccess:IRoleAccess[];
   taskTypes:ITaskType[];
   stage:IStage | undefined;
+  lossReasons:ILossReason[];
+  lossReason:ILossReason | undefined;
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -62,13 +65,14 @@ const UI_INITIAL_STATE:UsersState={
   roleAccess:undefined,
   rolesAccess:[],
   taskTypes:[],
-  stage:undefined
+  stage:undefined,
+  lossReasons:[],
+  lossReason: undefined
 }
 
 export const FarmsProvider = ({children}:Props) => {
   const [state, dispatch] = useReducer(usersReducer, UI_INITIAL_STATE)
-  const {logged,user,userAccess,setAccessError,idFarm} = useContext(AuthContext)
-  const [id, setId] = useState(idFarm||window.localStorage.getItem('id_farm'))
+  const {logged,user,userAccess,setAccessError,idFarm,setIdFarm} = useContext(AuthContext)
   const router= useRouter()
   
   useEffect(() => {
@@ -76,7 +80,9 @@ export const FarmsProvider = ({children}:Props) => {
       if(!user?.is_active){
          router.replace('/')
       }else{
-         setId(idFarm||localStorage.getItem('id_farm'))
+         if(!idFarm){
+            setIdFarm(+Cookies.get('id_farm')!)
+         }
          getResources()
          setAccessError(undefined)
          getUbications()
@@ -90,10 +96,11 @@ export const FarmsProvider = ({children}:Props) => {
      Promise.all([
       getFarmsRequest('/farms/catalog/pig_types'),
       getFarmsRequest('/farms/catalog/races'),
-      getFarmsRequest(`/farms/catalog/stages?id_farm=${id}`),
+      getFarmsRequest(`/farms/catalog/stages?id_farm=${idFarm}`),
       getFarmsRequest('/users/roles'),
       getFarmsRequest('/users/access'),
-      getFarmsRequest(`/farms/catalog/task_types?id_farm=${id}`),
+      getFarmsRequest(`/farms/catalog/task_types?id_farm=${idFarm}`),
+      getFarmsRequest(`/farms/catalog/loss_reasons?id_farm=${idFarm}`),
      ]).then((resp)=>{
       setPigTypes(resp[0].data as IPigType[])
       setRaces(resp[1].data as IRace[])
@@ -101,6 +108,7 @@ export const FarmsProvider = ({children}:Props) => {
       setRoles(resp[3].data as IRole[])
       setAccessArr(resp[4].data as IAccess[])
       setTaskTypes(resp[5].data as ITaskType[])
+      setLossReasons(resp[6].data as ILossReason[])
       setIsLoading(false)
      })
      .catch(error=>{
@@ -140,7 +148,7 @@ export const FarmsProvider = ({children}:Props) => {
       setAccessError('Credenciales inválidas')
       return 
     }
-    await getPostLoadingOrError(`/users/role_access?id_role=${payload}&id_farm=${id}`,setRolesAccess)
+    await getPostLoadingOrError(`/users/role_access?id_role=${payload}&id_farm=${idFarm}`,setRolesAccess)
     };
 
   const getUbications = async() =>{
@@ -148,8 +156,7 @@ export const FarmsProvider = ({children}:Props) => {
       setAccessError('Credenciales inválidas')
       return 
     }
-    
-    await getPostLoadingOrError(`/farms/catalog/ubications?id_farm=${id}`,setUbications)
+    await getPostLoadingOrError(`/farms/catalog/ubications?id_farm=${idFarm}`,setUbications)
     };
 
   const getTasks = async() =>{
@@ -157,7 +164,7 @@ export const FarmsProvider = ({children}:Props) => {
       setAccessError('Credenciales inválidas')
       return 
     }
-    await getPostLoadingOrError(`/farms/catalog/tasks?id_farm=${id}`,setTasks)
+    await getPostLoadingOrError(`/farms/catalog/tasks?id_farm=${idFarm}`,setTasks)
     };
 
   const postFarm = async(payload:IFarm):Promise<boolean> =>
@@ -200,6 +207,14 @@ export const FarmsProvider = ({children}:Props) => {
       return true 
     }
     return await getPostLoadingOrError('/farms/catalog/stages',setStages,payload,state.stages,'id_stage',true)
+  };
+
+  const postLossReason = async(payload:ILossReason):Promise<boolean> =>{
+   if(!userAccess.find(u=>u.id_access===14)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return true 
+    }
+    return await getPostLoadingOrError('/farms/catalog/loss_reasons',setLossReasons,payload,state.lossReasons,'id_loss_reason',true)
   };
 
 
@@ -344,6 +359,20 @@ export const FarmsProvider = ({children}:Props) => {
      })
   };
 
+  const setLossReason = (payload:ILossReason | undefined ) =>{
+     dispatch({
+      type:'[Farms] - setLossReason',
+      payload
+     })
+  };
+
+  const setLossReasons = (payload:ILossReason[] ) =>{
+     dispatch({
+      type:'[Farms] - setLossReasons',
+      payload
+     })
+  };
+
 
   const getPostLoadingOrError = async<T,K extends keyof T>(
       endpoint:string,setState:(payload: T[]) => void,payload?:T,state?:T[],id?:K,wich?:boolean
@@ -386,7 +415,9 @@ export const FarmsProvider = ({children}:Props) => {
       setTask,
       postTask,
       setStage,
-      postStage
+      postStage,
+      setLossReason,
+      postLossReason
     }}>
       {children}
     </FarmsContext.Provider>

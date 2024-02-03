@@ -22,11 +22,11 @@ const StagesPage = () => {
     <>
      <div className='actionCreateContainer'>
         <div></div>
-        <Button 
+        {/* <Button 
           onClick={onAdd}
           variant='contained' 
           color='success'
-          size='small'>Nuevo</Button>
+          size='small'>Nuevo</Button> */}
       </div>
       <div>
         {

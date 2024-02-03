@@ -1,5 +1,5 @@
 'use client'
-import { IPig, IPigType, IRace, IStage, ITask, ITaskType, IUbication } from '@/interfaces'
+import { ILossReason, IPig, IPigType, IRace, IStage, ITask, ITaskType, IUbication } from '@/interfaces'
 import { IFarm } from '@/interfaces/farm'
 import { IAccess,  IRole, IRoleAccess } from '@/interfaces/user'
 import { createContext } from 'react'
@@ -28,6 +28,8 @@ interface ContextProps{
   roleAccess:IRoleAccess|undefined;
   rolesAccess:IRoleAccess[];
   taskTypes:ITaskType[]
+  lossReasons:ILossReason[];
+  lossReason:ILossReason | undefined;
   
 
   //methods
@@ -51,6 +53,8 @@ interface ContextProps{
   postTask: (payload: ITask) => Promise<boolean>;
   setStage: (payload: IStage | undefined) => void;
   postStage: (payload: IStage) => Promise<boolean>;
+  setLossReason: (payload: ILossReason | undefined) => void;
+  postLossReason: (payload: ILossReason) => Promise<boolean>
 
 }
 
