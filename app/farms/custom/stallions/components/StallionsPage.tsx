@@ -5,33 +5,34 @@ import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { Button } from '@mui/material'
 import { useContext } from 'react'
-import { PostUpdateTask, TaskRow } from '.'
-import { ITask } from '@/interfaces'
+import { PostUpdateStallion, StallionRow } from '.'
+import { IStallion } from '@/interfaces'
 
-const TasksPage = () => {
+const StallionsPage = () => {
   const {toggleModal} = useContext(UiContext)
-  const {tasks,setTask,setFarmAction,farmAction,farmsLoading,farmsError,task,postTask} = useContext(FarmsContext)
-
-  const onAdd = () =>{
-    setTask(undefined)
+  const {stallions,farmAction,setFarmAction,setStallion,postStallion,stallion,farmsLoading,farmsError} = useContext(FarmsContext)
+  const onAdd = async() =>{
     setFarmAction(undefined)
-    toggleModal()
+    setStallion(undefined)
+     toggleModal()
   };
 
   const onDelete = async() =>{
-    const newTask={...task, status:false} as ITask
-    const ok=await postTask(newTask)
-    if(ok){
+     const newStallion={
+      ...stallion,
+      status:false
+     } as IStallion
+
+     const ok=await postStallion(newStallion)
+     if(ok){
       toggleModal()
-      setTask(undefined)
-      setFarmAction(undefined)
-    }
+     }
   };
 
   return (
     <>
      <div className='actionCreateContainer'>
-      <AccessErrorComponent/>
+     <AccessErrorComponent/>
         <div></div>
         <Button 
           onClick={onAdd}
@@ -41,15 +42,15 @@ const TasksPage = () => {
       </div>
       <div>
         {
-          tasks.filter(t=>t.status).length
-            ?tasks.filter(t=>t.status).map(a=><TaskRow task={a} key={a.id_task}/>)
+          stallions.filter(s=>s.status).length
+            ?stallions.filter(s=>s.status).map(a=><StallionRow stallion={a} key={a.id_stallion}/>)
             :<EmptyPage/>
         }
       </div>
       <AppModal>
         {
-          farmAction==='OPEN' || farmAction===undefined
-            ?<PostUpdateTask/>
+          farmAction==='EDIT' || farmAction===undefined
+            ?<PostUpdateStallion/>
             :<DeleteComponent onDelete={onDelete} loading={farmsLoading} error={farmsError}/>
         }
       </AppModal>
@@ -57,4 +58,4 @@ const TasksPage = () => {
   )
 }
 
-export default TasksPage
+export default StallionsPage

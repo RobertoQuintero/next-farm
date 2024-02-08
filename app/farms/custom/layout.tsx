@@ -9,6 +9,7 @@ const links=[
   {href:'/farms/custom/tasks',title:'Tareas'},
   {href:'/farms/custom/stages',title:'Etapas'},
   {href:'/farms/custom/loss_reasons',title:'Motivo baja'},
+  {href:'/farms/custom/stallions',title:'Sementales'},
 ]
 const RootLayout = ({children}:{children:ReactNode}) => {
   return (

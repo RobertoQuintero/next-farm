@@ -1,5 +1,5 @@
 'use client'
-import { ILossReason, IPig, IPigType, IRace, IStage, ITask, ITaskType, IUbication } from '@/interfaces'
+import { ILossReason, IPig, IPigType, IRace, IStage, IStallion, ITask, ITaskType, IUbication, IfertilizationType } from '@/interfaces'
 import { IFarm } from '@/interfaces/farm'
 import { IAccess,  IRole, IRoleAccess } from '@/interfaces/user'
 import { createContext } from 'react'
@@ -30,6 +30,9 @@ interface ContextProps{
   taskTypes:ITaskType[]
   lossReasons:ILossReason[];
   lossReason:ILossReason | undefined;
+  fertilizatinTypes:IfertilizationType[];
+  stallions:IStallion[];
+  stallion:IStallion | undefined;
   
 
   //methods
@@ -54,7 +57,9 @@ interface ContextProps{
   setStage: (payload: IStage | undefined) => void;
   postStage: (payload: IStage) => Promise<boolean>;
   setLossReason: (payload: ILossReason | undefined) => void;
-  postLossReason: (payload: ILossReason) => Promise<boolean>
+  postLossReason: (payload: ILossReason) => Promise<boolean>;
+  setStallion: (payload: IStallion | undefined) => void;
+  postStallion: (payload: IStallion) => Promise<boolean>;
 
 }
 

@@ -1,5 +1,5 @@
 'use client'
-import { IAccess, ILossReason, IPig, IPigType, IRace, IRole, IRoleAccess, IStage,  ITask,  ITaskType,  IUbication } from '@/interfaces';
+import { IAccess, ILossReason, IPig, IPigType, IRace, IRole, IRoleAccess, IStage,  IStallion,  ITask,  ITaskType,  IUbication, IfertilizationType } from '@/interfaces';
 import { UsersState } from './FarmsProvider'
 import { IFarm } from '@/interfaces/farm';
 
@@ -28,6 +28,9 @@ import { IFarm } from '@/interfaces/farm';
         | {type:'[Farms] - setTaskTypes'; payload:ITaskType[] }
         | {type:'[Farms] - setLossReasons'; payload:ILossReason[] }
         | {type:'[Farms] - setLossReason'; payload:ILossReason | undefined }
+        | {type:'[Farms] - setFertilizationTypes'; payload:IfertilizationType[] }
+        | {type:'[Farms] - setStallions'; payload:IStallion[] }
+        | {type:'[Farms] - setStallion'; payload:IStallion | undefined }
         
         
 export const usersReducer = (state:UsersState,action:UsersActionType):UsersState => {
@@ -170,8 +173,25 @@ export const usersReducer = (state:UsersState,action:UsersActionType):UsersState
         ...state,
         lossReason:action.payload
       }
-  
 
+    case '[Farms] - setFertilizationTypes':
+      return {
+        ...state,
+        fertilizatinTypes:action.payload
+      }
+
+    case '[Farms] - setStallions':
+      return {
+        ...state,
+        stallions:action.payload
+      }
+
+    case '[Farms] - setStallion':
+      return {
+        ...state,
+        stallion:action.payload
+      }
+  
     default:
       return state
   }

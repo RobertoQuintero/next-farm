@@ -17,3 +17,12 @@ export interface IPig {
   pig_stage:     string;
 }
 
+export interface IStallion {
+  id_stallion:  number;
+  name:         string;
+  status:       boolean;
+  id_ubication: number;
+  id_race:      number;
+  created_at:   string | Date;
+  id_farm:      number;
+}

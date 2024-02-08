@@ -23,7 +23,9 @@ const FarmPage = () => {
     if(!farm){
       getFarm(id!)
     }
-    getPigs(id!)
+    if(!pigs.length){
+      getPigs(id!)
+    }
   }, [])
 
   

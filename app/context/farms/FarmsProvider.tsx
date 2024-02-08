@@ -1,11 +1,11 @@
 'use client'
-import  {  useContext, useEffect, useReducer, useState } from 'react'
+import  {  useContext, useEffect, useReducer} from 'react'
 import { FarmsContext} from './FarmsContext'
 import {  usersReducer } from './farmsReducer'
 import { IFarm } from '@/interfaces/farm'
 import { getFarmsRequest, postFarmsRequest } from './farmsRequest'
 import { returnArray } from '../auth/authRequest'
-import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason } from '@/interfaces'
+import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion } from '@/interfaces'
 import { AuthContext } from '../auth/AuthContext'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
@@ -40,6 +40,9 @@ export interface UsersState{
   stage:IStage | undefined;
   lossReasons:ILossReason[];
   lossReason:ILossReason | undefined;
+  fertilizatinTypes:IfertilizationType[];
+  stallions:IStallion[];
+  stallion:IStallion | undefined;
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -67,7 +70,10 @@ const UI_INITIAL_STATE:UsersState={
   taskTypes:[],
   stage:undefined,
   lossReasons:[],
-  lossReason: undefined
+  lossReason: undefined,
+  fertilizatinTypes:[],
+  stallions:[],
+  stallion:undefined
 }
 
 export const FarmsProvider = ({children}:Props) => {
@@ -102,6 +108,8 @@ export const FarmsProvider = ({children}:Props) => {
       getFarmsRequest('/users/access'),
       getFarmsRequest(`/farms/catalog/task_types?id_farm=${idFarm}`),
       getFarmsRequest(`/farms/catalog/loss_reasons?id_farm=${idFarm}`),
+      getFarmsRequest(`/farms/catalog/fertilization_types`),
+      getFarmsRequest(`/farms/stallions?id_farm=${idFarm}`),
      ]).then((resp)=>{
       setPigTypes(resp[0].data as IPigType[])
       setRaces(resp[1].data as IRace[])
@@ -110,6 +118,8 @@ export const FarmsProvider = ({children}:Props) => {
       setAccessArr(resp[4].data as IAccess[])
       setTaskTypes(resp[5].data as ITaskType[])
       setLossReasons(resp[6].data as ILossReason[])
+      setFertilizationTypes(resp[7].data as IfertilizationType[])
+      setStallions(resp[8].data as IStallion[])
       setIsLoading(false)
      })
      .catch(error=>{
@@ -128,7 +138,6 @@ export const FarmsProvider = ({children}:Props) => {
     await getPostLoadingOrError(`/farms/pigs?idFarm=${payload}`,setPigs)
     };
 
-    
     const getFarm = async(payload:number) =>{
         setIsLoading(true)
          const {ok,data}=await getFarmsRequest(`/farms/${payload}`)
@@ -216,6 +225,14 @@ export const FarmsProvider = ({children}:Props) => {
       return true 
     }
     return await getPostLoadingOrError('/farms/catalog/loss_reasons',setLossReasons,payload,state.lossReasons,'id_loss_reason',true)
+  };
+
+  const postStallion = async(payload:IStallion):Promise<boolean> =>{
+   if(!userAccess.find(u=>u.id_access===15)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return true 
+    }
+    return await getPostLoadingOrError('/farms/stallions',setStallions,payload,state.stallions,'id_stallion',true)
   };
 
 
@@ -373,6 +390,24 @@ export const FarmsProvider = ({children}:Props) => {
       payload
      })
   };
+  const setFertilizationTypes = (payload:IfertilizationType[] ) =>{
+     dispatch({
+      type:'[Farms] - setFertilizationTypes',
+      payload
+     })
+  };
+  const setStallions = (payload:IStallion[] ) =>{
+     dispatch({
+      type:'[Farms] - setStallions',
+      payload
+     })
+  };
+  const setStallion = (payload:IStallion | undefined ) =>{
+     dispatch({
+      type:'[Farms] - setStallion',
+      payload
+     })
+  };
 
 
   const getPostLoadingOrError = async<T,K extends keyof T>(
@@ -418,7 +453,9 @@ export const FarmsProvider = ({children}:Props) => {
       setStage,
       postStage,
       setLossReason,
-      postLossReason
+      postLossReason,
+      setStallion,
+      postStallion
     }}>
       {children}
     </FarmsContext.Provider>

@@ -18,6 +18,7 @@ export interface IRace {
   id_race:     number;
   description: string;
   status:      boolean;
+  id_farm:number
 }
 
 export interface IStage {
@@ -75,4 +76,10 @@ export interface ILossReason {
   created_at:     string | Date;
   updated_at:     string | Date;
   id_farm:        number;
+}
+
+export interface IfertilizationType {
+  id_fertilization_type: number;
+  description:           string;
+  status:                boolean;
 }

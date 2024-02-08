@@ -20,7 +20,10 @@ const UsersPage = () => {
     if(!idFarm){
      id= Number(localStorage.getItem('id_farm'))
     }
-    getUsers(id!) 
+    if(!users.length){
+      getUsers(id!) 
+
+    }
   }, [])
   
   const onDelete = async() =>{
@@ -43,7 +46,6 @@ const UsersPage = () => {
 
   return (
     <>
-
       <div className={styles.onAdd}>
         <AccessErrorComponent/>
         <Button
