@@ -17,6 +17,7 @@ interface ContextProps{
   stage:IStage | undefined;
   pigTypes:IPigType[];
   races:IRace[];
+  race:IRace | undefined;
   pigs:IPig[];
   pig:IPig | undefined;
   idFarm: number | undefined;
@@ -60,7 +61,8 @@ interface ContextProps{
   postLossReason: (payload: ILossReason) => Promise<boolean>;
   setStallion: (payload: IStallion | undefined) => void;
   postStallion: (payload: IStallion) => Promise<boolean>;
-
+  setRace: (payload: IRace | undefined) => void;
+  postRace: (payload: IRace) => Promise<boolean>;
 }
 
 export const FarmsContext = createContext({} as ContextProps)

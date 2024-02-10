@@ -1,4 +1,5 @@
 'use client'
+import { SaveButton } from "@/app/components"
 import { AuthContext } from "@/app/context/auth/AuthContext"
 import { FarmsContext } from "@/app/context/farms/FarmsContext"
 import { UiContext } from "@/app/context/ui/UiContext"
@@ -110,19 +111,7 @@ export const PostUpdateFarm = () => {
               />
             </div>
            {farmsError?<p className="error">{farmsError}</p>:<></>}
-          <Button 
-            size="small"
-            type='submit'
-            variant="contained"
-            fullWidth     
-            disabled={farmsLoading} >
-            {
-              farmsLoading
-              ?<CircularProgress size='1.5rem' />
-              :'Guardar'
-            }
-          </Button>
-
+           <SaveButton loading={farmsLoading}/>
     </form>
   )
 }

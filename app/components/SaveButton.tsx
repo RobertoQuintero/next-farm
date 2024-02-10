@@ -2,7 +2,7 @@ import { Button, CircularProgress } from '@mui/material'
 import React from 'react'
 
 
-export const SaveButton = ({loading}:{loading:boolean}) => {
+export const SaveButton = ({loading,title='Guardar'}:{loading:boolean,title?:string}) => {
   return (
     <Button 
           size="small"
@@ -14,7 +14,7 @@ export const SaveButton = ({loading}:{loading:boolean}) => {
             {
               loading
                 ?  <CircularProgress size='1.5rem' />
-                :'Guardar'
+                :title
             }
       </Button>
   )

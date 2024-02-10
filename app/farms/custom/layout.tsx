@@ -5,11 +5,7 @@ const links=[
   {href:'/farms/custom',title:'Bitácora cerdas'},
   {href:'/farms/custom/users',title:'Usuarios'},
   {href:'/farms/custom/roles',title:'Roles'},
-  {href:'/farms/custom/ubications',title:'Ubicaciones'},
-  {href:'/farms/custom/tasks',title:'Tareas'},
-  {href:'/farms/custom/stages',title:'Etapas'},
-  {href:'/farms/custom/loss_reasons',title:'Motivo baja'},
-  {href:'/farms/custom/stallions',title:'Sementales'},
+  {href:'/farms/custom/catalogs',title:'Catálogos'},
 ]
 const RootLayout = ({children}:{children:ReactNode}) => {
   return (

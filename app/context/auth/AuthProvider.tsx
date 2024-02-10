@@ -63,6 +63,7 @@ export const AuthProvider = ({children}:Props) => {
       await getUserAccess(data as IUser)
     }else{
       logout()
+      router.replace('/')
     }
     setIsLoading(false)
   }

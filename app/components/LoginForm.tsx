@@ -1,11 +1,12 @@
 'use client'
-import { Button, CircularProgress,  TextField } from '@mui/material'
+import {  TextField } from '@mui/material'
 import styles from './components.module.css'
 import { UiContext } from '../context/ui/UiContext'
 import {  useContext} from 'react'
 import { useForm } from "react-hook-form"
 import { AuthContext } from '../context/auth/AuthContext'
 import { IUser } from '@/interfaces/user'
+import { SaveButton } from '.'
 
 export const LoginForm = () => {
   const {uiReset} = useContext(UiContext)
@@ -54,18 +55,7 @@ export const LoginForm = () => {
       <p className={styles.errorMessage}>
         {authError?authError:''}
       </p>
-      <Button 
-          disabled={authLoading}
-          type='submit' 
-          fullWidth 
-          variant='contained'
-          >
-            {
-              authLoading
-                ?  <CircularProgress size='1.5rem' />
-                :'Login'
-            }
-      </Button>
+      <SaveButton loading={authLoading} title='Login'/>
     </form>
   )
 }

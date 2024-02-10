@@ -1,0 +1,4 @@
+ALTER TABLE MOD.Pigs ADD
+id_semental int,
+created_at datetime,
+added_date datetime

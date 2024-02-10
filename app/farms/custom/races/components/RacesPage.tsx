@@ -1,29 +1,30 @@
 'use client'
-import {  AccessErrorComponent, BackButton, DeleteComponent, EmptyPage } from '@/app/components'
+import { BackButton, DeleteComponent, EmptyPage } from '@/app/components'
 import AppModal from '@/app/components/AppModal'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { Button } from '@mui/material'
 import { useContext } from 'react'
-import { PostUpdateStallion, StallionRow } from '.'
-import { IStallion } from '@/interfaces'
+import { PostUpdateRace, RaceRow } from '.'
+import { IRace } from '@/interfaces'
 
-const StallionsPage = () => {
+const RacesPage = () => {
   const {toggleModal} = useContext(UiContext)
-  const {stallions,farmAction,setFarmAction,setStallion,postStallion,stallion,farmsLoading,farmsError} = useContext(FarmsContext)
+  const {races,farmAction,farmsLoading,farmsError,setRace,setFarmAction,postRace,race} = useContext(FarmsContext)
+
   const onAdd = async() =>{
+    setRace(undefined)
     setFarmAction(undefined)
-    setStallion(undefined)
-     toggleModal()
+    toggleModal()
   };
 
   const onDelete = async() =>{
-     const newStallion={
-      ...stallion,
+    const newRace ={
+      ...race,
       status:false
-     } as IStallion
-
-     const ok=await postStallion(newStallion)
+    } as IRace
+     
+    const ok=await postRace(newRace)
      if(ok){
       toggleModal()
      }
@@ -32,7 +33,6 @@ const StallionsPage = () => {
   return (
     <>
      <div className='actionCreateContainer'>
-        <AccessErrorComponent/>
         <BackButton/>
         <Button 
           onClick={onAdd}
@@ -42,20 +42,21 @@ const StallionsPage = () => {
       </div>
       <div>
         {
-          stallions.filter(s=>s.status).length
-            ?stallions.filter(s=>s.status).map(a=><StallionRow stallion={a} key={a.id_stallion}/>)
+          races.filter(r=>r.status).length
+            ?races.filter(r=>r.status).map(a=><RaceRow race={a} key={a.id_race}/>)
             :<EmptyPage/>
         }
       </div>
       <AppModal>
+        <></>
         {
           farmAction==='EDIT' || farmAction===undefined
-            ?<PostUpdateStallion/>
-            :<DeleteComponent onDelete={onDelete} loading={farmsLoading} error={farmsError}/>
+              ?<PostUpdateRace/>
+              :<DeleteComponent onDelete={onDelete} loading={farmsLoading} error={farmsError}/>
         }
       </AppModal>
     </>
   )
 }
 
-export default StallionsPage
+export default RacesPage

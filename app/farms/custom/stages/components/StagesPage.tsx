@@ -1,5 +1,5 @@
 'use client'
-import { EmptyPage } from '@/app/components'
+import { BackButton, EmptyPage } from '@/app/components'
 import AppModal from '@/app/components/AppModal'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
@@ -21,7 +21,7 @@ const StagesPage = () => {
   return (
     <>
      <div className='actionCreateContainer'>
-        <div></div>
+        <BackButton/>
         {/* <Button 
           onClick={onAdd}
           variant='contained' 

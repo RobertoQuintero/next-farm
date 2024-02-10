@@ -1,11 +1,12 @@
 'use client'
-import { TextField,Button, CircularProgress, MenuItem  } from '@mui/material'
+import { TextField, MenuItem  } from '@mui/material'
 import styles from './components.module.css'
 import {  useContext, useState } from 'react'
 import { UiContext } from '../context/ui/UiContext'
 import { IUser } from '@/interfaces'
 import { useForm } from 'react-hook-form'
 import { AuthContext } from '../context/auth/AuthContext'
+import { SaveButton } from '.'
 
 
 export const RegisterForm = () => {
@@ -135,18 +136,7 @@ export const RegisterForm = () => {
         <p className={styles.errorMessage}>
         {authError?authError:''}
       </p>
-      <Button 
-          disabled={authLoading}
-          type='submit' 
-          fullWidth 
-          variant='contained'
-          >
-            {
-              authLoading
-                ?  <CircularProgress size='1.5rem' />
-                :'Registrar'
-            }
-      </Button> 
+      <SaveButton loading={authLoading} title='Registrar'/>
     </form>
   )
 }

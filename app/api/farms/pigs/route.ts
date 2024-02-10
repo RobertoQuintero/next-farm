@@ -8,7 +8,9 @@ const query=`
     MP.id_ubication,
     MP.id_race,
     code,
-    MP.start_date,
+    MP.added_date,
+    MP.created_at,
+    MP.id_stallion,
     visible,
     MP.id_farm,
     MP.id_stage,
@@ -16,7 +18,8 @@ const query=`
     PT.description pig_type,
     CU.description pig_ubication,
     CR.description pig_race,
-    Cs.description pig_stage
+    Cs.description pig_stage,
+    MS.name stallion
     FROM MOD.Pigs MP
     inner join CAT.Pig_types PT
     on PT.id_pig_type=MP.id_pig_type
@@ -26,6 +29,8 @@ const query=`
     on CR.id_race=MP.id_race
     inner join CAT.Stages CS
     on CS.id_stage=MP.id_stage
+    inner join MOD.Stallions MS
+    on MS.id_stallion=MP.id_stallion
 `
 
 export const GET = async(req:Request) =>{
@@ -37,7 +42,7 @@ export const GET = async(req:Request) =>{
 
 export const POST = async(req:Request) =>{
   const body = await req.json();
-  const {id_pig,code,id_farm,id_pig_type,id_race,id_stage,id_ubication,start_date,status,visible }= body as IPig;
+  const {id_pig,code,id_farm,id_pig_type,id_race,id_stage,id_ubication,added_date,status,visible,created_at,id_stallion }= body as IPig;
 
   return await postRequest(`
     declare @const int 
@@ -51,8 +56,9 @@ export const POST = async(req:Request) =>{
           id_race='${id_race}',
           id_stage='${id_stage}',
           id_ubication='${id_ubication}',
-          start_date='${start_date}',
+          added_date='${added_date}',
           status='${status}',
+          id_stallion='${id_stallion}',
           visible='${visible}'
       WHERE id_pig=${id_pig}
       ${query} WHERE MP.id_pig=${id_pig}
@@ -67,9 +73,11 @@ export const POST = async(req:Request) =>{
         id_race,
         id_stage,
         id_ubication,
-        start_date,
+        added_date,
         status,
-        visible
+        visible,
+        created_at,
+        id_stallion
       )
       VALUES(
         @const,
@@ -79,9 +87,11 @@ export const POST = async(req:Request) =>{
         '${id_race}',
         '${id_stage}',
         '${id_ubication}',
-        '${start_date}',
+        '${added_date}',
         '${status}',
-        '${visible}'
+        '${visible}',
+        '${created_at}',
+        '${id_stallion}'
       )
       ${query} WHERE MP.id_pig=@const
     end

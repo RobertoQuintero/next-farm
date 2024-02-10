@@ -1,7 +1,8 @@
+import { SaveButton } from '@/app/components'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { UsersContext } from '@/app/context/users/UsersContext'
 import { IUser } from '@/interfaces'
-import { Button, CircularProgress,  TextField } from '@mui/material'
+import { TextField } from '@mui/material'
 import React, { SyntheticEvent, useContext, useState } from 'react'
 
 export const PostPassword = () => {
@@ -54,19 +55,7 @@ export const PostPassword = () => {
         onChange={onChange}
         />
         {error?<p style={{textAlign:'center',color:'red',fontSize:'14px'}}>{error}</p>:<></>}
-        <Button 
-          size="small"
-          disabled={userLoading}
-          type='submit' 
-          fullWidth 
-          variant='contained'
-          >
-            {
-              userLoading
-                ?  <CircularProgress size='1.5rem' />
-                :'Guardar'
-            }
-      </Button>
+        <SaveButton loading={userLoading}/>
     </form>
   )
 }

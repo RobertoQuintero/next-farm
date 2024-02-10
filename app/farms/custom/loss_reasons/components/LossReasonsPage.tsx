@@ -34,7 +34,7 @@ const LossReasonsPage = () => {
   return (
     <>
      <div className='actionCreateContainer'>
-        <div></div>
+        <BackButton/>
         <Button 
           onClick={onAdd}
           variant='contained' 

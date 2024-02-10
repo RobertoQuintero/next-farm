@@ -18,7 +18,9 @@ export interface IRace {
   id_race:     number;
   description: string;
   status:      boolean;
-  id_farm:number
+  id_farm:number;
+  created_at:   string | Date;
+  updated_at:   string | Date;
 }
 
 export interface IStage {

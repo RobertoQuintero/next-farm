@@ -16,12 +16,12 @@ export const PigCard = ({pig}:Props) => {
 
   const onClick = async(action:string) =>{
     setPig(pig)
-    if(action==='EDIT'||action==='DELETE'){
+    if(action==='DELETE'){
       setFarmAction(action)
       toggleModal()
     }else{
       setFarmAction(undefined)
-      router.push(`/farms/custom/${action}`)
+      router.push('/farms/custom/history')
     }
   };
 
@@ -34,7 +34,7 @@ export const PigCard = ({pig}:Props) => {
         <p>{pig.pig_stage}</p>
       </div>
       <div style={{display:'flex', gap:'.2rem',paddingRight:'.5rem'}}>
-        <RowButton onClick={()=>router.push('/farms/custom/history')} label="ver"/>
+        <RowButton onClick={()=>onClick('GO')} label="ver"/>
         <RowButton onClick={()=>onClick('DELETE')} label="borrar"/>
       </div>
     </div>

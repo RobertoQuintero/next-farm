@@ -1,16 +1,13 @@
 'use client'
-import React from 'react'
-import Accordion from '@mui/material/Accordion';
-import AccordionActions from '@mui/material/AccordionActions';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Button from '@mui/material/Button';
+import React, { useContext } from 'react'
 import { BackButton } from '@/app/components';
 import { BirthsRow, InfoRow, TasksRow } from '.';
+import AppModal from '@/app/components/AppModal';
+import { FarmsContext } from '@/app/context/farms/FarmsContext';
+import { PostUpdatePig } from '../../components';
 
 const HistoryPage = () => {
-
+  const {farmAction} = useContext(FarmsContext)
   return (
     <>
       <div>
@@ -18,6 +15,11 @@ const HistoryPage = () => {
         <InfoRow/>
         <BirthsRow/>
         <TasksRow/>
+        <AppModal>
+          {
+            farmAction==='EDIT'?<PostUpdatePig/>:<></>
+          }
+        </AppModal>
       </div>
     </>
   )

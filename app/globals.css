@@ -342,3 +342,26 @@ background: #d4d4d4;
 .ubicationRow p:nth-child(3){
   width: 240px;
 }
+
+
+.datePiker,.datePikerSearch,.datePikerRow{
+  padding: .6rem 1rem;
+  border-radius: 3px;
+  border: 1px solid rgba(0,0,0,0.2);
+  font-size: 1rem;
+  color: #00000080; 
+}
+
+.datePikerSearch,.datePikerRow{
+  width: 120px;
+  padding: .5rem;
+}
+.datePiker:hover,
+.datePikerSearch:hover,
+.datePikerRow:hover
+{
+  border: 1px solid #000;
+}
+.datePikerRow{
+  height: 41px;
+}

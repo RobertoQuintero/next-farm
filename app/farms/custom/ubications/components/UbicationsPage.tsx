@@ -1,5 +1,5 @@
 'use client'
-import { DeleteComponent, EmptyPage } from '@/app/components'
+import { BackButton, DeleteComponent, EmptyPage } from '@/app/components'
 import AppModal from '@/app/components/AppModal'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { Button } from '@mui/material'
@@ -33,7 +33,7 @@ const UbicationsPage = () => {
   return (
     <>
      <div className='actionCreateContainer'>
-        <div></div>
+      <BackButton/>
         <Button 
           onClick={onAdd}
           variant='contained' 

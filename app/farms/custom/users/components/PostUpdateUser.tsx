@@ -1,9 +1,10 @@
 'use client'
+import { SaveButton } from "@/app/components"
 import { AuthContext } from "@/app/context/auth/AuthContext"
 import { UiContext } from "@/app/context/ui/UiContext"
 import { UsersContext } from "@/app/context/users/UsersContext"
 import { IUser } from "@/interfaces/user"
-import { Button, CircularProgress, MenuItem, Switch, TextField } from "@mui/material"
+import { MenuItem, Switch, TextField } from "@mui/material"
 import { useContext, useState } from "react"
 import { useForm } from "react-hook-form"
 
@@ -141,19 +142,7 @@ export const PostUpdateUser = () => {
               />
             </div>
            {userError?<p className="error">{userError}</p>:<></>}
-          <Button 
-            size="small"
-            type='submit'
-            variant="contained"
-            fullWidth     
-            disabled={userLoading} >
-            {
-              userLoading
-              ?<CircularProgress size='1.5rem' />
-              :'Guardar'
-            }
-          </Button>
-
+           <SaveButton loading={userLoading}/>
     </form>
   )
 }

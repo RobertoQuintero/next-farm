@@ -43,6 +43,7 @@ export interface UsersState{
   fertilizatinTypes:IfertilizationType[];
   stallions:IStallion[];
   stallion:IStallion | undefined;
+  race:IRace | undefined;
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -73,7 +74,8 @@ const UI_INITIAL_STATE:UsersState={
   lossReason: undefined,
   fertilizatinTypes:[],
   stallions:[],
-  stallion:undefined
+  stallion:undefined,
+  race:undefined
 }
 
 export const FarmsProvider = ({children}:Props) => {
@@ -102,7 +104,7 @@ export const FarmsProvider = ({children}:Props) => {
     setIsLoading(true)
      Promise.all([
       getFarmsRequest('/farms/catalog/pig_types'),
-      getFarmsRequest('/farms/catalog/races'),
+      getFarmsRequest(`/farms/catalog/races?id_farm=${idFarm}`),
       getFarmsRequest(`/farms/catalog/stages?id_farm=${idFarm}`),
       getFarmsRequest('/users/roles'),
       getFarmsRequest('/users/access'),
@@ -185,8 +187,20 @@ export const FarmsProvider = ({children}:Props) => {
       setAccessError('Credenciales inválidas')
       return true
     }
-    return await getPostLoadingOrError('/farms/pigs',setPigs,payload,state.pigs,'id_pig',true)
+    setIsLoading(true)
+         const {ok,data}=await postFarmsRequest('/farms/pigs',payload)
+         if(ok){
+            setPigs(returnArray(payload,data as IPig,state.pigs,'id_pig'))
+            setPig(data as IPig)
+         }
+         else{
+          setError(data as string)
+         }
+         setIsLoading(false)
+         return ok
+   //  return await getPostLoadingOrError('/farms/pigs',setPigs,payload,state.pigs,'id_pig',true)
   };
+
 
   const postRoleAccess = async(payload:IRoleAccess):Promise<boolean> =>{
    if(!userAccess.find(u=>u.id_access===8)&& user?.id_role!==1){
@@ -235,6 +249,13 @@ export const FarmsProvider = ({children}:Props) => {
     return await getPostLoadingOrError('/farms/stallions',setStallions,payload,state.stallions,'id_stallion',true)
   };
 
+  const postRace = async(payload:IRace):Promise<boolean> =>{
+   // if(!userAccess.find(u=>u.id_access===15)&& user?.id_role!==1){
+   //    setAccessError('Credenciales inválidas')
+   //    return true 
+   //  }
+    return await getPostLoadingOrError('/farms/catalog/races',setRaces,payload,state.races,'id_race',true)
+  };
 
   const setFarms = (payload:IFarm[]) =>{
      dispatch({
@@ -408,6 +429,12 @@ export const FarmsProvider = ({children}:Props) => {
       payload
      })
   };
+  const setRace = (payload:IRace | undefined ) =>{
+     dispatch({
+      type:'[Farms] - setRace',
+      payload
+     })
+  };
 
 
   const getPostLoadingOrError = async<T,K extends keyof T>(
@@ -455,7 +482,9 @@ export const FarmsProvider = ({children}:Props) => {
       setLossReason,
       postLossReason,
       setStallion,
-      postStallion
+      postStallion,
+      setRace,
+      postRace
     }}>
       {children}
     </FarmsContext.Provider>

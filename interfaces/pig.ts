@@ -6,7 +6,9 @@ export interface IPig {
   id_ubication:  number;
   id_race:       number;
   code:          string;
-  start_date:    string | Date;
+  added_date:    string | Date;
+  created_at:    string | Date;
+  id_stallion:   number;
   visible:       boolean;
   id_farm:       number;
   id_stage:      number;
@@ -15,6 +17,7 @@ export interface IPig {
   pig_ubication: string;
   pig_race:      string;
   pig_stage:     string;
+  stallion?:     string;
 }
 
 export interface IStallion {
@@ -25,4 +28,22 @@ export interface IStallion {
   id_race:      number;
   created_at:   string | Date;
   id_farm:      number;
+}
+
+export interface IBirth {
+  id_birth:        number;
+  id_pig:          number;
+  id_stallion:     number;
+  birth_date:      string;
+  confirm_date:    string;
+  crossing_date:   string;
+  is_positive:     boolean;
+  alive:           number;
+  dead:            number;
+  description:     string;
+  status:          boolean;
+  created_at:      string;
+  id_user:         number;
+  id_user_confirm: number;
+  id_user_birth:   number;
 }

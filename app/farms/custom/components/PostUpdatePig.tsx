@@ -1,16 +1,16 @@
-import { SaveButton } from '@/app/components'
+import { DatePickerElement, SaveButton } from '@/app/components'
 import { AuthContext } from '@/app/context/auth/AuthContext'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { IPig } from '@/interfaces'
 import {  MenuItem, TextField } from '@mui/material'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState} from 'react'
 import { useForm } from "react-hook-form"
 
 export const PostUpdatePig = () => {
   const {idFarm} = useContext(AuthContext)
   const {toggleModal} = useContext(UiContext)
-  const {farmsLoading,ubications,pigTypes,races,stages,pig,postPig} = useContext(FarmsContext)
+  const {farmsLoading,ubications,races,stages,pig,postPig,stallions} = useContext(FarmsContext)
 
   const {
     register,
@@ -20,91 +20,102 @@ export const PostUpdatePig = () => {
 
   const values={
     id_pig:pig?pig.id_pig:0,
-    id_pig_type:pig?pig.id_pig_type:pigTypes[2].id_pig_type,
-    id_ubication:pig?pig.id_ubication:ubications[0].id_ubication,
-    id_race:pig?pig.id_race:races[0].id_race,
+    id_pig_type:3,
+    id_ubication:pig?pig.id_ubication:ubications[0]?.id_ubication,
+    id_race:pig?pig.id_race:races[0]?.id_race,
     code:pig?pig.code:'',
-    start_date:pig?new Date(pig.start_date):new Date(),
+    added_date:pig?new Date(pig.added_date):new Date(),
     visible:pig?pig.visible:true,
     id_farm:pig?pig.id_farm:idFarm,
     id_stage:pig?pig.id_stage:stages[8].id_stage,
     status:pig?pig.status:true,
+    id_stallion:pig?pig.id_stallion:1,
   } as IPig
 
-  const [pigType, setPigType] = useState(values.id_pig_type)
-
+  const [addedDate, setAddedDate] = useState<Date | null>(new Date(values.added_date))
+  const [code, setCode] = useState(values.code)
+  const [submit, setSubmit] = useState(false)
 
   const onSubmit=async(data:IPig)=>{
-    // console.log(stages)
-    // return
     data.id_pig=values.id_pig
     data.status=values.status
     data.id_farm=values.id_farm
-    data.start_date=values.start_date
+    data.added_date=values.added_date
     data.visible=values.visible
-    data.id_pig_type=pigType
+    data.id_pig_type=values.id_pig_type
+    data.created_at=new Date()
+    data.code=code
+    if(!pig){
+      data.id_stage=9
+    }
+    setSubmit(true)
     const ok=await postPig(data)
     if(ok){
       toggleModal()
+      setSubmit(false)
     }
   }
 
-
   return (
     <form className='Form' onSubmit={handleSubmit(onSubmit)}>
-      {/* <FilterableList data={inputProps}/> */}
-      <TextField 
+      {
+        pig
+        ?<></>
+        :<TextField 
         size="small"
         fullWidth
         label='Código'
         type="text"
-        defaultValue={values.code}
-        {...register('code',{
-          required:'Este campo es requerido',
-        })}
-        error={!!errors.code}
-        helperText={errors.code?.message}
+        value={code}
+        onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{
+          setCode(e.target.value)
+        }}
+        error={!code.length&&submit}
+        helperText={!code.length&&submit&&'Es obligatorio'}
         />
+      }
         <TextField
           size="small"
-          label='Tipo'
+          label='Padre'
           fullWidth
-          value={pigType}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            setPigType(+event.target.value);
-          }}
+          defaultValue={values.id_stallion}
+            {...register('id_stallion')} 
           select >
           {
-            pigTypes.length
-            ?pigTypes.map(item=>(
+            stallions.length
+            ?stallions.map(item=>(
               <MenuItem 
-                key={item.id_pig_type} 
-                value={item.id_pig_type}>
-                {item.description}
+                key={item.id_stallion} 
+                value={item.id_stallion}>
+                {item.name}
               </MenuItem>
             ))
             :<div></div>
           }
         </TextField>
-        <TextField
-          size="small"
-          label='Etapa'
-          fullWidth
-          defaultValue={values.id_stage}
-          {...register('id_stage')} 
-          select >
-          {
-            stages.length
-            ?stages.filter(p=>p.id_pig_type===pigType).map(item=>(
-              <MenuItem 
-                key={item.id_stage} 
-                value={item.id_stage}>
-                {item.description}
-              </MenuItem>
-            ))
-            :<div></div>
-          }
-        </TextField>
+        {
+          pig
+            ?<TextField
+            size="small"
+            label='Etapa'
+            fullWidth
+            defaultValue={values.id_stage}
+            {...register('id_stage')} 
+            select >
+            {
+              stages.length
+              ?stages.filter(p=>p.id_pig_type===values.id_pig_type).map(item=>(
+                <MenuItem 
+                  key={item.id_stage} 
+                  value={item.id_stage}>
+                  {item.description}
+                </MenuItem>
+              ))
+              :<div></div>
+            }
+          </TextField>
+          :<></>
+        }
         <TextField
           size="small"
           label='Ubicación'
@@ -143,6 +154,14 @@ export const PostUpdatePig = () => {
             :<div></div>
           }
         </TextField>
+        {
+          pig
+            ?<></>
+            :<div style={{display:'flex',justifyContent:'flex-end', gap:'.5rem'}}>
+                <p style={{fontSize:'14px',padding:'.5rem 0 0 0'}}>Fecha ingreso</p>
+              <DatePickerElement date={addedDate} setDate={setAddedDate}/>
+              </div>
+        }
         <SaveButton loading={farmsLoading}/>
     </form>
   )

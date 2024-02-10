@@ -1,8 +1,9 @@
+import { SaveButton } from '@/app/components'
 import { AuthContext } from '@/app/context/auth/AuthContext'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { IStage } from '@/interfaces'
-import { Button, CircularProgress, MenuItem, TextField } from '@mui/material'
+import {  MenuItem, TextField } from '@mui/material'
 import React, { useContext } from 'react'
 import { useForm } from "react-hook-form"
 
@@ -116,19 +117,7 @@ export const PostUpdateStage = () => {
         error={!!errors.food_amount}
         helperText={errors.food_amount?.message}
         />
-        <Button 
-          size="small"
-          disabled={farmsLoading}
-          type='submit' 
-          fullWidth 
-          variant='contained'
-          >
-            {
-              farmsLoading
-                ?  <CircularProgress size='1.5rem' />
-                :'Guardar'
-            }
-      </Button>
+        <SaveButton loading={farmsLoading}/>
     </form>
   )
 }

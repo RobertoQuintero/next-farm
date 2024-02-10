@@ -13,6 +13,7 @@ import { IFarm } from '@/interfaces/farm';
         | {type:'[Farms] - setStage'; payload:IStage | undefined }
         | {type:'[Farms] - setPigTypes'; payload:IPigType[] }
         | {type:'[Farms] - setRaces'; payload:IRace[] }
+        | {type:'[Farms] - setRace'; payload:IRace | undefined }
         | {type:'[Farms] - setPigs'; payload:IPig[] }
         | {type:'[Farms] - setPig'; payload:IPig | undefined }
         | {type:'[Farms] - setFarmAction'; payload:string | undefined }
@@ -190,6 +191,12 @@ export const usersReducer = (state:UsersState,action:UsersActionType):UsersState
       return {
         ...state,
         stallion:action.payload
+      }
+
+    case '[Farms] - setRace':
+      return {
+        ...state,
+        race:action.payload
       }
   
     default:
