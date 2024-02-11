@@ -17,8 +17,8 @@ const CatalogsPage = () => {
       <div>
         {
           arr.map(a=>
-          <div className='rowCard'>
-          <Link href={a.href} key={a.title} style={{width:'100%'}}><p>{a.title}</p></Link>  
+          <div className='rowCard' key={a.title}>
+          <Link href={a.href}  style={{width:'100%'}}><p>{a.title}</p></Link>  
           </div>
           )
         }

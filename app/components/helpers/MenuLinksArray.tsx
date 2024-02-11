@@ -1,8 +1,10 @@
 import { 
   AccountBoxOutlined,
+  FormatListNumberedOutlined,
   GroupAddOutlined, 
   PlaylistAddCheckOutlined, 
-  RequestQuoteOutlined} from '@mui/icons-material';
+  RequestQuoteOutlined,
+  TaskAltOutlined} from '@mui/icons-material';
 
 interface MenuLinkElement {
   label:string;
@@ -29,14 +31,15 @@ export const menuLinksArray:MenuLinkElement[]=[
   {
     label:'Catálogos',
     href:'/farms/custom/catalogs',
-    icon: <RequestQuoteOutlined />
+    icon: <FormatListNumberedOutlined />
   },
-  
+]
+export const ownerMenuLinksArray:MenuLinkElement[]=[
+  {
+    label:'Lista Granjas',
+    href:'/farms',
+    icon: <TaskAltOutlined />
+  },
+  ...menuLinksArray
 ]
 
-const links=[
-  {href:'/farms/custom',title:'Bitácora cerdas'},
-  {href:'/farms/custom/users',title:'Usuarios'},
-  {href:'/farms/custom/roles',title:'Roles'},
-  {href:'/farms/custom/catalogs',title:'Catálogos'},
-]

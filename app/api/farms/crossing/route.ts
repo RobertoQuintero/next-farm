@@ -1,6 +1,5 @@
 import db from "@/database/connection";
-import { queryPig } from "../pigs/route";
-import { queryBirth } from "../births/route";
+import { queryBirth, queryPig } from "@/utils/queries";
 
 export const POST = async(req:Request) =>{
   const body = await req.json();

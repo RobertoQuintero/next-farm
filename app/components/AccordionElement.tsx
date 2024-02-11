@@ -10,15 +10,13 @@ interface Props{
 
 export const AccordionElement = ({children,title,open=false}:Props) => {
   return (
-    <Accordion defaultExpanded={open}>
+    <Accordion defaultExpanded={open} sx={{boxShadow:'none',border:'none'}}>
     <AccordionSummary
       expandIcon={<ExpandMoreIcon />}
-      aria-controls="panel1-content"
-      id="panel1-header"
     >
       {title}
     </AccordionSummary>
-    <AccordionDetails>
+    <AccordionDetails sx={{padding:0}}>
       {children}
     </AccordionDetails>
   </Accordion>
