@@ -39,19 +39,20 @@ const Auth_INITIAL_STATE:AuthState={
 export const AuthProvider = ({children}:Props) => {
   const [state, dispatch] = useReducer(authReducer, Auth_INITIAL_STATE)
   const router= useRouter()
-  useEffect(() => {
-    getResources()
-  }, [])
+
 
   useEffect(() => {
+    getResources()
     checkToken()
     if(state.logged){
       if(!state.user?.is_active){
         router.replace('/')
+        return
       }
+
     }
     setAccessError(undefined)
-  }, [])
+  }, [state.logged])
 
   const checkToken=async()=>{
     const{ok,data}= await validateTokenRequest()
@@ -74,6 +75,7 @@ export const AuthProvider = ({children}:Props) => {
       getAuthRequest('/auth/states'),
      ])
      .then((resp)=>{
+      
       setStates(resp[0].data as IState[])
       setIsLoading(false)
      })

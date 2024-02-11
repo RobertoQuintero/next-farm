@@ -1,5 +1,6 @@
+import { AccordionElement } from '@/app/components'
 import React from 'react'
-import { AccordionElement } from '.';
+
 
 export const TasksRow = () => {
   return (

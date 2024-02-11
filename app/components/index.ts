@@ -1,3 +1,5 @@
+export * from "./AccordionElement";
+
 export * from "./DatePickerElement";
 export * from "./SaveButton";
 export * from "./BackToFarms";

@@ -30,7 +30,8 @@ export const LoginForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       className={styles.formContainer} >
       <p className={styles.formTitle} >Login</p>
-      <TextField 
+      <TextField
+        size='small' 
         fullWidth
         label='Email'
         placeholder="user@gmail.com" 
@@ -41,7 +42,8 @@ export const LoginForm = () => {
         error={!!errors.email}
         helperText={errors.email?.message}
         />
-      <TextField 
+      <TextField
+        size='small' 
         fullWidth
         label='Password'
         placeholder="******" 

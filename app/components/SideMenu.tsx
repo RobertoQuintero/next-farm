@@ -6,6 +6,7 @@ import { menuLinksArray } from './helpers';
 import { BookmarkAddOutlined, EventAvailableOutlined, HomeOutlined, LoginOutlined, LogoutOutlined } from '@mui/icons-material';
 import { AuthContext } from '../context/auth/AuthContext';
 import { useRouter } from 'next/navigation';
+import { AccordionElement } from '.';
 
 const SideMenu = () => {
   const {isMenuOpen,toggleSideMenu,toggleModal,uiReset}= useContext(UiContext)
@@ -44,19 +45,20 @@ const SideMenu = () => {
       onClose={toggleSideMenu} >
       <Box sx={{ width: 250, paddingTop: '2rem'}}>
       <MenuLink  icon={<HomeOutlined/>} label='Inicio' onClick={()=>navigateTo('/')}  />
-      <MenuLink  icon={<EventAvailableOutlined/>} label='Entradas' onClick={()=>navigateTo('/assist')}  />
-        {
-          logged
-          ?menuLinksArray.map(link=>(
-            <MenuLink 
-              key={link.label}
-              icon={link.icon}
-              label={link.label}
-              onClick={()=>navigateTo(link.href)}
-              />
-          ))
-          :<></>
-        }
+        <AccordionElement title='Granjas'>
+          {
+            logged
+            ?menuLinksArray.map(link=>(
+              <MenuLink 
+                key={link.label}
+                icon={link.icon}
+                label={link.label}
+                onClick={()=>navigateTo(link.href)}
+                />
+            ))
+            :<></>
+          }
+        </AccordionElement>
         <Divider sx={{margin:'0 .5rem'}}/>
         {
           logged

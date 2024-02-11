@@ -139,8 +139,7 @@ background: #d4d4d4;
 .mainPage{
   width: 100%;
   /* background-color: #eee; */
-  padding: 1rem;
-  border-left: 1px solid #ccc;
+
 }
 .itemCard{
   background-color:#fff;
@@ -204,6 +203,10 @@ background: #d4d4d4;
   }
   .mainMenuLeft{
     display: block;
+  }
+  .mainPage{
+      padding: 1rem;
+  border-left: 1px solid #ccc;
   }
 
   .itemCardRow{

@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
-import { AccordionElement } from '.';
 import { FarmsContext } from '@/app/context/farms/FarmsContext';
 import { Button } from '@mui/material';
 import { UiContext } from '@/app/context/ui/UiContext';
 import styles from './pig.module.css'
+import { AccordionElement } from '@/app/components';
 
 export const InfoRow = () => {
   const {pig,setFarmAction} = useContext(FarmsContext)

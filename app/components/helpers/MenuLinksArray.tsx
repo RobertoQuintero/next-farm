@@ -12,24 +12,31 @@ interface MenuLinkElement {
 
 export const menuLinksArray:MenuLinkElement[]=[
   {
-    label:'Reservaciones',
-    href:'/booking',
+    label:'Bitácora cerdas',
+    href:'/farms/custom',
     icon: <PlaylistAddCheckOutlined />
   },
   {
-    label:'Empleados',
-    href:'/staff',
+    label:'Usuarios',
+    href:'/farms/custom/users',
     icon: <AccountBoxOutlined />
   },
   {
-    label:'Candidatos',
-    href:'/staff/candidates',
+    label:'Roles',
+    href:'/farms/custom/roles',
     icon: <GroupAddOutlined />
   },
   {
-    label:'Facturas',
-    href:'/cfdi',
+    label:'Catálogos',
+    href:'/farms/custom/catalogs',
     icon: <RequestQuoteOutlined />
   },
   
+]
+
+const links=[
+  {href:'/farms/custom',title:'Bitácora cerdas'},
+  {href:'/farms/custom/users',title:'Usuarios'},
+  {href:'/farms/custom/roles',title:'Roles'},
+  {href:'/farms/custom/catalogs',title:'Catálogos'},
 ]
