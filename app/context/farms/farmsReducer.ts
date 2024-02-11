@@ -1,5 +1,5 @@
 'use client'
-import { IAccess, ILossReason, IPig, IPigType, IRace, IRole, IRoleAccess, IStage,  IStallion,  ITask,  ITaskType,  IUbication, IfertilizationType } from '@/interfaces';
+import { IAccess, IBirth, ILossReason, IPig, IPigType, IRace, IRole, IRoleAccess, IStage,  IStallion,  ITask,  ITaskType,  IUbication, IfertilizationType } from '@/interfaces';
 import { UsersState } from './FarmsProvider'
 import { IFarm } from '@/interfaces/farm';
 
@@ -32,6 +32,8 @@ import { IFarm } from '@/interfaces/farm';
         | {type:'[Farms] - setFertilizationTypes'; payload:IfertilizationType[] }
         | {type:'[Farms] - setStallions'; payload:IStallion[] }
         | {type:'[Farms] - setStallion'; payload:IStallion | undefined }
+        | {type:'[Farms] - setBirth'; payload:IBirth | undefined }
+        | {type:'[Farms] - setBirths'; payload:IBirth[] }
         
         
 export const usersReducer = (state:UsersState,action:UsersActionType):UsersState => {
@@ -197,6 +199,17 @@ export const usersReducer = (state:UsersState,action:UsersActionType):UsersState
       return {
         ...state,
         race:action.payload
+      }
+
+    case '[Farms] - setBirth':
+      return {
+        ...state,
+        birth:action.payload
+      }
+    case '[Farms] - setBirths':
+      return {
+        ...state,
+        births:action.payload
       }
   
     default:

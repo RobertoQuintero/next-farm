@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form"
 export const PostUpdatePig = () => {
   const {idFarm} = useContext(AuthContext)
   const {toggleModal} = useContext(UiContext)
-  const {farmsLoading,ubications,races,stages,pig,postPig,stallions} = useContext(FarmsContext)
+  const {farmsLoading,ubications,races,pig,postPig,stallions} = useContext(FarmsContext)
 
   const {
     register,
@@ -27,7 +27,6 @@ export const PostUpdatePig = () => {
     added_date:pig?new Date(pig.added_date):new Date(),
     visible:pig?pig.visible:true,
     id_farm:pig?pig.id_farm:idFarm,
-    id_stage:pig?pig.id_stage:stages[8].id_stage,
     status:pig?pig.status:true,
     id_stallion:pig?pig.id_stallion:1,
   } as IPig
@@ -44,10 +43,10 @@ export const PostUpdatePig = () => {
     data.visible=values.visible
     data.id_pig_type=values.id_pig_type
     data.created_at=new Date()
+    data.id_stage=pig?.id_stage!
     data.code=code
-    if(!pig){
-      data.id_stage=9
-    }
+    // console.log(data)
+    // return
     setSubmit(true)
     const ok=await postPig(data)
     if(ok){
@@ -93,29 +92,6 @@ export const PostUpdatePig = () => {
             :<div></div>
           }
         </TextField>
-        {
-          pig
-            ?<TextField
-            size="small"
-            label='Etapa'
-            fullWidth
-            defaultValue={values.id_stage}
-            {...register('id_stage')} 
-            select >
-            {
-              stages.length
-              ?stages.filter(p=>p.id_pig_type===values.id_pig_type).map(item=>(
-                <MenuItem 
-                  key={item.id_stage} 
-                  value={item.id_stage}>
-                  {item.description}
-                </MenuItem>
-              ))
-              :<div></div>
-            }
-          </TextField>
-          :<></>
-        }
         <TextField
           size="small"
           label='Ubicación'

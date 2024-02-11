@@ -1,5 +1,5 @@
 'use client'
-import { ILossReason, IPig, IPigType, IRace, IStage, IStallion, ITask, ITaskType, IUbication, IfertilizationType } from '@/interfaces'
+import { IBirth, ILossReason, IPig, IPigType, IRace, IStage, IStallion, ITask, ITaskType, IUbication, IfertilizationType } from '@/interfaces'
 import { IFarm } from '@/interfaces/farm'
 import { IAccess,  IRole, IRoleAccess } from '@/interfaces/user'
 import { createContext } from 'react'
@@ -34,6 +34,8 @@ interface ContextProps{
   fertilizatinTypes:IfertilizationType[];
   stallions:IStallion[];
   stallion:IStallion | undefined;
+  births:IBirth[];
+  birth:IBirth | undefined;
   
 
   //methods
@@ -63,6 +65,8 @@ interface ContextProps{
   postStallion: (payload: IStallion) => Promise<boolean>;
   setRace: (payload: IRace | undefined) => void;
   postRace: (payload: IRace) => Promise<boolean>;
+  postCrossingDate: (payload: {id_stallion: number;crossing_date: string;id_pig: number;id_user: number;id_fertilization_type:number}) => Promise<boolean>;
+  getBirths: (payload: number) => Promise<void>;
 }
 
 export const FarmsContext = createContext({} as ContextProps)

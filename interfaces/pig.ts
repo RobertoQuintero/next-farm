@@ -46,4 +46,12 @@ export interface IBirth {
   id_user:         number;
   id_user_confirm: number;
   id_user_birth:   number;
+  id_fertilization_type:number;
+  fertilization_type?:string;
+  stallion?:string
+}
+
+export interface ICrossing{
+  pig:IPig;
+  birth:IBirth
 }

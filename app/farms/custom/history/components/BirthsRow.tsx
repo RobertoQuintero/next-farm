@@ -1,11 +1,37 @@
-import React from 'react'
-import { AccordionElement } from '.';
+import React, { useContext, useEffect } from 'react'
+import { AccordionElement, BirthElementRow } from '.';
+import { FarmsContext } from '@/app/context/farms/FarmsContext';
+import styles from './pig.module.css'
 
 export const BirthsRow = () => {
+  const {pig,getBirths,births} = useContext(FarmsContext)
+
+  useEffect(() => {
+    getBirths(pig?.id_pig!)
+  }, [])
+  
+
+
   return (
     <AccordionElement title='Historial de Partos'>
-      <p>Esse voluptate incididunt sint qui consequat quis cillum consequat ea mollit nulla proident. Cillum sunt sit aliqua sit consequat reprehenderit incididunt dolor minim laboris anim quis enim. Proident ullamco ut sint adipisicing irure.</p>
-      <p>Esse voluptate incididunt sint qui consequat quis cillum consequat ea mollit nulla proident. Cillum sunt sit aliqua sit consequat reprehenderit incididunt dolor minim laboris anim quis enim. Proident ullamco ut sint adipisicing irure.</p>
+      <div className={styles.birthRow} style={{fontWeight:'bold'}}>
+        <p >Monta</p>
+        <p >Tipo</p>
+        <p>Semental</p>
+        <p>Confirma</p>
+        <p>(+/-)</p>
+        <p>Parto</p>
+        <p>H. vivos</p>
+        <p>H. muertos</p>
+        <p>Comentario</p>
+      </div>
+      <>
+        {
+          births.length
+            ?births.map(a=><BirthElementRow birth={a} key={a.id_birth}/>)
+            :<></>
+        }
+      </>
     </AccordionElement>
   )
 }

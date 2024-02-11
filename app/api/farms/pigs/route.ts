@@ -1,7 +1,7 @@
 import { IPig } from "@/interfaces";
 import {  getRequestQuery, postRequest } from "@/utils/getRequest";
 
-const query=`
+export const queryPig=`
     SELECT 
     id_pig,
     MP.id_pig_type,
@@ -37,7 +37,7 @@ export const GET = async(req:Request) =>{
   const {searchParams}= new URL(req.url)
   const idFarm=searchParams.get('idFarm')
 
-  return await getRequestQuery(`${query} WHERE MP.id_farm=${idFarm}`)
+  return await getRequestQuery(`${queryPig} WHERE MP.id_farm=${idFarm}`)
 }
 
 export const POST = async(req:Request) =>{
@@ -61,7 +61,7 @@ export const POST = async(req:Request) =>{
           id_stallion='${id_stallion}',
           visible='${visible}'
       WHERE id_pig=${id_pig}
-      ${query} WHERE MP.id_pig=${id_pig}
+      ${queryPig} WHERE MP.id_pig=${id_pig}
     end
     else
     begin
@@ -93,7 +93,7 @@ export const POST = async(req:Request) =>{
         '${created_at}',
         '${id_stallion}'
       )
-      ${query} WHERE MP.id_pig=@const
+      ${queryPig} WHERE MP.id_pig=@const
     end
   `)
 };

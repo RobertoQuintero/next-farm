@@ -5,7 +5,7 @@ import {  usersReducer } from './farmsReducer'
 import { IFarm } from '@/interfaces/farm'
 import { getFarmsRequest, postFarmsRequest } from './farmsRequest'
 import { returnArray } from '../auth/authRequest'
-import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion } from '@/interfaces'
+import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing } from '@/interfaces'
 import { AuthContext } from '../auth/AuthContext'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
@@ -44,6 +44,8 @@ export interface UsersState{
   stallions:IStallion[];
   stallion:IStallion | undefined;
   race:IRace | undefined;
+  births:IBirth[];
+  birth:IBirth | undefined;
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -75,7 +77,9 @@ const UI_INITIAL_STATE:UsersState={
   fertilizatinTypes:[],
   stallions:[],
   stallion:undefined,
-  race:undefined
+  race:undefined,
+  births:[],
+  birth: undefined
 }
 
 export const FarmsProvider = ({children}:Props) => {
@@ -179,6 +183,18 @@ export const FarmsProvider = ({children}:Props) => {
     await getPostLoadingOrError(`/farms/catalog/tasks?id_farm=${idFarm}`,setTasks)
     };
 
+    const getBirths = async(payload:number) =>{
+        setIsLoading(true)
+         const {ok,data}=await getFarmsRequest(`/farms/births?id_pig=${payload}`)
+         if(ok){
+            setBirths(data as IBirth[])
+         }
+         else{
+          setError(data as string)
+         }
+         setIsLoading(false)
+      };
+
   const postFarm = async(payload:IFarm):Promise<boolean> =>
   await getPostLoadingOrError('/farms',setFarms,payload,state.farms,'id_farm',true)
 
@@ -250,12 +266,32 @@ export const FarmsProvider = ({children}:Props) => {
   };
 
   const postRace = async(payload:IRace):Promise<boolean> =>{
-   // if(!userAccess.find(u=>u.id_access===15)&& user?.id_role!==1){
-   //    setAccessError('Credenciales inválidas')
-   //    return true 
-   //  }
+   if(!userAccess.find(u=>u.id_access===16)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return true 
+    }
     return await getPostLoadingOrError('/farms/catalog/races',setRaces,payload,state.races,'id_race',true)
   };
+
+  
+  const postCrossingDate = async(payload:{id_stallion:number,crossing_date:string,id_pig:number,id_user:number,id_fertilization_type:number}) =>{
+      setIsLoading(true)
+       const {ok,data}=await postFarmsRequest(`/farms/crossing`,payload)
+       if(ok){
+         const {pig,birth}= data as ICrossing
+         setBirths([...state.births,birth])
+         setPigs(returnArray(state.pig!,pig,state.pigs,'id_pig'))
+         // returnArray(state.pig!,pig,state.pigs,'id_pig')
+         setPig(pig)
+       }
+       else{
+        setError(data as string)
+       }
+       setIsLoading(false)
+       return ok
+    };
+
+  
 
   const setFarms = (payload:IFarm[]) =>{
      dispatch({
@@ -435,6 +471,20 @@ export const FarmsProvider = ({children}:Props) => {
       payload
      })
   };
+  
+  const setBirth = (payload:IBirth | undefined ) =>{
+     dispatch({
+      type:'[Farms] - setBirth',
+      payload
+     })
+  };
+
+  const setBirths = (payload:IBirth[] ) =>{
+     dispatch({
+      type:'[Farms] - setBirths',
+      payload
+     })
+  };
 
 
   const getPostLoadingOrError = async<T,K extends keyof T>(
@@ -484,7 +534,9 @@ export const FarmsProvider = ({children}:Props) => {
       setStallion,
       postStallion,
       setRace,
-      postRace
+      postRace,
+      postCrossingDate,
+      getBirths
     }}>
       {children}
     </FarmsContext.Provider>
