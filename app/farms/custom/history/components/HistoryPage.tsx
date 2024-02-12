@@ -1,13 +1,21 @@
 'use client'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { BackButton } from '@/app/components';
 import { BirthsRow, InfoRow, TasksRow,UpdateCrossingForm } from '.';
 import AppModal from '@/app/components/AppModal';
 import { FarmsContext } from '@/app/context/farms/FarmsContext';
 import { PostUpdatePig } from '../../components';
+import Cookies from 'js-cookie'
 
 const HistoryPage = () => {
-  const {farmAction} = useContext(FarmsContext)
+  const {farmAction,pig,setPig} = useContext(FarmsContext)
+
+  useEffect(() => {
+    if(!pig){
+      setPig(JSON.parse(Cookies.get('pig')!))
+    }
+  }, [])
+  
   return (
     <>
       <div>

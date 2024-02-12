@@ -3,12 +3,19 @@ import {  BirthElementRow } from '.';
 import { FarmsContext } from '@/app/context/farms/FarmsContext';
 import styles from './pig.module.css'
 import { AccordionElement } from '@/app/components';
+import Cookies from 'js-cookie'
+import { IPig } from '@/interfaces';
 
 export const BirthsRow = () => {
   const {pig,getBirths,births} = useContext(FarmsContext)
 
   useEffect(() => {
-    getBirths(pig?.id_pig!)
+    if(pig){
+      getBirths(pig?.id_pig!)
+    }else{
+      const newPig= JSON.parse(Cookies.get('pig')!) as IPig
+      getBirths(newPig.id_pig)
+    }
   }, [])
   
 

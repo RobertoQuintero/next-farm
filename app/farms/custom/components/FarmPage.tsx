@@ -20,12 +20,14 @@ const FarmPage = () => {
     if(!idFarm){
      id= Number(Cookie.get('id_farm'))
     }
-    if(!farm){
-      getFarm(id!)
-    }
-    if(!pigs.length){
-      getPigs(id!)
-    }
+    // if(!farm){
+    //   getFarm(id!)
+    // }
+    // if(!pigs.length){
+    //   getPigs(id!)
+    // }
+    getFarm(id!)
+    getPigs(id!)
   }, [])
 
   

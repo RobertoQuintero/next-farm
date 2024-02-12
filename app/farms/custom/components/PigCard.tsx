@@ -4,6 +4,7 @@ import { IPig } from "@/interfaces"
 import { useContext } from "react"
 import { RowButton } from "."
 import { useRouter } from "next/navigation"
+import Cookies from 'js-cookie'
 
 interface Props {
   pig:IPig
@@ -21,6 +22,7 @@ export const PigCard = ({pig}:Props) => {
       toggleModal()
     }else{
       setFarmAction(undefined)
+      Cookies.set('pig',JSON.stringify(pig))
       router.push('/farms/custom/history')
     }
   };

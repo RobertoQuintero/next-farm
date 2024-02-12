@@ -4,13 +4,13 @@
 }
 .birthContainer{
   overflow-x: scroll;
-  
+  width: 400px;
 }
 
 .birthRow{
-  width: 800px;
+
   display:flex;
-  /* flex-wrap:wrap; */
+  width: 900px;
   font-size:14px;
 }
 .birthRow >p{
@@ -18,19 +18,21 @@
 }
 
 
-
-
 @media screen and (min-width:400px) {
   .birthRow{
-   
-    /* flex-wrap:wrap; */
     font-size:14px;
+  }
+}
+@media screen and (min-width:770px) {
+  .birthContainer{
+    width: 600px;
   }
 }
 
 @media screen and (min-width:960px) {
   .birthContainer{
     overflow-x: auto;
+    width: 100%;
   }
   .birthRow{
     width: 100%;
