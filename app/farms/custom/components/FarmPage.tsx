@@ -16,19 +16,15 @@ const FarmPage = () => {
   const {farmsLoading,pigs,getPigs,setPig,setFarmAction,farmAction,farmsError,pig,postPig,getFarm,farm} = useContext(FarmsContext)
 
   useEffect(() => {
-    let id= idFarm
-    if(!idFarm){
-     id= Number(Cookie.get('id_farm'))
-    }
-    // if(!farm){
-    //   getFarm(id!)
-    // }
-    // if(!pigs.length){
-    //   getPigs(id!)
-    // }
-    getFarm(id!)
-    getPigs(id!)
-  }, [])
+    if(idFarm){
+      getFarm(idFarm)
+      getPigs(idFarm)
+    }else{
+      let id= Number(Cookie.get('id_farm'))
+      getFarm(id!)
+      getPigs(id!)
+    }    
+  }, [idFarm])
 
   
   if(farmsLoading && !isModalOpen){
