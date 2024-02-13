@@ -1,5 +1,5 @@
 'use client'
-import { AccessErrorComponent, BackButton, DeleteComponent, EmptyPage } from '@/app/components'
+import { AccessErrorComponent, BackButton, DeleteComponent, EmptyPage, LoadingComponent } from '@/app/components'
 import AppModal from '@/app/components/AppModal'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
@@ -17,6 +17,10 @@ const AccessPage = () => {
   useEffect(() => {
     getRolesAccess(role?.id_role!)
   }, [])
+
+  if(farmsLoading){
+    return <LoadingComponent/>
+  }
   
   const onAdd = () =>{
     setRoleAccess(undefined)

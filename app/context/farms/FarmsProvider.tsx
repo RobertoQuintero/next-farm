@@ -46,6 +46,7 @@ export interface UsersState{
   race:IRace | undefined;
   births:IBirth[];
   birth:IBirth | undefined;
+  code: string | undefined;
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -79,7 +80,8 @@ const UI_INITIAL_STATE:UsersState={
   stallion:undefined,
   race:undefined,
   births:[],
-  birth: undefined
+  birth: undefined,
+  code: undefined
 }
 
 export const FarmsProvider = ({children}:Props) => {
@@ -109,7 +111,7 @@ export const FarmsProvider = ({children}:Props) => {
      Promise.all([
       getFarmsRequest('/farms/catalog/pig_types'),
       getFarmsRequest(`/farms/catalog/races?id_farm=${idFarm}`),
-      getFarmsRequest(`/farms/catalog/stages?id_farm=${idFarm}`),
+      getFarmsRequest(`/farms/catalog/stages`),
       getFarmsRequest('/users/roles'),
       getFarmsRequest('/users/access'),
       getFarmsRequest(`/farms/catalog/task_types?id_farm=${idFarm}`),
@@ -150,6 +152,18 @@ export const FarmsProvider = ({children}:Props) => {
          if(ok){
             const farm=data as IFarm[]
             setFarm(farm[0])
+         }
+         else{
+          setError(data as string)
+         }
+         setIsLoading(false)
+      };
+
+    const getCode = async() =>{
+        setIsLoading(true)
+         const {ok,data}=await getFarmsRequest(`/farms/code?id_farm=${idFarm}`)
+         if(ok){
+            setCode(data as string)
          }
          else{
           setError(data as string)
@@ -486,6 +500,13 @@ export const FarmsProvider = ({children}:Props) => {
      })
   };
 
+  const setCode = (payload: string | undefined ) =>{
+     dispatch({
+      type:'[Farms] - setCode',
+      payload
+     })
+  };
+
 
   const getPostLoadingOrError = async<T,K extends keyof T>(
       endpoint:string,setState:(payload: T[]) => void,payload?:T,state?:T[],id?:K,wich?:boolean
@@ -536,7 +557,8 @@ export const FarmsProvider = ({children}:Props) => {
       setRace,
       postRace,
       postCrossingDate,
-      getBirths
+      getBirths,
+      getCode
     }}>
       {children}
     </FarmsContext.Provider>

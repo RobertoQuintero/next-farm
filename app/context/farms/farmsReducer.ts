@@ -34,6 +34,7 @@ import { IFarm } from '@/interfaces/farm';
         | {type:'[Farms] - setStallion'; payload:IStallion | undefined }
         | {type:'[Farms] - setBirth'; payload:IBirth | undefined }
         | {type:'[Farms] - setBirths'; payload:IBirth[] }
+        | {type:'[Farms] - setCode'; payload:string | undefined }
         
         
 export const usersReducer = (state:UsersState,action:UsersActionType):UsersState => {
@@ -210,6 +211,11 @@ export const usersReducer = (state:UsersState,action:UsersActionType):UsersState
       return {
         ...state,
         births:action.payload
+      }
+    case '[Farms] - setCode':
+      return {
+        ...state,
+        code:action.payload
       }
   
     default:

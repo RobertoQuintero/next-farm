@@ -1,4 +1,5 @@
 import { SaveButton } from '@/app/components'
+import { AuthContext } from '@/app/context/auth/AuthContext'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { IUbication } from '@/interfaces'
@@ -7,7 +8,8 @@ import React, { useContext } from 'react'
 import { useForm } from "react-hook-form"
 
 export const PostUpdateUbication = () => {
-  const {ubication,pigTypes,farmsLoading,idFarm,postUbication} = useContext(FarmsContext)
+  const {ubication,pigTypes,farmsLoading,postUbication} = useContext(FarmsContext)
+  const  {idFarm}= useContext(AuthContext)
   const {toggleModal} = useContext(UiContext)
   const {
     register,
@@ -20,7 +22,7 @@ export const PostUpdateUbication = () => {
     id_pig_type:ubication?ubication.id_pig_type:'3',
     description:ubication?ubication.description:'',
     status:ubication?ubication.status:true,
-    id_farm:ubication?ubication.id_farm:Number(localStorage.getItem('id_farm'))
+    id_farm:ubication?ubication.id_farm:idFarm
   } as IUbication
 
 

@@ -18,9 +18,8 @@ export const GET = async(req:Request) =>{
     if(!resp[0]?.code){
       const num= await db.query(` 
       SELECT isNull((
-        SELECT COUNT(*)
-        FROM MOD.Pigs WHERE id_farm=1 and status='true'
-        ),0)+1 code
+        select top 1 CONVERT(int,code) from MOD.Pigs where id_farm=${id_farm} and status='true' order by code desc
+        ),0) code
       `) as unknown  as {code:string}[]
       const id=Number(num[0].code)
 

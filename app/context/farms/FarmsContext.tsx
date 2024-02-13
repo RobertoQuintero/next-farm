@@ -36,6 +36,7 @@ interface ContextProps{
   stallion:IStallion | undefined;
   births:IBirth[];
   birth:IBirth | undefined;
+  code: string | undefined;
   
 
   //methods
@@ -67,6 +68,7 @@ interface ContextProps{
   postRace: (payload: IRace) => Promise<boolean>;
   postCrossingDate: (payload: {id_stallion: number;crossing_date: string;id_pig: number;id_user: number;id_fertilization_type:number}) => Promise<boolean>;
   getBirths: (payload: number) => Promise<void>;
+  getCode: () => Promise<void>;
 }
 
 export const FarmsContext = createContext({} as ContextProps)

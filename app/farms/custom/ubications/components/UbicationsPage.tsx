@@ -49,7 +49,7 @@ const UbicationsPage = () => {
         {
           ubications.filter(u=>u.status).length
             ?ubications.filter(u=>u.status).map(a=><UbicationRow ubication={a} key={a.id_ubication}/>)
-            :<EmptyPage/>
+            :<EmptyPage title='Ubicaciones'/>
         }
       </div>
       <AppModal>

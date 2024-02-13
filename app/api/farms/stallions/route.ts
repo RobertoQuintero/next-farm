@@ -1,12 +1,11 @@
 import { IStallion } from "@/interfaces";
-import { getRequest, getRequestQuery, postRequest } from "@/utils/getRequest";
+import {  getRequestQuery, postRequest } from "@/utils/getRequest";
 
 export const GET = async(req:Request) =>{
     const {searchParams}= new URL(req.url)
     const id_farm=searchParams.get('id_farm')
   return await getRequestQuery(`SELECT * FROM MOD.Stallions WHERE id_farm=${id_farm}`)
 }
-
 
 export const POST = async(req:Request) =>{
   const body = await req.json();

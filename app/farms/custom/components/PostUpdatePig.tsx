@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form"
 export const PostUpdatePig = () => {
   const {idFarm} = useContext(AuthContext)
   const {toggleModal} = useContext(UiContext)
-  const {farmsLoading,ubications,races,pig,postPig,stallions} = useContext(FarmsContext)
+  const {farmsLoading,ubications,races,pig,postPig,stallions,getCode,code} = useContext(FarmsContext)
 
   const {
     register,
@@ -23,16 +23,16 @@ export const PostUpdatePig = () => {
     id_pig_type:3,
     id_ubication:pig?pig.id_ubication:ubications[0]?.id_ubication,
     id_race:pig?pig.id_race:races[0]?.id_race,
-    code:pig?pig.code:'',
+    code:pig?pig.code:code,
     added_date:pig?new Date(pig.added_date):new Date(),
     visible:pig?pig.visible:true,
     id_farm:pig?pig.id_farm:idFarm,
     status:pig?pig.status:true,
-    id_stallion:pig?pig.id_stallion:1,
+    id_stallion:pig?pig.id_stallion:stallions[0].id_stallion,
   } as IPig
 
   const [addedDate, setAddedDate] = useState<Date | null>(new Date(values.added_date))
-  const [code, setCode] = useState(values.code)
+  const [newCode, setNewCode] = useState(values.code)
   const [submit, setSubmit] = useState(false)
 
   const onSubmit=async(data:IPig)=>{
@@ -44,14 +44,13 @@ export const PostUpdatePig = () => {
     data.id_pig_type=values.id_pig_type
     data.created_at=new Date()
     data.id_stage=pig?pig?.id_stage!:9
-    data.code=code
-    // console.log(data)
-    // return
+    data.code=newCode
     setSubmit(true)
     const ok=await postPig(data)
     if(ok){
       toggleModal()
       setSubmit(false)
+      getCode()
     }
   }
 
@@ -65,12 +64,12 @@ export const PostUpdatePig = () => {
         fullWidth
         label='Código'
         type="text"
-        value={code}
+        value={newCode}
         onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{
-          setCode(e.target.value)
+          setNewCode(e.target.value)
         }}
-        error={!code.length&&submit}
-        helperText={!code.length&&submit&&'Es obligatorio'}
+        error={!newCode?.length&&submit}
+        helperText={!newCode?.length&&submit&&'Es obligatorio'}
         />
       }
         <TextField
