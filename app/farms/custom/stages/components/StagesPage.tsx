@@ -39,7 +39,7 @@ const StagesPage = () => {
         {
           stages.length
             ?stages.map(a=><StageRow stage={a} key={a.id_stage}/>)
-            :<EmptyPage/>
+            :<EmptyPage title='Etapas'/>
         }
       </div>
       <AppModal>
