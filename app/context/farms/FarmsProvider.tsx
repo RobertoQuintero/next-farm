@@ -114,7 +114,7 @@ export const FarmsProvider = ({children}:Props) => {
       getFarmsRequest(`/farms/catalog/stages?id_farm=${idFarm}`),
       getFarmsRequest('/users/roles'),
       getFarmsRequest('/users/access'),
-      getFarmsRequest(`/farms/catalog/task_types?id_farm=${idFarm}`),
+      getFarmsRequest(`/farms/catalog/task_types`),
       getFarmsRequest(`/farms/catalog/loss_reasons?id_farm=${idFarm}`),
       getFarmsRequest(`/farms/catalog/fertilization_types`),
       getFarmsRequest(`/farms/stallions?id_farm=${idFarm}`),

@@ -22,7 +22,7 @@ export const PostUpdateTask = () => {
     id_task:task?task.id_task:0,
     id_task_type:task?task.id_task_type:1,
     id_pig_type:task?task.id_pig_type:1,
-    id_stage:task?task.id_stage:1,
+    id_stage:task?task.id_stage:stages[0].id_stage,
     description:task?task.description:'',
     status:task?task.status:true,
     days:task?task.days:0,

@@ -1,4 +1,4 @@
-import { getRequest, getRequestQuery } from "@/utils/getRequest";
+import {  getRequestQuery } from "@/utils/getRequest";
 
 export const GET = async(req:Request) =>{
   const {searchParams}= new URL(req.url)
@@ -10,6 +10,6 @@ export const GET = async(req:Request) =>{
     description,
     status,
     id_farm
-  FROM CAT.task_types WHERE status='true' and id_farm=${id_farm}
+  FROM CAT.task_types WHERE status='true' --and id_farm=${id_farm}
   `)
 }
