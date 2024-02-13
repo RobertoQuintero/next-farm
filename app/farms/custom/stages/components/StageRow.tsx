@@ -32,7 +32,7 @@ export const StageRow = ({stage}:Props) => {
           <p style={{width:'100px'}}>{stage.food_amount.toFixed(3)} kg</p>
       </div>
       <div>
-      <RowButton onClick={()=>onClick('EDIT')} label="Editar"/>
+      {/* <RowButton onClick={()=>onClick('EDIT')} label="Editar"/> */}
       <RowButton onClick={()=>onClick('FORM')} label="Fórmula"/>
       </div>
     </div>

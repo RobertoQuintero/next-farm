@@ -111,7 +111,7 @@ export const FarmsProvider = ({children}:Props) => {
      Promise.all([
       getFarmsRequest('/farms/catalog/pig_types'),
       getFarmsRequest(`/farms/catalog/races?id_farm=${idFarm}`),
-      getFarmsRequest(`/farms/catalog/stages`),
+      getFarmsRequest(`/farms/catalog/stages?id_farm=${idFarm}`),
       getFarmsRequest('/users/roles'),
       getFarmsRequest('/users/access'),
       getFarmsRequest(`/farms/catalog/task_types?id_farm=${idFarm}`),
@@ -164,6 +164,17 @@ export const FarmsProvider = ({children}:Props) => {
          const {ok,data}=await getFarmsRequest(`/farms/code?id_farm=${idFarm}`)
          if(ok){
             setCode(data as string)
+         }
+         else{
+          setError(data as string)
+         }
+         setIsLoading(false)
+      };
+    const getNewStages = async() =>{
+        setIsLoading(true)
+         const {ok,data}=await getFarmsRequest(`/farms/catalog/stages/update?id_farm=${idFarm}`)
+         if(ok){
+            setStages(data as IStage[])
          }
          else{
           setError(data as string)
@@ -558,7 +569,8 @@ export const FarmsProvider = ({children}:Props) => {
       postRace,
       postCrossingDate,
       getBirths,
-      getCode
+      getCode,
+      getNewStages
     }}>
       {children}
     </FarmsContext.Provider>

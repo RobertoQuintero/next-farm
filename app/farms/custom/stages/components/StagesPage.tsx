@@ -10,23 +10,30 @@ import { PostUpdateStage } from './PostUpdateStage'
 
 const StagesPage = () => {
   const {toggleModal} = useContext(UiContext)
-  const {stages,setStage,setFarmAction,farmAction} = useContext(FarmsContext)
+  const {stages,setStage,setFarmAction,farmAction,getNewStages} = useContext(FarmsContext)
 
-  const onAdd = async() =>{
-    setFarmAction(undefined)
-    setStage(undefined)
-     toggleModal()
+  // const onAdd = async() =>{
+  //   setFarmAction(undefined)
+  //   setStage(undefined)
+  //    toggleModal()
+  // };
+  const onCharge = async() =>{
+     getNewStages()
   };
 
   return (
     <>
      <div className='actionCreateContainer'>
         <BackButton/>
-        {/* <Button 
-          onClick={onAdd}
-          variant='contained' 
-          color='success'
-          size='small'>Nuevo</Button> */}
+        {
+          !stages.length 
+            ? <Button 
+            onClick={onCharge}
+            variant='contained' 
+            color='warning'
+            size='small'>Cargar</Button>
+            :<></>
+        }
       </div>
       <div>
         {

@@ -69,6 +69,7 @@ interface ContextProps{
   postCrossingDate: (payload: {id_stallion: number;crossing_date: string;id_pig: number;id_user: number;id_fertilization_type:number}) => Promise<boolean>;
   getBirths: (payload: number) => Promise<void>;
   getCode: () => Promise<void>;
+  getNewStages: () => Promise<void>
 }
 
 export const FarmsContext = createContext({} as ContextProps)
