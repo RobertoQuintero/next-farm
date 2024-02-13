@@ -4,14 +4,21 @@ import AppModal from '@/app/components/AppModal'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { Button } from '@mui/material'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { PostUpdateStallion, StallionRow } from '.'
 import { IStallion } from '@/interfaces'
+import Link from 'next/link'
 
 const StallionsPage = () => {
   const {toggleModal} = useContext(UiContext)
-  const {stallions,farmAction,setFarmAction,setStallion,postStallion,stallion,farmsLoading,farmsError} = useContext(FarmsContext)
+  const {stallions,farmAction,setFarmAction,setStallion,postStallion,stallion,farmsLoading,farmsError,races} = useContext(FarmsContext)
+  const [error, setError] = useState(false)
+
   const onAdd = async() =>{
+    if(!races.length){
+      setError(true)
+      return
+    }
     setFarmAction(undefined)
     setStallion(undefined)
      toggleModal()
@@ -34,17 +41,22 @@ const StallionsPage = () => {
      <div className='actionCreateContainer'>
         <AccessErrorComponent/>
         <BackButton/>
-        <Button 
-          onClick={onAdd}
-          variant='contained' 
-          color='success'
-          size='small'>Nuevo</Button>
+        <div style={{display:'flex',alignItems:'center',gap:'1rem',color:'red'}}>
+          {
+            error?<p style={{fontSize:'14px'}}>Debe agregar una raza <Link href='/farms/custom/races' style={{textDecoration:'underline'}}>Click!</Link></p>:<></>
+          }
+          <Button 
+            onClick={onAdd}
+            variant='contained' 
+            color='success'
+            size='small'>Nuevo</Button>
+        </div>
       </div>
       <div>
         {
           stallions.filter(s=>s.status).length
             ?stallions.filter(s=>s.status).map(a=><StallionRow stallion={a} key={a.id_stallion}/>)
-            :<EmptyPage/>
+            :<EmptyPage title='Sementales'/>
         }
       </div>
       <AppModal>

@@ -86,8 +86,8 @@ export const Navbar = () => {
                       :(<ButtonGroup 
                         size='small' 
                         aria-label="small outlined primary button group">
-                          <Button onClick={()=>openModal(false)}>login</Button>
-                          <Button onClick={()=>openModal(true)}>signup</Button>
+                          <Button size='small' onClick={()=>openModal(false)}>login</Button>
+                          <Button size='small' onClick={()=>openModal(true)}>signup</Button>
                       </ButtonGroup>)
                   }
                 </div>

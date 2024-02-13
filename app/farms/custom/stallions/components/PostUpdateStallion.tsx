@@ -55,7 +55,7 @@ export const PostUpdateStallion = () => {
         />
         <TextField
           size="small"
-          label='Valor'
+          label='Raza'
           fullWidth
           defaultValue={values.id_race}
           {...register('id_race')} 

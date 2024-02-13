@@ -43,7 +43,7 @@ export const PostUpdatePig = () => {
     data.visible=values.visible
     data.id_pig_type=values.id_pig_type
     data.created_at=new Date()
-    data.id_stage=pig?.id_stage!
+    data.id_stage=pig?pig?.id_stage!:9
     data.code=code
     // console.log(data)
     // return

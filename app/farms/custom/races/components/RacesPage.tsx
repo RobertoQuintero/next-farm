@@ -44,7 +44,7 @@ const RacesPage = () => {
         {
           races.filter(r=>r.status).length
             ?races.filter(r=>r.status).map(a=><RaceRow race={a} key={a.id_race}/>)
-            :<EmptyPage/>
+            :<EmptyPage title='Razas'/>
         }
       </div>
       <AppModal>
