@@ -23,12 +23,12 @@ export const InfoRow = () => {
           <p>Raza: <strong>{pig?.pig_race}</strong></p>
           <p>Ubicación: <strong>{pig?.pig_ubication}</strong></p>
           <p>Padre: <strong>{pig?.stallion}</strong></p>
+          <p>Peso: <strong>{pig?.pig_weight}</strong></p>
           {
             pig?.pig_stage==='Cargada'
               ?<p>Situación: <strong >{pig?.pig_stage}</strong></p>
               :<p>Situación: <strong className={styles.stage} onClick={()=>onClick('CROSSING')}>{pig?.pig_stage}</strong></p>
           }
-          
         </div>
         <div>
           <Button size='small' color='warning' onClick={()=>onClick('EDIT')} variant='contained'>Editar</Button>

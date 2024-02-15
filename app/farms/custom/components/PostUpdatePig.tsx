@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form"
 export const PostUpdatePig = () => {
   const {idFarm} = useContext(AuthContext)
   const {toggleModal} = useContext(UiContext)
-  const {farmsLoading,ubications,races,pig,postPig,stallions,getCode,code} = useContext(FarmsContext)
+  const {farmsLoading,ubications,races,pig,postPig,stallions,getCode,code,weightTypes} = useContext(FarmsContext)
 
   const {
     register,
@@ -29,6 +29,7 @@ export const PostUpdatePig = () => {
     id_farm:pig?pig.id_farm:idFarm,
     status:pig?pig.status:true,
     id_stallion:pig?pig.id_stallion:stallions[0].id_stallion,
+    id_weight_type:pig?pig.id_weight_type:weightTypes[1].id_weight_type
   } as IPig
 
   const [addedDate, setAddedDate] = useState<Date | null>(new Date(values.added_date))
@@ -43,7 +44,7 @@ export const PostUpdatePig = () => {
     data.visible=values.visible
     data.id_pig_type=values.id_pig_type
     data.created_at=new Date()
-    data.id_stage=pig?pig?.id_stage!:9
+    data.id_stage_type=pig?pig?.id_stage_type!:9
     data.code=newCode
     setSubmit(true)
     const ok=await postPig(data)
@@ -123,6 +124,25 @@ export const PostUpdatePig = () => {
               <MenuItem 
                 key={item.id_race} 
                 value={item.id_race}>
+                {item.description}
+              </MenuItem>
+            ))
+            :<div></div>
+          }
+        </TextField>
+        <TextField
+          size="small"
+          label='Peso'
+          fullWidth
+          defaultValue={values.id_weight_type}
+          {...register('id_weight_type')} 
+          select >
+          {
+            weightTypes.length
+            ?weightTypes.map(item=>(
+              <MenuItem 
+                key={item.id_weight_type} 
+                value={item.id_weight_type}>
                 {item.description}
               </MenuItem>
             ))

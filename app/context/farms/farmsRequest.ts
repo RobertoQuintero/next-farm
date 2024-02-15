@@ -1,5 +1,5 @@
 import belisarioApi from "@/database/apis";
-import { IAccess, IBirth, ICrossing, ILossReason, IPig, IPigType, IRace, IRole, IRoleAccess, IStage, IStallion, ITaskType, IUbication, IfertilizationType } from "@/interfaces";
+import { IAccess, IBirth, ICrossing, ILossReason, IPig, IPigType, IPigWeight, IRace, IRole, IRoleAccess, IStage, IStallion, ITaskType, IUbication, IfertilizationType } from "@/interfaces";
 import { IFarm } from "@/interfaces/farm";
 
 
@@ -27,6 +27,7 @@ interface FarmsResponse{
       | IBirth[]
       | IBirth
       | ICrossing
+      | IPigWeight[]
 }
 
 export const getFarmsRequest = async (url: string): Promise<FarmsResponse> => {

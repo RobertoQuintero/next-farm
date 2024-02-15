@@ -5,7 +5,7 @@ const query=`
     SELECT 
       id_task,
       CT.id_task_type,
-      CT.id_stage,
+      CT.id_stage_type,
       CT.description,
       CT.status,
       created_at,
@@ -17,8 +17,8 @@ const query=`
       CT.id_farm,
       TT.description task_type
     FROM Cat.Tasks CT
-    inner join CAT.Stages CS
-    on CS.id_stage=CT.id_stage
+    inner join CAT.Stage_types CS
+    on CS.id_stage_type=CT.id_stage_type
     inner join CAT.pig_types PT
     on PT.id_pig_type=CT.id_pig_type
     inner join CAT.task_types TT
@@ -33,7 +33,7 @@ export const GET = async(req:Request) =>{
 
 export const POST = async(req:Request) =>{
   const body = await req.json();
-  const { id_task,created_at,days,description,id_farm,id_pig_type,id_stage,id_task_type,status,updated_at}= body as ITask;
+  const { id_task,created_at,days,description,id_farm,id_pig_type,  id_stage_type,id_task_type,status,updated_at}= body as ITask;
     
   return await postRequest(`
   declare @const int 
@@ -45,7 +45,7 @@ export const POST = async(req:Request) =>{
         description='${description}',
         id_farm='${id_farm}',
         id_pig_type='${id_pig_type}',
-        id_stage='${id_stage}',
+          id_stage_type='${  id_stage_type}',
         id_task_type='${id_task_type}',
         status='${status}',
         updated_at='${updated_at}'
@@ -61,7 +61,7 @@ export const POST = async(req:Request) =>{
       description,
       id_farm,
       id_pig_type,
-      id_stage,
+        id_stage_type,
       id_task_type,
       status,
       updated_at
@@ -73,7 +73,7 @@ export const POST = async(req:Request) =>{
       '${description}',
       '${id_farm}',
       '${id_pig_type}',
-      '${id_stage}',
+      '${  id_stage_type}',
       '${id_task_type}',
       '${status}',
       '${updated_at}'

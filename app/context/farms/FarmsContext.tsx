@@ -1,5 +1,5 @@
 'use client'
-import { IBirth, ILossReason, IPig, IPigType, IRace, IStage, IStallion, ITask, ITaskType, IUbication, IfertilizationType } from '@/interfaces'
+import { IBirth, ILossReason, IPig, IPigType, IPigWeight, IRace, IStage, IStallion, ITask, ITaskType, IUbication, IfertilizationType } from '@/interfaces'
 import { IFarm } from '@/interfaces/farm'
 import { IAccess,  IRole, IRoleAccess } from '@/interfaces/user'
 import { createContext } from 'react'
@@ -37,6 +37,7 @@ interface ContextProps{
   births:IBirth[];
   birth:IBirth | undefined;
   code: string | undefined;
+  weightTypes:IPigWeight[];
   
 
   //methods

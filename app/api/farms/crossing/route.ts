@@ -14,7 +14,7 @@ export const POST = async(req:Request) =>{
 
     try {
       const pig=await db.query(`
-        UPDATE MOD.Pigs SET id_stage=10 WHERE id_pig=${id_pig}
+        UPDATE MOD.Pigs SET id_stage_type=10 WHERE id_pig=${id_pig}
         ${queryPig} where id_pig=${id_pig}
       `)
 

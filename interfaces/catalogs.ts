@@ -25,6 +25,7 @@ export interface IRace {
 
 export interface IStage {
   id_stage:    number;
+  id_stage_type:    number;
   id_pig_type: number;
   description: string;
   order:       number;
@@ -51,7 +52,7 @@ export interface IUbication {
 export interface ITask {
   id_task:      number;
   id_task_type: number;
-  id_stage:     number;
+  id_stage_type:    number;
   description:  string;
   status:       boolean;
   created_at:   string | Date;

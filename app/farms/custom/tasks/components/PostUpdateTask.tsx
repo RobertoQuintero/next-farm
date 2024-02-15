@@ -22,7 +22,7 @@ export const PostUpdateTask = () => {
     id_task:task?task.id_task:0,
     id_task_type:task?task.id_task_type:1,
     id_pig_type:task?task.id_pig_type:1,
-    id_stage:task?task.id_stage:stages[0].id_stage,
+    id_stage_type:task?task.id_stage_type:stages[0].id_stage_type,
     description:task?task.description:'',
     status:task?task.status:true,
     days:task?task.days:0,
@@ -73,15 +73,15 @@ export const PostUpdateTask = () => {
         size="small"
         label='Etapa'
         fullWidth
-        defaultValue={values.id_stage}
-        {...register('id_stage')} 
+        defaultValue={values.id_stage_type}
+        {...register('id_stage_type')} 
         select >
         {
           stages.filter(s=>s.id_pig_type===pigType).length
           ?stages.filter(s=>s.id_pig_type===pigType).map(item=>(
             <MenuItem 
-              key={item.id_stage} 
-              value={item.id_stage}>
+              key={item.id_stage_type} 
+              value={item.id_stage_type}>
               {item.description}
             </MenuItem>
           ))

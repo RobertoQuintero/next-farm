@@ -1,5 +1,5 @@
 'use client'
-import { IAccess, IBirth, ILossReason, IPig, IPigType, IRace, IRole, IRoleAccess, IStage,  IStallion,  ITask,  ITaskType,  IUbication, IfertilizationType } from '@/interfaces';
+import { IAccess, IBirth, ILossReason, IPig, IPigType, IPigWeight, IRace, IRole, IRoleAccess, IStage,  IStallion,  ITask,  ITaskType,  IUbication, IfertilizationType } from '@/interfaces';
 import { UsersState } from './FarmsProvider'
 import { IFarm } from '@/interfaces/farm';
 
@@ -35,6 +35,7 @@ import { IFarm } from '@/interfaces/farm';
         | {type:'[Farms] - setBirth'; payload:IBirth | undefined }
         | {type:'[Farms] - setBirths'; payload:IBirth[] }
         | {type:'[Farms] - setCode'; payload:string | undefined }
+        | {type:'[Farms] - setPigWeights'; payload:IPigWeight[] }
         
         
 export const usersReducer = (state:UsersState,action:UsersActionType):UsersState => {
@@ -216,6 +217,11 @@ export const usersReducer = (state:UsersState,action:UsersActionType):UsersState
       return {
         ...state,
         code:action.payload
+      }
+    case '[Farms] - setPigWeights':
+      return {
+        ...state,
+        weightTypes:action.payload
       }
   
     default:

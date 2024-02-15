@@ -5,7 +5,7 @@ import {  usersReducer } from './farmsReducer'
 import { IFarm } from '@/interfaces/farm'
 import { getFarmsRequest, postFarmsRequest } from './farmsRequest'
 import { returnArray } from '../auth/authRequest'
-import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing } from '@/interfaces'
+import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing, IPigWeight } from '@/interfaces'
 import { AuthContext } from '../auth/AuthContext'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
@@ -47,6 +47,7 @@ export interface UsersState{
   births:IBirth[];
   birth:IBirth | undefined;
   code: string | undefined;
+  weightTypes:IPigWeight[];
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -81,7 +82,8 @@ const UI_INITIAL_STATE:UsersState={
   race:undefined,
   births:[],
   birth: undefined,
-  code: undefined
+  code: undefined,
+  weightTypes:[]
 }
 
 export const FarmsProvider = ({children}:Props) => {
@@ -118,16 +120,18 @@ export const FarmsProvider = ({children}:Props) => {
       getFarmsRequest(`/farms/catalog/loss_reasons?id_farm=${idFarm}`),
       getFarmsRequest(`/farms/catalog/fertilization_types`),
       getFarmsRequest(`/farms/stallions?id_farm=${idFarm}`),
+      getFarmsRequest(`/farms/catalog/pig_weight`),
      ]).then((resp)=>{
       setPigTypes(resp[0].data as IPigType[])
       setRaces(resp[1].data as IRace[])
-      setStages(resp[2].data as IStage[])
+      setStages(resp[2].data as IStage[] || [])
       setRoles(resp[3].data as IRole[])
       setAccessArr(resp[4].data as IAccess[])
       setTaskTypes(resp[5].data as ITaskType[])
       setLossReasons(resp[6].data as ILossReason[])
       setFertilizationTypes(resp[7].data as IfertilizationType[])
       setStallions(resp[8].data as IStallion[])
+      setPigWeights(resp[9].data as IPigWeight[])
       setIsLoading(false)
      })
      .catch(error=>{
@@ -315,8 +319,6 @@ export const FarmsProvider = ({children}:Props) => {
        setIsLoading(false)
        return ok
     };
-
-  
 
   const setFarms = (payload:IFarm[]) =>{
      dispatch({
@@ -514,6 +516,13 @@ export const FarmsProvider = ({children}:Props) => {
   const setCode = (payload: string | undefined ) =>{
      dispatch({
       type:'[Farms] - setCode',
+      payload
+     })
+  };
+
+  const setPigWeights = (payload: IPigWeight[] ) =>{
+     dispatch({
+      type:'[Farms] - setPigWeights',
       payload
      })
   };
