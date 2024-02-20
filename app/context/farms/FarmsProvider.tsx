@@ -5,7 +5,7 @@ import {  usersReducer } from './farmsReducer'
 import { IFarm } from '@/interfaces/farm'
 import { getFarmsRequest, postFarmsRequest } from './farmsRequest'
 import { returnArray } from '../auth/authRequest'
-import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing, IPigWeight } from '@/interfaces'
+import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing, IPigWeight, IPigStage, IPigTask, IStageTaskType } from '@/interfaces'
 import { AuthContext } from '../auth/AuthContext'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
@@ -48,6 +48,10 @@ export interface UsersState{
   birth:IBirth | undefined;
   code: string | undefined;
   weightTypes:IPigWeight[];
+  pigStages:IPigStage[];
+  pigTasks:IPigTask[];
+  pigTask:IPigTask | undefined;
+  stageTaskTypes:IStageTaskType[];
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -83,7 +87,11 @@ const UI_INITIAL_STATE:UsersState={
   births:[],
   birth: undefined,
   code: undefined,
-  weightTypes:[]
+  weightTypes:[],
+  pigStages:[],
+  pigTasks:[],
+  pigTask: undefined,
+  stageTaskTypes:[]
 }
 
 export const FarmsProvider = ({children}:Props) => {
@@ -121,6 +129,9 @@ export const FarmsProvider = ({children}:Props) => {
       getFarmsRequest(`/farms/catalog/fertilization_types`),
       getFarmsRequest(`/farms/stallions?id_farm=${idFarm}`),
       getFarmsRequest(`/farms/catalog/pig_weight`),
+      getFarmsRequest(`/farms/catalog/pig_stages`),
+      getFarmsRequest(`/farms/catalog/stage_task_types`),
+      getFarmsRequest(`/farms/catalog/pig_tasks?id_farm=${idFarm}`),
      ]).then((resp)=>{
       setPigTypes(resp[0].data as IPigType[])
       setRaces(resp[1].data as IRace[])
@@ -132,6 +143,9 @@ export const FarmsProvider = ({children}:Props) => {
       setFertilizationTypes(resp[7].data as IfertilizationType[])
       setStallions(resp[8].data as IStallion[])
       setPigWeights(resp[9].data as IPigWeight[])
+      setPigStages(resp[10].data as IPigStage[])
+      setStageTaskTypes(resp[11].data as IStageTaskType[])
+      setPigTasks(resp[12].data as IPigTask[])
       setIsLoading(false)
      })
      .catch(error=>{
@@ -262,12 +276,12 @@ export const FarmsProvider = ({children}:Props) => {
     return await getPostLoadingOrError('/farms/catalog/ubications',setUbications,payload,state.ubications,'id_ubication',true)
   };
 
-  const postTask = async(payload:ITask):Promise<boolean> =>{
+  const postTask = async(payload:IPigTask):Promise<boolean> =>{
    if(!userAccess.find(u=>u.id_access===12)&& user?.id_role!==1){
       setAccessError('Credenciales inválidas')
       return true 
     }
-    return await getPostLoadingOrError('/farms/catalog/tasks',setTasks,payload,state.tasks,'id_task',true)
+    return await getPostLoadingOrError('/farms/catalog/pig_tasks',setPigTasks,payload,state.pigTasks,'id_pig_task',true)
   };
 
   const postStage = async(payload:IStage):Promise<boolean> =>{
@@ -527,6 +541,33 @@ export const FarmsProvider = ({children}:Props) => {
      })
   };
 
+  const setPigStages = (payload: IPigStage[] ) =>{
+     dispatch({
+      type:'[Farms] - setPigStages',
+      payload
+     })
+  };
+  const setPigTasks = (payload: IPigTask[] ) =>{
+     dispatch({
+      type:'[Farms] - setPigTasks',
+      payload
+     })
+  };
+  const setPigTask = (payload: IPigTask | undefined ) =>{
+     dispatch({
+      type:'[Farms] - setPigTask',
+      payload
+     })
+  };
+  const setStageTaskTypes = (payload: IStageTaskType[] ) =>{
+     dispatch({
+      type:'[Farms] - setStageTaskTypes',
+      payload
+     })
+  };
+
+
+
 
   const getPostLoadingOrError = async<T,K extends keyof T>(
       endpoint:string,setState:(payload: T[]) => void,payload?:T,state?:T[],id?:K,wich?:boolean
@@ -579,7 +620,8 @@ export const FarmsProvider = ({children}:Props) => {
       postCrossingDate,
       getBirths,
       getCode,
-      getNewStages
+      getNewStages,
+      setPigTask
     }}>
       {children}
     </FarmsContext.Provider>

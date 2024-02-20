@@ -1,5 +1,5 @@
 'use client'
-import { IBirth, ILossReason, IPig, IPigType, IPigWeight, IRace, IStage, IStallion, ITask, ITaskType, IUbication, IfertilizationType } from '@/interfaces'
+import { IBirth, ILossReason, IPig, IPigStage, IPigTask, IPigType, IPigWeight, IRace, IStage, IStageTaskType, IStallion, ITask, ITaskType, IUbication, IfertilizationType } from '@/interfaces'
 import { IFarm } from '@/interfaces/farm'
 import { IAccess,  IRole, IRoleAccess } from '@/interfaces/user'
 import { createContext } from 'react'
@@ -38,6 +38,11 @@ interface ContextProps{
   birth:IBirth | undefined;
   code: string | undefined;
   weightTypes:IPigWeight[];
+
+  pigStages:IPigStage[];
+  pigTasks:IPigTask[];
+  pigTask:IPigTask | undefined;
+  stageTaskTypes:IStageTaskType[];
   
 
   //methods
@@ -58,7 +63,7 @@ interface ContextProps{
   setUbication: (payload: IUbication | undefined) => void;
   postUbication: (payload: IUbication) => Promise<boolean>;
   setTask: (payload: ITask | undefined) => void;
-  postTask: (payload: ITask) => Promise<boolean>;
+  postTask: (payload: IPigTask) => Promise<boolean>;
   setStage: (payload: IStage | undefined) => void;
   postStage: (payload: IStage) => Promise<boolean>;
   setLossReason: (payload: ILossReason | undefined) => void;
@@ -70,7 +75,8 @@ interface ContextProps{
   postCrossingDate: (payload: {id_stallion: number;crossing_date: string;id_pig: number;id_user: number;id_fertilization_type:number}) => Promise<boolean>;
   getBirths: (payload: number) => Promise<void>;
   getCode: () => Promise<void>;
-  getNewStages: () => Promise<void>
+  getNewStages: () => Promise<void>;
+  setPigTask: (payload: IPigTask | undefined) => void
 }
 
 export const FarmsContext = createContext({} as ContextProps)

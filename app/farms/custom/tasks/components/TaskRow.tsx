@@ -1,31 +1,33 @@
-import { ITask } from '@/interfaces'
+import { IPigTask, ITask } from '@/interfaces'
 import React, { useContext } from 'react'
 import { RowButton } from '../../components';
 import { FarmsContext } from '@/app/context/farms/FarmsContext';
 import { UiContext } from '@/app/context/ui/UiContext';
 interface Props{
-  task:ITask
+  task:IPigTask
 }
 export const TaskRow = ({task}:Props) => {
-  const {setTask,setFarmAction} = useContext(FarmsContext)
+  const {setTask,setFarmAction,setPigTask} = useContext(FarmsContext)
   const {toggleModal} = useContext(UiContext)
 
   const onClick =(action:string) =>{
     setFarmAction(action)
-    setTask(task)
+    setPigTask(task)
     toggleModal()   
   };
 
   return (
     <div className='rowCard'>
-      <div className='ubicationRow'>
-      <p>{new Date(task.updated_at).toLocaleString().split(',')[0]}</p>
-      <p>{task.pig_type}</p>
-      <p>{task.description}</p>
-      <p style={{width:'130px',display:'flex',justifyContent:'space-between'}}>
-        <span>{task.task_type}</span> 
+      <div style={{display:'flex',gap:'.5rem', fontSize:'14px'}}>
+      {/* <p>{new Date(task.updated_at).toLocaleString().split(',')[0]}</p> */}
+      <p style={{width:'100px'}}>{task.pig_type?.split(' ')[0]}</p>
+      <p style={{width:'100px'}}>{task.stage}</p>
+      <p style={{width:'250px'}}>{task.description}</p>
+      <p style={{width:'130px',display:'flex',gap:'.2rem'}}>
+        <span>a los</span> 
         <span>{task.days}</span>
-        </p>
+        <span>días</span>
+      </p>
       </div>
       <div style={{display:'flex',alignItems:'center', gap:'.5rem'}}>
       <RowButton onClick={()=>onClick('OPEN')} label="ver"/>

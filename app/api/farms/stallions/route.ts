@@ -4,7 +4,7 @@ import {  getRequestQuery, postRequest } from "@/utils/getRequest";
 export const GET = async(req:Request) =>{
     const {searchParams}= new URL(req.url)
     const id_farm=searchParams.get('id_farm')
-  return await getRequestQuery(`SELECT * FROM MOD.Stallions WHERE id_farm=${id_farm}`)
+  return await getRequestQuery(`SELECT * FROM MOD.Stallions WHERE id_farm=${id_farm} and status='true'`)
 }
 
 export const POST = async(req:Request) =>{

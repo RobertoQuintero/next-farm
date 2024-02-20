@@ -6,12 +6,12 @@ import { UiContext } from '@/app/context/ui/UiContext'
 import { Button } from '@mui/material'
 import { useContext, useState } from 'react'
 import { PostUpdateTask, TaskRow } from '.'
-import { ITask } from '@/interfaces'
+import { IPigTask, ITask } from '@/interfaces'
 import Link from 'next/link'
 
 const TasksPage = () => {
   const {toggleModal} = useContext(UiContext)
-  const {tasks,setTask,setFarmAction,farmAction,farmsLoading,farmsError,task,postTask,stages} = useContext(FarmsContext)
+  const {tasks,setTask,setFarmAction,farmAction,farmsLoading,farmsError,task,postTask,stages,pigTask,pigTasks} = useContext(FarmsContext)
   const [error, setError] = useState(false)
 
   const onAdd = () =>{
@@ -26,7 +26,7 @@ const TasksPage = () => {
   };
 
   const onDelete = async() =>{
-    const newTask={...task, status:false} as ITask
+    const newTask={...pigTask, status:false} as IPigTask
     const ok=await postTask(newTask)
     if(ok){
       toggleModal()
@@ -53,8 +53,8 @@ const TasksPage = () => {
       </div>
       <div>
         {
-          tasks.filter(t=>t.status).length
-            ?tasks.filter(t=>t.status).map(a=><TaskRow task={a} key={a.id_task}/>)
+          pigTasks.filter(t=>t.status).length
+            ?pigTasks.filter(t=>t.status).map(a=><TaskRow task={a} key={a.id_pig_task}/>)
             :<EmptyPage title='Tareas'/>
         }
       </div>

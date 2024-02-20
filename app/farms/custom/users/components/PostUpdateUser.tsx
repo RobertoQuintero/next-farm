@@ -48,8 +48,7 @@ export const PostUpdateUser = () => {
     data.zip=''
     data.id_state=0
     data.address=values.address
-    console.log(data)
-    // return
+    
     const ok= await postUser(data)
     if(ok){
       toggleModal()
