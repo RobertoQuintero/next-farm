@@ -11,7 +11,7 @@ import Link from 'next/link'
 
 const TasksPage = () => {
   const {toggleModal} = useContext(UiContext)
-  const {tasks,setTask,setFarmAction,farmAction,farmsLoading,farmsError,task,postTask,stages,pigTask,pigTasks} = useContext(FarmsContext)
+  const {tasks,setTask,setFarmAction,farmAction,farmsLoading,farmsError,task,postTask,stages,pigTask,pigTasks,setPigTask} = useContext(FarmsContext)
   const [error, setError] = useState(false)
 
   const onAdd = () =>{
@@ -20,7 +20,7 @@ const TasksPage = () => {
       setError(true)
       return
     }
-    setTask(undefined)
+    setPigTask(undefined)
     setFarmAction(undefined)
     toggleModal()
   };
@@ -51,7 +51,7 @@ const TasksPage = () => {
             size='small'>Nuevo</Button>
         </div>
       </div>
-      <div>
+      <div style={{paddingBottom:'2rem'}}>
         {
           pigTasks.filter(t=>t.status).length
             ?pigTasks.filter(t=>t.status).map(a=><TaskRow task={a} key={a.id_pig_task}/>)

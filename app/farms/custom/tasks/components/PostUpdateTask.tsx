@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form"
 export const PostUpdateTask = () => {
   const {toggleModal} = useContext(UiContext)
   const {idFarm} = useContext(AuthContext)
-  const {task,pigTypes,stages,farmsLoading,taskTypes,postTask,pigTask,pigStages,stageTaskTypes} = useContext(FarmsContext)
+  const {pigTypes,farmsLoading,postTask,pigTask,pigStages,stageTaskTypes} = useContext(FarmsContext)
 
   const {
     register,
@@ -30,7 +30,7 @@ export const PostUpdateTask = () => {
   } as IPigTask
 
   const [pigType, setPigType] = useState(pigStages.find( p=>p.id_pig_stage===values.id_pig_stage)?.id_pig_type)
-  const [newStages, setNewStages] = useState(pigStages.filter(p=>p.id_pig_type===3))
+  const [newStages, setNewStages] = useState(pigStages.filter(p=>p.id_pig_type===pigType))
   const [pigStage, setpigStage] = useState(values.id_pig_stage)
  
 
