@@ -39,7 +39,8 @@ export const POST = async(req:Request) =>{
           is_positive,
           status,
           id_birth_type,
-          id_fertilization_type
+          id_fertilization_type,
+          closed
         )
         VALUES(
           @const,
@@ -58,7 +59,8 @@ export const POST = async(req:Request) =>{
           'false',
           'true',
           1,
-          '${id_fertilization_type}'
+          '${id_fertilization_type}',
+          'false'
         )
       ${queryBirth} WHERE id_birth=@const
       `)

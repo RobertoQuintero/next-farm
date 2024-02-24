@@ -23,7 +23,6 @@ export interface UsersState{
   ubication:IUbication | undefined;
   tasks:ITask[]
   task:ITask | undefined;
-  stages:IStage[];
   pigTypes:IPigType[];
   races:IRace[];
   pigs:IPig[];
@@ -37,7 +36,6 @@ export interface UsersState{
   roleAccess:IRoleAccess|undefined;
   rolesAccess:IRoleAccess[];
   taskTypes:ITaskType[];
-  stage:IStage | undefined;
   lossReasons:ILossReason[];
   lossReason:ILossReason | undefined;
   fertilizatinTypes:IfertilizationType[];
@@ -64,7 +62,6 @@ const UI_INITIAL_STATE:UsersState={
   ubication: undefined,
   tasks:[],
   task:undefined,
-  stages:[],
   pigTypes:[],
   races:[],
   pigs:[],
@@ -78,7 +75,6 @@ const UI_INITIAL_STATE:UsersState={
   roleAccess:undefined,
   rolesAccess:[],
   taskTypes:[],
-  stage:undefined,
   lossReasons:[],
   lossReason: undefined,
   fertilizatinTypes:[],
@@ -122,7 +118,7 @@ export const FarmsProvider = ({children}:Props) => {
      Promise.all([
       getFarmsRequest('/farms/catalog/pig_types'),
       getFarmsRequest(`/farms/catalog/races?id_farm=${idFarm}`),
-      getFarmsRequest(`/farms/catalog/stages?id_farm=${idFarm}`),
+      getFarmsRequest(`/farms/catalog/birth_types`),
       getFarmsRequest('/users/roles'),
       getFarmsRequest('/users/access'),
       getFarmsRequest(`/farms/catalog/task_types`),
@@ -133,11 +129,11 @@ export const FarmsProvider = ({children}:Props) => {
       getFarmsRequest(`/farms/catalog/pig_stages`),
       getFarmsRequest(`/farms/catalog/stage_task_types`),
       getFarmsRequest(`/farms/catalog/pig_tasks?id_farm=${idFarm}`),
-      getFarmsRequest(`/farms/catalog/birth_types`),
+      
      ]).then((resp)=>{
       setPigTypes(resp[0].data as IPigType[])
       setRaces(resp[1].data as IRace[])
-      setStages(resp[2].data as IStage[] || [])
+      setBirthTypes(resp[2].data as IBirthType[])
       setRoles(resp[3].data as IRole[])
       setAccessArr(resp[4].data as IAccess[])
       setTaskTypes(resp[5].data as ITaskType[])
@@ -148,7 +144,7 @@ export const FarmsProvider = ({children}:Props) => {
       setPigStages(resp[10].data as IPigStage[])
       setStageTaskTypes(resp[11].data as IStageTaskType[])
       setPigTasks(resp[12].data as IPigTask[])
-      setBirthTypes(resp[13].data as IBirthType[])
+      
       setIsLoading(false)
      })
      .catch(error=>{
@@ -191,17 +187,7 @@ export const FarmsProvider = ({children}:Props) => {
          }
          setIsLoading(false)
       };
-    const getNewStages = async() =>{
-        setIsLoading(true)
-         const {ok,data}=await getFarmsRequest(`/farms/catalog/stages/update?id_farm=${idFarm}`)
-         if(ok){
-            setStages(data as IStage[])
-         }
-         else{
-          setError(data as string)
-         }
-         setIsLoading(false)
-      };
+
 
   const getFarms = async(payload:number) =>await getPostLoadingOrError(`/farms?id_user=${payload}`,setFarms)
 
@@ -306,13 +292,7 @@ export const FarmsProvider = ({children}:Props) => {
     return await getPostLoadingOrError('/farms/catalog/pig_tasks',setPigTasks,payload,state.pigTasks,'id_pig_task',true)
   };
 
-  const postStage = async(payload:IStage):Promise<boolean> =>{
-   if(!userAccess.find(u=>u.id_access===13)&& user?.id_role!==1){
-      setAccessError('Credenciales inválidas')
-      return true 
-    }
-    return await getPostLoadingOrError('/farms/catalog/stages',setStages,payload,state.stages,'id_stage',true)
-  };
+
 
   const postLossReason = async(payload:ILossReason):Promise<boolean> =>{
    if(!userAccess.find(u=>u.id_access===14)&& user?.id_role!==1){
@@ -336,6 +316,14 @@ export const FarmsProvider = ({children}:Props) => {
       return true 
     }
     return await getPostLoadingOrError('/farms/catalog/races',setRaces,payload,state.races,'id_race',true)
+  };
+
+  const postBirth = async(payload:IBirth):Promise<boolean> =>{
+   // if(!userAccess.find(u=>u.id_access===16)&& user?.id_role!==1){
+   //    setAccessError('Credenciales inválidas')
+   //    return true 
+   //  }
+    return await getPostLoadingOrError('/farms/births',setBirths,payload,state.births,'id_birth',true)
   };
 
   
@@ -489,12 +477,6 @@ export const FarmsProvider = ({children}:Props) => {
       payload
      })
   };
-  const setStage = (payload:IStage | undefined ) =>{
-     dispatch({
-      type:'[Farms] - setStage',
-      payload
-     })
-  };
 
   const setLossReason = (payload:ILossReason | undefined ) =>{
      dispatch({
@@ -634,8 +616,6 @@ export const FarmsProvider = ({children}:Props) => {
       postUbication,
       setTask,
       postTask,
-      setStage,
-      postStage,
       setLossReason,
       postLossReason,
       setStallion,
@@ -645,10 +625,12 @@ export const FarmsProvider = ({children}:Props) => {
       postCrossingDate,
       getBirths,
       getCode,
-      getNewStages,
       setPigTask,
       getTasks,
-      updateTasks
+      updateTasks,
+      setBirth,
+      postBirth,
+      createTasksToDo
     }}>
       {children}
     </FarmsContext.Provider>

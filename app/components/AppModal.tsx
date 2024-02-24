@@ -1,6 +1,6 @@
 import { Box, Modal } from "@mui/material"
-import { ReactNode, useContext } from "react"
-import { UiContext } from "../context/ui/UiContext"
+import { ReactNode } from "react"
+import { useUi } from "../context/ui/useUi";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -14,7 +14,7 @@ const style = {
 };
 
 const AppModal = ({children}:{children:ReactNode}) => {
-  const {toggleModal,isModalOpen} = useContext(UiContext)
+  const {toggleModal,isModalOpen} = useUi()
 
   return (
     <Modal

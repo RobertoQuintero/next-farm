@@ -1,7 +1,6 @@
 'use client'
 import { AccessErrorComponent,  BackToFarms, DeleteComponent, EmptyPage, LoadingComponent } from '@/app/components'
 import AppModal from '@/app/components/AppModal'
-import { UiContext } from '@/app/context/ui/UiContext'
 import { Button, CardActionArea } from '@mui/material'
 import { CSSProperties, useContext, useEffect, useState } from 'react'
 import { PigCard, PostUpdatePig } from '.'
@@ -11,6 +10,7 @@ import { IPig } from '@/interfaces'
 import Cookie from 'js-cookie'
 import Link from 'next/link'
 import { CachedOutlined } from '@mui/icons-material'
+import { useUi } from '@/app/context/ui/useUi'
 
 const style={
   backgroundColor:'#fff',
@@ -20,7 +20,7 @@ const style={
 } as CSSProperties
 
 const FarmPage = () => {
-  const {toggleModal,isModalOpen} = useContext(UiContext)
+  const {toggleModal,isModalOpen} = useUi()
   const {idFarm,user} = useContext(AuthContext)
   const {farmsLoading,pigs,getPigs,setPig,setFarmAction,farmAction,farmsError,pig,postPig,getFarm,farm,getCode,stallions,ubications} = useContext(FarmsContext)
   const [error, setError] = useState(false)

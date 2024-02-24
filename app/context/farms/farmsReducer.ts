@@ -74,11 +74,7 @@ export const usersReducer = (state:UsersState,action:UsersActionType):UsersState
         ...state,
         ubications:action.payload
       }
-    case '[Farms] - setStages':
-      return {
-        ...state,
-        stages:action.payload
-      }
+
     case '[Farms] - setPigTypes':
       return {
         ...state,
@@ -167,11 +163,7 @@ export const usersReducer = (state:UsersState,action:UsersActionType):UsersState
         taskTypes:action.payload
       }
 
-    case '[Farms] - setStage':
-      return {
-        ...state,
-        stage:action.payload
-      }
+
     case '[Farms] - setLossReasons':
       return {
         ...state,

@@ -1,6 +1,5 @@
-import { UiContext } from '@/app/context/ui/UiContext'
 import { Button, CircularProgress } from '@mui/material'
-import React, { useContext } from 'react'
+import { useUi } from '../context/ui/useUi';
 
 interface Props{
   onDelete: ()=>void
@@ -9,7 +8,7 @@ interface Props{
 }
 
 export const DeleteComponent = ({onDelete,loading=false,error=undefined}:Props) => {
-  const {toggleModal} = useContext(UiContext)
+  const {toggleModal} = useUi()
 
   return (
     <>

@@ -37,22 +37,25 @@ export interface IBirth {
   id_birth:        number;
   id_pig:          number;
   id_stallion:     number;
-  birth_date:      string;
-  confirm_date:    string;
-  crossing_date:   string;
+  birth_date:      string | Date;
+  confirm_date:    string | Date;
+  crossing_date:   string | Date;
   is_positive:     boolean;
-  alive:           number;
-  dead:            number;
+  alive:           number | string;
+  dead:            number | string;
   description:     string;
   status:          boolean;
-  created_at:      string;
+  created_at:      string | Date;
   id_user:         number;
   id_user_confirm: number;
   id_user_birth:   number;
   id_birth_type:number;
+  birth_type?: string;
   id_fertilization_type:number;
   fertilization_type?:string;
   stallion?:string;
+  comment:string;
+  closed:boolean;
 }
 
 export interface ICrossing{

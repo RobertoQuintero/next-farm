@@ -5,6 +5,7 @@
 .birthContainer{
   overflow-x: scroll;
   width: 400px;
+  padding-bottom: 1rem;
 }
 
 .birthRow{
@@ -12,11 +13,22 @@
   display:flex;
   width: 900px;
   font-size:14px;
+  border-bottom: 1px solid #ccc;
+}
+.birthRow:nth-child(1){
+  border: none;
 }
 .birthRow >p{
   flex-basis: 10%;
 }
 
+.underline{
+  cursor: pointer;
+}
+.underline:hover{
+  font-weight: bold;
+  text-decoration: underline;
+}
 
 @media screen and (min-width:400px) {
   .birthRow{

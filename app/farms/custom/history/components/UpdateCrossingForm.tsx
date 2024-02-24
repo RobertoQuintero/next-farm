@@ -9,7 +9,7 @@ import { AuthContext } from '@/app/context/auth/AuthContext'
 export const UpdateCrossingForm = () => {
   const {toggleModal} = useContext(UiContext)
   const {user} = useContext(AuthContext)
-  const {stallions,farmsLoading,pig,postCrossingDate,fertilizatinTypes} = useContext(FarmsContext)
+  const {stallions,farmsLoading,pig,postCrossingDate,fertilizatinTypes,createTasksToDo} = useContext(FarmsContext)
   const [idStallion, setIdStallion] = useState(stallions[0].id_stallion)
   const [fertilizationType, setFertilizationType] = useState(fertilizatinTypes[0].id_fertilization_type)
   const [date, setDate] = useState<Date | null>(new Date())  
@@ -25,10 +25,16 @@ export const UpdateCrossingForm = () => {
       id_fertilization_type:fertilizationType
     } as {id_stallion:number,crossing_date:string,id_pig:number,id_user:number,id_fertilization_type:number}
 
-    const ok= await postCrossingDate(data)
-    if(ok){
+    Promise.all([
+      postCrossingDate(data),
+      createTasksToDo({id_pig:pig?.id_pig!,id_pig_stage:3,id_user:user?.id_user!})
+    ]).then(resp=>{
       toggleModal()
-    }
+    })
+    .catch(error=>{
+      console.log({error})
+    })
+
   }
 
   return (
@@ -76,9 +82,9 @@ export const UpdateCrossingForm = () => {
           }
         </TextField>
         <div style={{display:'flex',justifyContent:'flex-end', gap:'.5rem'}}>
-                <p style={{fontSize:'14px',padding:'.5rem 0 0 0'}}>Fecha monta</p>
-              <DatePickerElement date={date} setDate={setDate}/>
-              </div>
+          <p style={{fontSize:'14px',padding:'.5rem 0 0 0'}}>Fecha monta</p>
+          <DatePickerElement date={date} setDate={setDate}/>
+        </div>
         <SaveButton loading={farmsLoading}/>
     </form>
   )

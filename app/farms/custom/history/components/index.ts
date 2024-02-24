@@ -1,3 +1,9 @@
+export * from "./UpdateLactation";
+
+export * from "./UpdateBirthForm";
+
+export * from "./UpdateConfirmForm";
+
 export * from "./UpdateTask";
 
 export * from "./TaskElementRow";

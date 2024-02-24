@@ -117,6 +117,6 @@ export interface IStageTaskType {
 
 export interface IBirthType {
   id_birth_type: number;
-  desciption:    string;
+  description:    string;
   status:        boolean;
 }

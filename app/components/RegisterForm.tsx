@@ -2,15 +2,15 @@
 import { TextField, MenuItem  } from '@mui/material'
 import styles from './components.module.css'
 import {  useContext, useState } from 'react'
-import { UiContext } from '../context/ui/UiContext'
 import { IUser } from '@/interfaces'
 import { useForm } from 'react-hook-form'
 import { AuthContext } from '../context/auth/AuthContext'
 import { SaveButton } from '.'
+import { useUi } from '../context/ui/useUi'
 
 
 export const RegisterForm = () => {
-  const {toggleModal} = useContext(UiContext)
+  const {toggleModal} = useUi()
   const {authLoading,authError,states,postUser} = useContext(AuthContext)
   const [state, setState] = useState(1)
 

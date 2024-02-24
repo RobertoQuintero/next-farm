@@ -13,8 +13,6 @@ interface ContextProps{
   ubication:IUbication | undefined;
   tasks:ITask[]
   task:ITask | undefined;
-  stages:IStage[];
-  stage:IStage | undefined;
   pigTypes:IPigType[];
   races:IRace[];
   race:IRace | undefined;
@@ -64,8 +62,6 @@ interface ContextProps{
   postUbication: (payload: IUbication) => Promise<boolean>;
   setTask: (payload: ITask | undefined) => void;
   postTask: (payload: IPigTask) => Promise<boolean>;
-  setStage: (payload: IStage | undefined) => void;
-  postStage: (payload: IStage) => Promise<boolean>;
   setLossReason: (payload: ILossReason | undefined) => void;
   postLossReason: (payload: ILossReason) => Promise<boolean>;
   setStallion: (payload: IStallion | undefined) => void;
@@ -75,10 +71,12 @@ interface ContextProps{
   postCrossingDate: (payload: {id_stallion: number;crossing_date: string;id_pig: number;id_user: number;id_fertilization_type:number}) => Promise<boolean>;
   getBirths: (payload: number) => Promise<void>;
   getCode: () => Promise<void>;
-  getNewStages: () => Promise<void>;
   setPigTask: (payload: IPigTask | undefined) => void;
   getTasks: (id: number) => Promise<void>;
   updateTasks: (payload: ITask) => Promise<boolean>;
+  setBirth: (payload: IBirth | undefined) => void;
+  postBirth: (payload: IBirth) => Promise<boolean>;
+  createTasksToDo: (payload: {id_pig: number;id_pig_stage: number;id_user: number;}) => Promise<void>
 }
 
 export const FarmsContext = createContext({} as ContextProps)
