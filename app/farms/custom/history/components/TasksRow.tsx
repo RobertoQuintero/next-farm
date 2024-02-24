@@ -1,14 +1,41 @@
 import { AccordionElement } from '@/app/components'
-import React from 'react'
-
+import { FarmsContext } from '@/app/context/farms/FarmsContext'
+import React, { useContext, useEffect } from 'react'
+import Cookies from 'js-cookie'
+import { IPig } from '@/interfaces'
+import { TaskElementRow } from '.'
+import styles from './pig.module.css'
 
 export const TasksRow = () => {
+  const {getTasks,pig,tasks} = useContext(FarmsContext)
+
+  useEffect(() => {
+    if(pig){
+      getTasks(pig?.id_pig!)
+    }else{
+      const newPig= JSON.parse(Cookies.get('pig')!) as IPig
+      getTasks(newPig.id_pig)
+    }
+  }, [])
+  
+
   return (
     <AccordionElement title='Actividades'>
-      <p>Esse voluptate incididunt sint qui consequat quis cillum consequat ea mollit nulla proident. Cillum sunt sit aliqua sit consequat reprehenderit incididunt dolor minim laboris anim quis enim. Proident ullamco ut sint adipisicing irure.</p>
-      <p>Esse voluptate incididunt sint qui consequat quis cillum consequat ea mollit nulla proident. Cillum sunt sit aliqua sit consequat reprehenderit incididunt dolor minim laboris anim quis enim. Proident ullamco ut sint adipisicing irure.</p>
-      <p>Esse voluptate incididunt sint qui consequat quis cillum consequat ea mollit nulla proident. Cillum sunt sit aliqua sit consequat reprehenderit incididunt dolor minim laboris anim quis enim. Proident ullamco ut sint adipisicing irure.</p>
-      <p>Esse voluptate incididunt sint qui consequat quis cillum consequat ea mollit nulla proident. Cillum sunt sit aliqua sit consequat reprehenderit incididunt dolor minim laboris anim quis enim. Proident ullamco ut sint adipisicing irure.</p>
+      <>
+      <div className={styles.birthContainer}>
+      <div className={styles.birthRow} style={{fontWeight:'bold'}}>
+          <p >Fecha</p>
+          <p >Hasta</p>
+          <p>Aplicó</p>
+          <p>Descripción</p>
+        </div>
+        {
+          tasks.filter(t=>t.status).length
+          ?tasks.filter(t=>t.status).map(t=><TaskElementRow task={t} key={t.id_task}/>)
+          :<></>
+        }
+      </div>
+      </>
     </AccordionElement>
   )
 }

@@ -38,7 +38,7 @@ MP.created_at,
 MP.id_stallion,
 visible,
 MP.id_farm,
-MP.id_stage_type,
+MP.id_pig_stage,
 MP.status, 
 PT.description pig_type,
 CU.description pig_ubication,
@@ -53,8 +53,8 @@ inner join CAT.Ubications CU
 on CU.id_ubication=MP.id_ubication
 inner join CAT.Races CR
 on CR.id_race=MP.id_race
-inner join CAT.Stage_types CS
-on CS.id_stage_type=MP.id_stage_type
+inner join CAT.Pig_stages CS
+on CS.id_pig_stage=MP.id_pig_stage
 inner join MOD.Stallions MS
 on MS.id_stallion=MP.id_stallion
 inner join CAT.Weight_types WS

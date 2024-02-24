@@ -18,8 +18,6 @@ export const BirthsRow = () => {
     }
   }, [])
   
-
-
   return (
     <AccordionElement title='Historial de Partos'>
       <div className={styles.birthContainer}>
@@ -36,8 +34,8 @@ export const BirthsRow = () => {
         </div>
         <>
           {
-            births.length
-              ?births.map(a=><BirthElementRow birth={a} key={a.id_birth}/>)
+            births.filter(b=>b.status).length
+              ?births.filter(b=>b.status).map(a=><BirthElementRow birth={a} key={a.id_birth}/>)
               :<></>
           }
         </>

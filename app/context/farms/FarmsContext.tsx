@@ -1,5 +1,5 @@
 'use client'
-import { IBirth, ILossReason, IPig, IPigStage, IPigTask, IPigType, IPigWeight, IRace, IStage, IStageTaskType, IStallion, ITask, ITaskType, IUbication, IfertilizationType } from '@/interfaces'
+import { IBirth, IBirthType, ILossReason, IPig, IPigStage, IPigTask, IPigType, IPigWeight, IRace, IStage, IStageTaskType, IStallion, ITask, ITaskType, IUbication, IfertilizationType } from '@/interfaces'
 import { IFarm } from '@/interfaces/farm'
 import { IAccess,  IRole, IRoleAccess } from '@/interfaces/user'
 import { createContext } from 'react'
@@ -38,12 +38,12 @@ interface ContextProps{
   birth:IBirth | undefined;
   code: string | undefined;
   weightTypes:IPigWeight[];
+  birthTypes:IBirthType[]
 
   pigStages:IPigStage[];
   pigTasks:IPigTask[];
   pigTask:IPigTask | undefined;
-  stageTaskTypes:IStageTaskType[];
-  
+  stageTaskTypes:IStageTaskType[];  
 
   //methods
   setFarm: (payload: IFarm | undefined) => void;
@@ -76,7 +76,9 @@ interface ContextProps{
   getBirths: (payload: number) => Promise<void>;
   getCode: () => Promise<void>;
   getNewStages: () => Promise<void>;
-  setPigTask: (payload: IPigTask | undefined) => void
+  setPigTask: (payload: IPigTask | undefined) => void;
+  getTasks: (id: number) => Promise<void>;
+  updateTasks: (payload: ITask) => Promise<boolean>;
 }
 
 export const FarmsContext = createContext({} as ContextProps)

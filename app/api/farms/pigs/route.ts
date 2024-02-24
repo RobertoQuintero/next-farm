@@ -12,7 +12,7 @@ export const GET = async(req:Request) =>{
 
 export const POST = async(req:Request) =>{
   const body = await req.json();
-  const {id_pig,code,id_farm,id_pig_type,id_race,id_stage_type,id_ubication,added_date,status,visible,created_at,id_stallion,id_weight_type }= body as IPig;
+  const {id_pig,code,id_farm,id_pig_type,id_race,id_pig_stage,id_ubication,added_date,status,visible,created_at,id_stallion,id_weight_type }= body as IPig;
 
   return await postRequest(`
     declare @const int 
@@ -24,7 +24,7 @@ export const POST = async(req:Request) =>{
           id_farm='${id_farm}',
           id_pig_type='${id_pig_type}',
           id_race='${id_race}',
-          id_stage_type='${id_stage_type}',
+          id_pig_stage='${id_pig_stage}',
           id_ubication='${id_ubication}',
           added_date='${added_date}',
           status='${status}',
@@ -42,7 +42,7 @@ export const POST = async(req:Request) =>{
         id_farm,
         id_pig_type,
         id_race,
-        id_stage_type,
+        id_pig_stage,
         id_ubication,
         added_date,
         status,
@@ -57,7 +57,7 @@ export const POST = async(req:Request) =>{
         '${id_farm}',
         '${id_pig_type}',
         '${id_race}',
-        '${id_stage_type}',
+        '${id_pig_stage}',
         '${id_ubication}',
         '${added_date}',
         '${status}',

@@ -1,3 +1,7 @@
+export * from "./UpdateTask";
+
+export * from "./TaskElementRow";
+
 export * from "./BirthElementRow";
 
 export * from "./TasksRow";

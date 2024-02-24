@@ -5,7 +5,7 @@ import {  usersReducer } from './farmsReducer'
 import { IFarm } from '@/interfaces/farm'
 import { getFarmsRequest, postFarmsRequest } from './farmsRequest'
 import { returnArray } from '../auth/authRequest'
-import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing, IPigWeight, IPigStage, IPigTask, IStageTaskType } from '@/interfaces'
+import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing, IPigWeight, IPigStage, IPigTask, IStageTaskType, IBirthType } from '@/interfaces'
 import { AuthContext } from '../auth/AuthContext'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
@@ -52,6 +52,7 @@ export interface UsersState{
   pigTasks:IPigTask[];
   pigTask:IPigTask | undefined;
   stageTaskTypes:IStageTaskType[];
+  birthTypes:IBirthType[]
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -91,7 +92,8 @@ const UI_INITIAL_STATE:UsersState={
   pigStages:[],
   pigTasks:[],
   pigTask: undefined,
-  stageTaskTypes:[]
+  stageTaskTypes:[],
+  birthTypes:[]
 }
 
 export const FarmsProvider = ({children}:Props) => {
@@ -110,7 +112,6 @@ export const FarmsProvider = ({children}:Props) => {
             getResources(idFarm!)
             setAccessError(undefined)
             getUbications()
-            getTasks()
          }
       }
    }
@@ -132,6 +133,7 @@ export const FarmsProvider = ({children}:Props) => {
       getFarmsRequest(`/farms/catalog/pig_stages`),
       getFarmsRequest(`/farms/catalog/stage_task_types`),
       getFarmsRequest(`/farms/catalog/pig_tasks?id_farm=${idFarm}`),
+      getFarmsRequest(`/farms/catalog/birth_types`),
      ]).then((resp)=>{
       setPigTypes(resp[0].data as IPigType[])
       setRaces(resp[1].data as IRace[])
@@ -146,6 +148,7 @@ export const FarmsProvider = ({children}:Props) => {
       setPigStages(resp[10].data as IPigStage[])
       setStageTaskTypes(resp[11].data as IStageTaskType[])
       setPigTasks(resp[12].data as IPigTask[])
+      setBirthTypes(resp[13].data as IBirthType[])
       setIsLoading(false)
      })
      .catch(error=>{
@@ -218,12 +221,19 @@ export const FarmsProvider = ({children}:Props) => {
     await getPostLoadingOrError(`/farms/catalog/ubications?id_farm=${idFarm}`,setUbications)
     };
 
-  const getTasks = async() =>{
+  const getTasks = async(id:number) =>{
    if(!userAccess.find(u=>u.id_access===11)&& user?.id_role!==1){
       setAccessError('Credenciales inválidas')
       return 
     }
-    await getPostLoadingOrError(`/farms/catalog/tasks?id_farm=${idFarm}`,setTasks)
+    await getPostLoadingOrError(`/farms/tasks?id_pig=${id}`,setTasks)
+    };
+  const updateTasks = async(payload:ITask) =>{
+   // if(!userAccess.find(u=>u.id_access===11)&& user?.id_role!==1){
+   //    setAccessError('Credenciales inválidas')
+   //    return 
+   //  }
+    return await getPostLoadingOrError(`/farms/tasks`,setTasks,payload,state.tasks,'id_task',true)
     };
 
     const getBirths = async(payload:number) =>{
@@ -231,6 +241,18 @@ export const FarmsProvider = ({children}:Props) => {
          const {ok,data}=await getFarmsRequest(`/farms/births?id_pig=${payload}`)
          if(ok){
             setBirths(data as IBirth[])
+         }
+         else{
+          setError(data as string)
+         }
+         setIsLoading(false)
+      };
+
+    const createTasksToDo = async(payload:{id_pig:number;id_pig_stage:number;id_user:number}) =>{
+        setIsLoading(true)
+         const {ok,data}=await postFarmsRequest(`/farms/stage_change`,payload)
+         if(ok){
+            setTasks([...state.tasks,...data as ITask[]])
          }
          else{
           setError(data as string)
@@ -324,7 +346,6 @@ export const FarmsProvider = ({children}:Props) => {
          const {pig,birth}= data as ICrossing
          setBirths([...state.births,birth])
          setPigs(returnArray(state.pig!,pig,state.pigs,'id_pig'))
-         // returnArray(state.pig!,pig,state.pigs,'id_pig')
          setPig(pig)
        }
        else{
@@ -565,8 +586,12 @@ export const FarmsProvider = ({children}:Props) => {
       payload
      })
   };
-
-
+  const setBirthTypes = (payload: IBirthType[] ) =>{
+     dispatch({
+      type:'[Farms] - setBirthTypes',
+      payload
+     })
+  };
 
 
   const getPostLoadingOrError = async<T,K extends keyof T>(
@@ -621,7 +646,9 @@ export const FarmsProvider = ({children}:Props) => {
       getBirths,
       getCode,
       getNewStages,
-      setPigTask
+      setPigTask,
+      getTasks,
+      updateTasks
     }}>
       {children}
     </FarmsContext.Provider>

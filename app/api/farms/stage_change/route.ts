@@ -1,0 +1,85 @@
+import db from "@/database/connection";
+import { IPigTask } from "@/interfaces";
+import { addZero } from "@/utils";
+
+export const POST = async(req:Request) =>{
+  const body = await req.json();
+  const {id_pig,id_pig_stage,id_user }= body as {id_pig:number,id_pig_stage:number,id_user:number};
+
+  try {
+
+    const date = new Date(addZero(new Date()))
+    date.setHours(date.getHours()+6)
+
+    const tasks= await db.query(`
+      SELECT * FROM CAT.Pig_tasks WHERE id_pig_stage=${id_pig_stage}
+    `) as unknown as IPigTask[]
+
+
+    for (const task of tasks) {
+      await db.query(`
+      declare @const int 
+      set @const=(SELECT isNull(max(id_task),0)+1  FROM MOD.Tasks)
+      INSERT MOD.Tasks(
+        id_task,
+        id_pig,
+        id_pig_task,
+        comment,
+        created_at,
+        done,
+        end_date,
+        id_user,
+        start_date,
+        status 
+      )
+      VALUES(
+        @const,
+        '${id_pig}',
+        '${task.id_pig_task}',
+        '',
+        '${date.toISOString()}',
+        'false',
+        dateadd(hour,24*${task.days+task.while_days}+6,'${addZero(new Date())}'),
+        '${id_user}',
+        dateadd(hour,24*${task.days}+6,'${addZero(new Date())}'),
+        'true' 
+      )
+      `)
+    }
+
+    const newTasks= await db.query(`
+      select top ${tasks.length}
+        id_task,
+        id_pig,
+        MT.id_pig_task,
+        MT.id_user,
+        start_date,
+        end_date,
+        MT.created_at,
+        done,
+        comment,
+        MT.status,
+        PT.description,
+        RU.name 
+      FROM MOD.Tasks MT
+      inner join CAT.Pig_tasks PT
+      on PT.id_pig_task=MT.id_pig_task
+      inner join RH.Users RU
+      on RU.id_user=MT.id_user
+      order by id_task desc
+    `) as unknown as []
+
+    return Response.json({
+      ok:true,
+      data:newTasks.reverse()
+    })
+  } catch (error) {
+    console.log({error})
+    return Response.json({
+      ok:false,
+      data:'Error en el servidor al intentar conectar con la base de datos'
+    },{
+      status:500
+    })
+  }
+};

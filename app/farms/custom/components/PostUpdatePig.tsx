@@ -27,6 +27,7 @@ export const PostUpdatePig = () => {
     added_date:pig?new Date(pig.added_date):new Date(),
     visible:pig?pig.visible:true,
     id_farm:pig?pig.id_farm:idFarm,
+    bar_code:pig?pig.bar_code:'',
     status:pig?pig.status:true,
     id_stallion:pig?pig.id_stallion:stallions[0].id_stallion,
     id_weight_type:pig?pig.id_weight_type:weightTypes[1].id_weight_type
@@ -44,7 +45,8 @@ export const PostUpdatePig = () => {
     data.visible=values.visible
     data.id_pig_type=values.id_pig_type
     data.created_at=new Date()
-    data.id_stage_type=pig?pig?.id_stage_type!:9
+    data.id_pig_stage=pig?pig?.id_pig_stage!:1
+    data.bar_code=values.bar_code
     data.code=newCode
     setSubmit(true)
     const ok=await postPig(data)

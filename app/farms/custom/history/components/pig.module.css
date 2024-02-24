@@ -8,7 +8,7 @@
 }
 
 .birthRow{
-
+  padding: .5rem 0 0;
   display:flex;
   width: 900px;
   font-size:14px;

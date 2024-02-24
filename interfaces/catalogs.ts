@@ -48,21 +48,19 @@ export interface IUbication {
   updated_at:   string | Date;
 }
 
-
 export interface ITask {
-  id_task:      number;
-  id_task_type: number;
-  id_stage_type:    number;
-  description:  string;
-  status:       boolean;
-  created_at:   string | Date;
-  updated_at:   string | Date;
-  days:         number;
-  id_pig_type:  number;
-  stage:        string;
-  pig_type:     string;
-  id_farm:      number;
-  task_type:string;
+  id_task:     number;
+  id_pig:      number;
+  id_pig_task: number;
+  id_user:     number;
+  start_date:  string | Date;
+  end_date:    string | Date;
+  created_at:  string | Date;
+  done:        boolean;
+  comment:     string;
+  status:      boolean;
+  description?:string;
+  name?:string;
 }
 
 export interface ITaskType {
@@ -103,14 +101,11 @@ export interface IPigTask {
   id_pig_stage:       number;
   description:        string;
   status:             boolean;
-  created_at?:         string | Date;
+  created_at:         string | Date;
   id_farm:            number;
   days:               number;
   while_days:         number;
   id_stage_task_type: number;
-  pig_type?:           string;
-  stage?:              string;
-  task_type?:          string;
 }
 
 
@@ -120,3 +115,8 @@ export interface IStageTaskType {
   status:             boolean;
 }
 
+export interface IBirthType {
+  id_birth_type: number;
+  desciption:    string;
+  status:        boolean;
+}

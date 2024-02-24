@@ -11,12 +11,13 @@ export interface IPig {
   id_stallion:   number;
   visible:       boolean;
   id_farm:       number;
-  id_stage_type:      number;
+  id_pig_stage:      number;
   status:        boolean;
   pig_type:      string;
   pig_ubication: string;
   pig_race:      string;
   pig_stage:     string;
+  bar_code:     string;
   stallion?:     string;
   id_weight_type:number;
   pig_weight?:string;
@@ -48,9 +49,10 @@ export interface IBirth {
   id_user:         number;
   id_user_confirm: number;
   id_user_birth:   number;
+  id_birth_type:number;
   id_fertilization_type:number;
   fertilization_type?:string;
-  stallion?:string
+  stallion?:string;
 }
 
 export interface ICrossing{

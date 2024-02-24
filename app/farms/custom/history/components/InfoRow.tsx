@@ -25,7 +25,7 @@ export const InfoRow = () => {
           <p>Padre: <strong>{pig?.stallion}</strong></p>
           <p>Peso: <strong>{pig?.pig_weight}</strong></p>
           {
-            pig?.pig_stage==='Cargada'
+            !(pig?.id_pig_stage===1 || pig?.id_pig_stage===2)
               ?<p>Situación: <strong >{pig?.pig_stage}</strong></p>
               :<p>Situación: <strong className={styles.stage} onClick={()=>onClick('CROSSING')}>{pig?.pig_stage}</strong></p>
           }
