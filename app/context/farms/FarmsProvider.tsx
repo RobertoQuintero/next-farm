@@ -50,7 +50,8 @@ export interface UsersState{
   pigTasks:IPigTask[];
   pigTask:IPigTask | undefined;
   stageTaskTypes:IStageTaskType[];
-  birthTypes:IBirthType[]
+  birthTypes:IBirthType[];
+  piggletCode: string | undefined;
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -89,7 +90,8 @@ const UI_INITIAL_STATE:UsersState={
   pigTasks:[],
   pigTask: undefined,
   stageTaskTypes:[],
-  birthTypes:[]
+  birthTypes:[],
+  piggletCode: undefined
 }
 
 export const FarmsProvider = ({children}:Props) => {
@@ -176,11 +178,11 @@ export const FarmsProvider = ({children}:Props) => {
          setIsLoading(false)
       };
 
-    const getCode = async() =>{
+    const getCode = async(payload:string) =>{
         setIsLoading(true)
-         const {ok,data}=await getFarmsRequest(`/farms/code?id_farm=${idFarm}`)
+         const {ok,data}=await getFarmsRequest(`/farms/code?id_farm=${idFarm}&pig=${payload}`)
          if(ok){
-            setCode(data as string)
+            payload==='pig'?setCode(data as string):setPiggletCode(data as string)
          }
          else{
           setError(data as string)
@@ -533,6 +535,12 @@ export const FarmsProvider = ({children}:Props) => {
   const setCode = (payload: string | undefined ) =>{
      dispatch({
       type:'[Farms] - setCode',
+      payload
+     })
+  };
+  const setPiggletCode = (payload: string | undefined ) =>{
+     dispatch({
+      type:'[Farms] - setPiggletCode',
       payload
      })
   };

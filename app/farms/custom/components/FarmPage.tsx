@@ -3,7 +3,7 @@ import { AccessErrorComponent,  BackToFarms, DeleteComponent, EmptyPage, Loading
 import AppModal from '@/app/components/AppModal'
 import { Button, CardActionArea } from '@mui/material'
 import { CSSProperties, useContext, useEffect, useState } from 'react'
-import { PigCard, PostUpdatePig } from '.'
+import { PigCard, PostUpdatePig, SearchPigButton, SearchPigForm } from '.'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { AuthContext } from '@/app/context/auth/AuthContext'
 import { IPig } from '@/interfaces'
@@ -29,12 +29,12 @@ const FarmPage = () => {
     if(idFarm){
       getFarm(idFarm)
       getPigs(idFarm)
-      getCode()
+      getCode('pig')
     }else{
       let id= Number(Cookie.get('id_farm'))
       getFarm(id!)
       getPigs(id!)
-      getCode()
+      getCode('pig')
     }    
   }, [idFarm])
 
@@ -68,7 +68,7 @@ const FarmPage = () => {
 
   const onRefresh = async() =>{
     getPigs(idFarm!)
-    getCode()
+    getCode('pig')
   };
 
   return (
@@ -82,6 +82,7 @@ const FarmPage = () => {
             style={style} >
             <CachedOutlined fontSize='small'/>
           </CardActionArea>
+          <SearchPigButton/>
         </div>
         <div style={{display:'flex',alignItems:'center',gap:'1rem',color:'red'}}>
         {
@@ -117,6 +118,9 @@ const FarmPage = () => {
         }
         {
           farmAction==='DELETE'?<DeleteComponent onDelete={onDelete} loading={farmsLoading} error={farmsError}/>:<></>
+        }
+        {
+          farmAction==='SEARCH-PIG'?<SearchPigForm/>:<></>
         }
       </AppModal>
     </>

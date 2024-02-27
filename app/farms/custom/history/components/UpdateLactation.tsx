@@ -41,7 +41,6 @@ export const UpdateLactation = () => {
 
   return (
     <form className='Form' onSubmit={onSubmit}>
-      
         <TextField
           size="small"
           label='Valor'

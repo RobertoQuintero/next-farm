@@ -35,6 +35,7 @@ import { IFarm } from '@/interfaces/farm';
         | {type:'[Farms] - setBirth'; payload:IBirth | undefined }
         | {type:'[Farms] - setBirths'; payload:IBirth[] }
         | {type:'[Farms] - setCode'; payload:string | undefined }
+        | {type:'[Farms] - setPiggletCode'; payload:string | undefined }
         | {type:'[Farms] - setPigWeights'; payload:IPigWeight[] }
         | {type:'[Farms] - setPigStages'; payload:IPigStage[] }
         | {type:'[Farms] - setPigTasks'; payload:IPigTask[] }
@@ -214,6 +215,11 @@ export const usersReducer = (state:UsersState,action:UsersActionType):UsersState
       return {
         ...state,
         code:action.payload
+      }
+    case '[Farms] - setPiggletCode':
+      return {
+        ...state,
+        piggletCode:action.payload
       }
     case '[Farms] - setPigWeights':
       return {

@@ -4,13 +4,15 @@ export const GET = async(req:Request) =>{
 
   const {searchParams}= new URL(req.url)
   const id_farm=searchParams.get('id_farm')
+  const pig=searchParams.get('pig')
+  let table=pig==='pig'?'Pigs':'Lot_Piglets'
 
   try {
     let serial=''
     const resp=await db.query(`
-    select top 1 p1.code from MOD.Pigs as p1
+    select top 1 p1.code from MOD.${table} as p1
     where p1.status=0 and p1.id_farm=${id_farm}
-    and not exists (select p2.code from mod.Pigs as p2
+    and not exists (select p2.code from mod.${table} as p2
     where p2.status=1 and p2.id_farm=${id_farm} and p1.code=p2.code)
     order by p1.code
     `) as unknown as {code:string}[]
@@ -18,7 +20,7 @@ export const GET = async(req:Request) =>{
     if(!resp[0]?.code){
       const num= await db.query(` 
       SELECT isNull((
-        select top 1 CONVERT(int,code) from MOD.Pigs where id_farm=${id_farm} and status='true' order by code desc
+        select top 1 CONVERT(int,code) from MOD.${table} where id_farm=${id_farm} and status='true' order by code desc
         ),0) code
       `) as unknown  as {code:string}[]
       const id=Number(num[0].code)

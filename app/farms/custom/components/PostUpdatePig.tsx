@@ -4,7 +4,7 @@ import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { IPig } from '@/interfaces'
 import {  MenuItem, TextField } from '@mui/material'
-import React, { useContext, useState} from 'react'
+import React, { useContext, useEffect, useState} from 'react'
 import { useForm } from "react-hook-form"
 
 export const PostUpdatePig = () => {
@@ -36,6 +36,7 @@ export const PostUpdatePig = () => {
   const [addedDate, setAddedDate] = useState<Date | null>(new Date(values.added_date))
   const [newCode, setNewCode] = useState(values.code)
   const [submit, setSubmit] = useState(false)
+  const [barcode, setBarcode] = useState(values.bar_code)
 
   const onSubmit=async(data:IPig)=>{
     data.id_pig=values.id_pig
@@ -46,8 +47,11 @@ export const PostUpdatePig = () => {
     data.id_pig_type=values.id_pig_type
     data.created_at=new Date()
     data.id_pig_stage=pig?pig?.id_pig_stage!:1
-    data.bar_code=values.bar_code
+    data.bar_code=barcode
     data.code=newCode
+
+    // console.log(data)
+    // return
     setSubmit(true)
     const ok=await postPig(data)
     if(ok){
@@ -56,6 +60,38 @@ export const PostUpdatePig = () => {
       getCode()
     }
   }
+  
+  function handleBarcode(scanned_code:string){
+    setBarcode(scanned_code)
+  }
+
+  useEffect(() => {
+    let barcode=''
+    let interval:NodeJS.Timeout | undefined= undefined
+    const handler=(e:KeyboardEvent)=>{
+      if(interval){
+        clearInterval(interval)
+      }
+      if(e.code==='Enter'){
+        if(barcode)
+        handleBarcode(barcode)
+      barcode=''
+      return
+      }
+
+      if(e.code !='Shift'){
+        barcode+=e.key
+      }
+      interval = setInterval(() => {
+        barcode=''
+      }, 20);
+    }
+      document.addEventListener('keydown',handler)
+    return () => {
+      document.removeEventListener('keydown',handler)
+    }
+  }, [])
+  
 
   return (
     <form className='Form' onSubmit={handleSubmit(onSubmit)}>
@@ -159,6 +195,16 @@ export const PostUpdatePig = () => {
               <DatePickerElement date={addedDate} setDate={setAddedDate}/>
               </div>
         }
+        <TextField 
+        size="small"
+        fullWidth
+        // label='Código de barras'
+        type="text"
+        defaultValue={barcode}
+        disabled
+        {...register('bar_code')} 
+          
+        />
         <SaveButton loading={farmsLoading}/>
     </form>
   )
