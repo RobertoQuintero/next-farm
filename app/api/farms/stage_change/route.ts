@@ -4,7 +4,7 @@ import { addZero } from "@/utils";
 
 export const POST = async(req:Request) =>{
   const body = await req.json();
-  const {id_pig,id_pig_stage,id_user }= body as {id_pig:number,id_pig_stage:number,id_user:number};
+  const {id_pig,id_pig_stage,id_user,id_lot_piglets }= body as {id_pig:number,id_pig_stage:number,id_user:number,id_lot_piglets:number};
 
   try {
 
@@ -23,6 +23,7 @@ export const POST = async(req:Request) =>{
       INSERT MOD.Tasks(
         id_task,
         id_pig,
+        id_lot_piglets,
         id_pig_task,
         comment,
         created_at,
@@ -34,7 +35,8 @@ export const POST = async(req:Request) =>{
       )
       VALUES(
         @const,
-        '${id_pig}',
+        ${id_pig || 'NULL'},
+        ${id_lot_piglets || 'NULL'},
         '${task.id_pig_task}',
         '',
         '${date.toISOString()}',
@@ -51,6 +53,7 @@ export const POST = async(req:Request) =>{
       select top ${tasks.length}
         id_task,
         id_pig,
+        id_lot_piglets,
         MT.id_pig_task,
         MT.id_user,
         start_date,

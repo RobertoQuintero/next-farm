@@ -61,6 +61,7 @@ export interface ITask {
   status:      boolean;
   description?:string;
   name?:string;
+  id_lot_piglets:number;
 }
 
 export interface ITaskType {

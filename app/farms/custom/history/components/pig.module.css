@@ -3,13 +3,14 @@
   cursor: pointer;
 }
 .birthContainer{
+  position: relative;
   overflow-x: scroll;
   width: 400px;
-  padding-bottom: 1rem;
+  padding-bottom: .5rem;
 }
 
 .birthRow{
-  padding: .5rem 0 0;
+  padding: 1rem 0 0;
   display:flex;
   width: 900px;
   font-size:14px;
@@ -17,6 +18,7 @@
 }
 .birthRow:nth-child(1){
   border: none;
+  padding-bottom:.6rem;
 }
 .birthRow >p{
   flex-basis: 10%;
@@ -28,6 +30,31 @@
 .underline:hover{
   font-weight: bold;
   text-decoration: underline;
+}
+
+.comment{
+  position: relative;
+  text-align: center;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.comment span{
+  font-size: 13px;
+  position: absolute;
+  text-align: left;
+  width: 250px;
+  left: -80%;
+  bottom: 10px;
+  background-color: #fff;
+  padding: .1rem .3rem;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  display: none;
+  line-height: 1.3;
+}
+.comment:hover > span{
+  
+  display: block;
 }
 
 @media screen and (min-width:400px) {

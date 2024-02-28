@@ -13,7 +13,7 @@ export const UpdateConfirmForm = () => {
   const {birth,birthTypes,farmsLoading,postPig,pig,postBirth,createTasksToDo,farmAction} = useContext(FarmsContext)
   const [comment, setComment] = useState('')
   const [birthType, setBirthType] = useState(birthTypes[0].id_birth_type)
-  const [date, setDate] = useState<Date | null>(new Date())
+  const [date, setDate] = useState<Date | null>(new Date(birth?.confirm_date!))
 
   const onSubmit=async(e:SyntheticEvent)=>{
     e.preventDefault()
@@ -39,7 +39,7 @@ export const UpdateConfirmForm = () => {
     Promise.all([
       postPig(newPig),
       postBirth(newBirth),
-      is_normal&& createTasksToDo({id_pig:newPig.id_pig,id_pig_stage:newPig.id_pig_stage,id_user:user?.id_user!})
+      is_normal&& createTasksToDo({id_pig:newPig.id_pig,id_pig_stage:newPig.id_pig_stage,id_user:user?.id_user!,id_lot_piglets:0})
     ])
       .then(res=>{
         toggleModal()

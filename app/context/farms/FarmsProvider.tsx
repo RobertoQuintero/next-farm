@@ -5,7 +5,7 @@ import {  usersReducer } from './farmsReducer'
 import { IFarm } from '@/interfaces/farm'
 import { getFarmsRequest, postFarmsRequest } from './farmsRequest'
 import { returnArray } from '../auth/authRequest'
-import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing, IPigWeight, IPigStage, IPigTask, IStageTaskType, IBirthType } from '@/interfaces'
+import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing, IPigWeight, IPigStage, IPigTask, IStageTaskType, IBirthType, IPiglets } from '@/interfaces'
 import { AuthContext } from '../auth/AuthContext'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
@@ -52,6 +52,8 @@ export interface UsersState{
   stageTaskTypes:IStageTaskType[];
   birthTypes:IBirthType[];
   piggletCode: string | undefined;
+  piglets:IPiglets[]
+  piglet:IPiglets | undefined;
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -91,7 +93,9 @@ const UI_INITIAL_STATE:UsersState={
   pigTask: undefined,
   stageTaskTypes:[],
   birthTypes:[],
-  piggletCode: undefined
+  piggletCode: undefined,
+  piglets:[],
+  piglet: undefined
 }
 
 export const FarmsProvider = ({children}:Props) => {
@@ -131,7 +135,7 @@ export const FarmsProvider = ({children}:Props) => {
       getFarmsRequest(`/farms/catalog/pig_stages`),
       getFarmsRequest(`/farms/catalog/stage_task_types`),
       getFarmsRequest(`/farms/catalog/pig_tasks?id_farm=${idFarm}`),
-      
+      getFarmsRequest(`/farms/piglets?id_farm=${idFarm}`),
      ]).then((resp)=>{
       setPigTypes(resp[0].data as IPigType[])
       setRaces(resp[1].data as IRace[])
@@ -146,7 +150,7 @@ export const FarmsProvider = ({children}:Props) => {
       setPigStages(resp[10].data as IPigStage[])
       setStageTaskTypes(resp[11].data as IStageTaskType[])
       setPigTasks(resp[12].data as IPigTask[])
-      
+      setPiglets(resp[13].data as IPiglets[])
       setIsLoading(false)
      })
      .catch(error=>{
@@ -209,12 +213,12 @@ export const FarmsProvider = ({children}:Props) => {
     await getPostLoadingOrError(`/farms/catalog/ubications?id_farm=${idFarm}`,setUbications)
     };
 
-  const getTasks = async(id:number) =>{
+  const getTasks = async(id:number,pig:string) =>{
    if(!userAccess.find(u=>u.id_access===11)&& user?.id_role!==1){
       setAccessError('Credenciales inválidas')
       return 
     }
-    await getPostLoadingOrError(`/farms/tasks?id_pig=${id}`,setTasks)
+    await getPostLoadingOrError(`/farms/tasks?id=${id}&pig=${pig}`,setTasks)
     };
   const updateTasks = async(payload:ITask) =>{
    // if(!userAccess.find(u=>u.id_access===11)&& user?.id_role!==1){
@@ -236,7 +240,7 @@ export const FarmsProvider = ({children}:Props) => {
          setIsLoading(false)
       };
 
-    const createTasksToDo = async(payload:{id_pig:number;id_pig_stage:number;id_user:number}) =>{
+    const createTasksToDo = async(payload:{id_pig:number;id_pig_stage:number;id_user:number;id_lot_piglets:number}) =>{
         setIsLoading(true)
          const {ok,data}=await postFarmsRequest(`/farms/stage_change`,payload)
          if(ok){
@@ -270,7 +274,6 @@ export const FarmsProvider = ({children}:Props) => {
    //  return await getPostLoadingOrError('/farms/pigs',setPigs,payload,state.pigs,'id_pig',true)
   };
 
-
   const postRoleAccess = async(payload:IRoleAccess):Promise<boolean> =>{
    if(!userAccess.find(u=>u.id_access===8)&& user?.id_role!==1){
       setAccessError('Credenciales inválidas')
@@ -293,8 +296,6 @@ export const FarmsProvider = ({children}:Props) => {
     }
     return await getPostLoadingOrError('/farms/catalog/pig_tasks',setPigTasks,payload,state.pigTasks,'id_pig_task',true)
   };
-
-
 
   const postLossReason = async(payload:ILossReason):Promise<boolean> =>{
    if(!userAccess.find(u=>u.id_access===14)&& user?.id_role!==1){
@@ -327,8 +328,28 @@ export const FarmsProvider = ({children}:Props) => {
    //  }
     return await getPostLoadingOrError('/farms/births',setBirths,payload,state.births,'id_birth',true)
   };
+  const postPiglets = async(payload:IPiglets):Promise<boolean> =>{
+   // if(!userAccess.find(u=>u.id_access===16)&& user?.id_role!==1){
+   //    setAccessError('Credenciales inválidas')
+   //    return true 
+   //  }
+    return await getPostLoadingOrError('/farms/piglets',setPiglets,payload,state.piglets,'id_lot_piglets',true)
+  };
 
-  
+  const postNewPiglets = async(payload:IPiglets):Promise<boolean | number> =>{
+    setIsLoading(true)
+         const {ok,data}=await postFarmsRequest('/farms/piglets',payload)
+         if(ok){
+           return (data as IPiglets).id_lot_piglets
+         }
+         else{
+          setError(data as string)
+         }
+         setIsLoading(false)
+         return ok
+
+  };
+
   const postCrossingDate = async(payload:{id_stallion:number,crossing_date:string,id_pig:number,id_user:number,id_fertilization_type:number}) =>{
       setIsLoading(true)
        const {ok,data}=await postFarmsRequest(`/farms/crossing`,payload)
@@ -375,12 +396,6 @@ export const FarmsProvider = ({children}:Props) => {
   const setUbications = (payload:IUbication[]) =>{
      dispatch({
       type:'[Farms] - setUbications',
-      payload
-     })
-  };
-  const setStages = (payload:IStage[]) =>{
-     dispatch({
-      type:'[Farms] - setStages',
       payload
      })
   };
@@ -582,6 +597,18 @@ export const FarmsProvider = ({children}:Props) => {
       payload
      })
   };
+  const setPiglets = (payload: IPiglets[] ) =>{
+     dispatch({
+      type:'[Farms] - setPiglets',
+      payload
+     })
+  };
+  const setPiglet = (payload: IPiglets | undefined ) =>{
+     dispatch({
+      type:'[Farms] - setPiglet',
+      payload
+     })
+  };
 
 
   const getPostLoadingOrError = async<T,K extends keyof T>(
@@ -638,7 +665,10 @@ export const FarmsProvider = ({children}:Props) => {
       updateTasks,
       setBirth,
       postBirth,
-      createTasksToDo
+      createTasksToDo,
+      postPiglets,
+      postNewPiglets,
+      setPiglet
     }}>
       {children}
     </FarmsContext.Provider>

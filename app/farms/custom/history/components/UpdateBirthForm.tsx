@@ -3,14 +3,14 @@ import React, { useContext, useState } from 'react'
 import { useForm } from "react-hook-form"
 import { UiContext } from '@/app/context/ui/UiContext'
 import { DatePickerElement, SaveButton } from '@/app/components'
-import { IBirth, IPig } from '@/interfaces'
+import { IBirth, IPig, IPiglets } from '@/interfaces'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { AuthContext } from '@/app/context/auth/AuthContext'
 
 export const UpdateBirthForm = () => {
   const {user} = useContext(AuthContext)
   const {toggleModal} = useContext(UiContext)
-  const {birth,birthTypes,farmsLoading,pig,postPig,postBirth,createTasksToDo} = useContext(FarmsContext)
+  const {birth,birthTypes,farmsLoading,pig,postPig,postBirth,createTasksToDo,piggletCode,postNewPiglets,farmAction} = useContext(FarmsContext)
   const [date, setDate] = useState<Date | null>(new Date(birth?.birth_date!))
   const {
     register,
@@ -27,6 +27,14 @@ export const UpdateBirthForm = () => {
 
 
   const onSubmit=async(data:IBirth)=>{
+    if(farmAction==='COMMENT'){
+      const comment={...birth,comment:data.comment} as IBirth
+    const ok= await postBirth(comment)
+    if(ok){
+      toggleModal()
+    }
+    return
+  }
 
     if(pig?.id_pig_stage===6){
       const newBirth={
@@ -60,23 +68,48 @@ export const UpdateBirthForm = () => {
       id_pig_stage:is_normal?6:2
     } as IPig
 
-    Promise.all([
-      postPig(newPig),
-      postBirth(newBirth),
-      is_normal&& createTasksToDo({id_pig:newPig.id_pig,id_pig_stage:newPig.id_pig_stage,id_user:user?.id_user!})
-    ])
-      .then(res=>{
-        toggleModal()
-      })
-      .catch(error=>{
-        console.log({error})
-      })
+    const piglets={
+      id_lot_piglets:0,
+      id_birth:birth?.id_birth,
+      quantity:data.alive,
+      created_at:date,
+      close_date:date,
+      id_user:user?.id_user,
+      id_ubication:pig?.id_ubication,
+      id_pig_stage:7,
+      code:piggletCode,
+      status:true,
+      closed:false,
+      id_farm:pig?.id_farm
+    } as IPiglets
+    // console.log(piglets)
+    // return
+    
+          Promise.all([
+            postPig(newPig),
+            postBirth(newBirth),
+            is_normal&& createTasksToDo({id_pig:newPig.id_pig,id_pig_stage:newPig.id_pig_stage,id_user:user?.id_user!,id_lot_piglets:0}),
+            pig?.id_pig_stage===5&&postNewPiglets(piglets).then(async(resp)=>{
+              if(resp){
+                await createTasksToDo({id_pig:0,id_pig_stage:7,id_user:user?.id_user!,id_lot_piglets:resp as number})
+              }
+            })
+          ])
+            .then(res=>{
+              toggleModal()
+            })
+            .catch(error=>{
+              console.log({error})
+            })
+
   }
 
   return (
     <form className='Form' onSubmit={handleSubmit(onSubmit)}>
       <TextField 
         size="small"
+        multiline 
+        rows={2}
         fullWidth
         label='Comentarios'
         type="text"
@@ -84,53 +117,59 @@ export const UpdateBirthForm = () => {
         {...register('comment')}
         />
         {
-          pig?.id_pig_stage===6
-            ?<></>
-            :<TextField
-            size="small"
-            label='Tipo'
-            fullWidth
-            defaultValue={values.id_birth_type}
-            {...register('id_birth_type')} 
-            select >
+          farmAction!=='COMMENT'
+            ?<>
             {
-              birthTypes.length
-              ?birthTypes.map(item=>(
-                <MenuItem 
-                  key={item.id_birth_type} 
-                  value={item.id_birth_type}>
-                  {item.description}
-                </MenuItem>
-              ))
-              :<div></div>
+              pig?.id_pig_stage===6
+                ?<></>
+                :<TextField
+                size="small"
+                label='Tipo'
+                fullWidth
+                defaultValue={values.id_birth_type}
+                {...register('id_birth_type')} 
+                select >
+                {
+                  birthTypes.length
+                  ?birthTypes.map(item=>(
+                    <MenuItem 
+                      key={item.id_birth_type} 
+                      value={item.id_birth_type}>
+                      {item.description}
+                    </MenuItem>
+                  ))
+                  :<div></div>
+                }
+              </TextField>
             }
-          </TextField>
+            {
+              pig?.id_pig_stage===6
+                ?<></>
+                :<>
+                <TextField 
+              size="small"
+              fullWidth
+              label='Hijos vivos'
+              type="number"
+              defaultValue={values.alive}
+              {...register('alive')}
+            />
+            <TextField 
+              size="small"
+              fullWidth
+              label='Hijos muertos'
+              type="number"
+              defaultValue={values.dead}
+              {...register('dead')}
+            />
+                <div style={{display:'flex',justifyContent:'flex-end', gap:'.5rem'}}>
+                  <p style={{fontSize:'14px',padding:'.5rem 0 0 0'}}>Fecha parto</p>
+                  <DatePickerElement date={date} setDate={setDate}/>
+                </div>
+                </>
+            }
+          </>:<></>
         }
-        <TextField 
-          size="small"
-          fullWidth
-          label='Hijos vivos'
-          type="number"
-          defaultValue={values.alive}
-          {...register('alive')}
-        />
-        <TextField 
-          size="small"
-          fullWidth
-          label='Hijos muertos'
-          type="number"
-          defaultValue={values.dead}
-          {...register('dead')}
-        />
-        {
-          pig?.id_pig_stage===6
-            ?<></>
-            :<div style={{display:'flex',justifyContent:'flex-end', gap:'.5rem'}}>
-              <p style={{fontSize:'14px',padding:'.5rem 0 0 0'}}>Fecha parto</p>
-              <DatePickerElement date={date} setDate={setDate}/>
-            </div>
-        }
-        
         <SaveButton loading={farmsLoading}/>
     </form>
   )

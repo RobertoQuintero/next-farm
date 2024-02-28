@@ -40,13 +40,10 @@ export const BirthElementRow = ({birth}:Props) => {
         :<p>{new Date(birth.birth_date).toLocaleString().split(',')[0]}</p>
         
       }
-      {
-        pig?.id_pig_stage===6&& !birth.closed
-        ?<p onClick={()=>onConfirm('ALIVE')} className={styles.underline}>{birth.alive}</p>
-        :<p>{birth.alive}</p>
-      }
+      
+      <p>{birth.alive}</p>
       <p>{birth.dead}</p>
-      <p>{birth.comment}</p>
+      <p onClick={()=>onConfirm('COMMENT')} className={styles.comment}>... {birth.comment?.length?<span>{birth.comment}</span>:''}</p>
       <p>{birth.birth_type}</p>
       
     </div>

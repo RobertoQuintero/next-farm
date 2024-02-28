@@ -14,7 +14,6 @@ export const InfoRow = () => {
      toggleModal()
   };
 
-  
   return (
     <AccordionElement title='Información' open>
       <div style={{display:'flex',justifyContent:'space-between'}}>

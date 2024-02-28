@@ -14,6 +14,7 @@ id_task,
   comment,
   MT.status,
   PT.description,
+  id_lot_piglets,
   RU.name 
 FROM MOD.Tasks MT
 inner join CAT.Pig_tasks PT
@@ -24,13 +25,14 @@ on RU.id_user=MT.id_user
 
 export const GET = async(req:Request) =>{
   const {searchParams}= new URL(req.url)
-  const id_pig=searchParams.get('id_pig')
-  return await getRequestQuery(`${query} WHERE MT.status='true' AND id_pig=${id_pig} order by id_task desc`)
+  const id=searchParams.get('id')
+  const pig=searchParams.get('pig')
+  return await getRequestQuery(`${query} WHERE MT.status='true' AND ${pig==='pig'?`id_pig=${id}`:`id_lot_piglets=${id}`} order by id_task asc`)
 }
 
 export const POST = async(req:Request) =>{
   const body = await req.json();
-  const {id_task,id_pig,id_pig_task,comment,created_at,done,end_date,id_user,start_date,status }= body as ITask;
+  const {id_task,id_pig,id_pig_task,comment,created_at,done,end_date,id_user,start_date,status,id_lot_piglets }= body as ITask;
     
   return await postRequest(`
   declare @const int 
@@ -45,6 +47,7 @@ export const POST = async(req:Request) =>{
         end_date='${end_date}',
         id_user='${id_user}',
         start_date='${start_date}',
+        id_lot_piglets='${id_lot_piglets}',
         status='${status}'
     WHERE id_task=${id_task}
     ${query} WHERE id_task=${id_task}
@@ -61,6 +64,7 @@ export const POST = async(req:Request) =>{
       end_date,
       id_user,
       start_date,
+      id_lot_piglets,
       status 
     )
     VALUES(
@@ -73,6 +77,7 @@ export const POST = async(req:Request) =>{
       '${end_date}',
       '${id_user}',
       '${start_date}',
+      '${id_lot_piglets}',
       '${status}' 
     )
     ${query} WHERE id_task=@const

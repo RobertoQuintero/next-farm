@@ -2,19 +2,19 @@ import { AccordionElement } from '@/app/components'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import React, { useContext, useEffect } from 'react'
 import Cookies from 'js-cookie'
-import { IPig } from '@/interfaces'
-import { TaskElementRow } from '.'
-import styles from './pig.module.css'
+import { IPiglets } from '@/interfaces'
+import { TaskElementRow } from '../../history/components'
+import styles from '../../history/components/pig.module.css'
 
-export const TasksRow = () => {
-  const {getTasks,pig,tasks} = useContext(FarmsContext)
+export const TasksRowPiglets = () => {
+  const {getTasks,tasks,piglet} = useContext(FarmsContext)
 
   useEffect(() => {
-    if(pig){
-      getTasks(pig?.id_pig!,'pig')
+    if(piglet){
+      getTasks(piglet?.id_lot_piglets!,'lot')
     }else{
-      const newPig= JSON.parse(Cookies.get('pig')!) as IPig
-      getTasks(newPig.id_pig,'pig')
+      const newPig= JSON.parse(Cookies.get('piglet')!) as IPiglets
+      getTasks(newPig.id_lot_piglets,'lot')
     }
   }, [])
   
@@ -30,8 +30,8 @@ export const TasksRow = () => {
           <p>Descripción</p>
         </div>
         {
-          tasks.filter(t=>t.status&&!t.id_lot_piglets).length
-          ?tasks.filter(t=>t.status&&!t.id_lot_piglets).map(t=><TaskElementRow task={t} key={t.id_task}/>)
+          tasks.filter(t=>t.status&&!t.id_pig).length
+          ?tasks.filter(t=>t.status&&!t.id_pig).map(t=><TaskElementRow task={t} key={t.id_task}/>)
           :<></>
         }
       </div>

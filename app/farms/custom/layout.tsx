@@ -3,6 +3,7 @@ import CustomMenuLink from '../../components/CustomMenuLink'
 
 const links=[
   {href:'/farms/custom',title:'Bitácora cerdas'},
+  {href:'/farms/custom/piglets',title:'Lechones'},
   {href:'/farms/custom/users',title:'Usuarios'},
   {href:'/farms/custom/roles',title:'Roles'},
   {href:'/farms/custom/catalogs',title:'Catálogos'},

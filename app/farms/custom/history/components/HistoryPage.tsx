@@ -10,13 +10,14 @@ import { ITask } from '@/interfaces';
 import { useUi } from '@/app/context/ui/useUi';
 
 const HistoryPage = () => {
-  const {farmAction,pig,setPig,farmsError,farmsLoading,task,updateTasks} = useContext(FarmsContext)
+  const {farmAction,pig,setPig,farmsError,farmsLoading,task,updateTasks,getCode} = useContext(FarmsContext)
   const {toggleModal} = useUi()
   
   useEffect(() => {
     if(!pig){
       setPig(JSON.parse(Cookies.get('pig')!))
     }
+    getCode('lot')
   }, [])
 
   const onDelete = async() =>{
@@ -26,7 +27,6 @@ const HistoryPage = () => {
      if(ok){
       toggleModal()
      }
-     
   };
   
   return (
@@ -59,7 +59,7 @@ const HistoryPage = () => {
             farmAction==='BIRTH'?<UpdateBirthForm/>:<></>
           }
           {
-            farmAction==='ALIVE'?<UpdateBirthForm/>:<></>
+            farmAction==='COMMENT'?<UpdateBirthForm/>:<></>
           }
           {
             farmAction==='LACTATION'?<UpdateLactation/>:<></>
