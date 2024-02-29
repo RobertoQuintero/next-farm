@@ -1,4 +1,4 @@
-import React, { useContext} from 'react'
+import React, { useContext, useEffect} from 'react'
 import { FarmsContext } from '@/app/context/farms/FarmsContext';
 import { Button } from '@mui/material';
 import { AccordionElement } from '@/app/components';
@@ -7,6 +7,7 @@ import { useUi } from '@/app/context/ui/useUi';
 export const InfoRowPiglets = () => {
   const {setFarmAction,piglet} = useContext(FarmsContext)
   const {toggleModal} = useUi()
+
 
   const onClick =(action:string) =>{
      setFarmAction(action)
@@ -23,6 +24,8 @@ export const InfoRowPiglets = () => {
           <p>Ubicación: <strong>{piglet?.ubication}</strong></p>
           <p>Padre: <strong>{piglet?.stallion}</strong></p>
           <p>Cantidad: <strong>{piglet?.quantity}</strong></p>
+          <p>Etapa: <strong>{piglet?.stage}</strong></p>
+          <p>Modificó: <strong>{piglet?.user}</strong></p>
         </div>
         <div>
           <Button size='small' color='warning' onClick={()=>onClick('EDIT')} variant='contained'>Editar</Button>

@@ -57,7 +57,7 @@ export const PostUpdatePig = () => {
     if(ok){
       toggleModal()
       setSubmit(false)
-      getCode()
+      getCode('pig')
     }
   }
   

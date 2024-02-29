@@ -18,14 +18,13 @@ export const TasksRow = () => {
     }
   }, [])
   
-
   return (
     <AccordionElement title='Actividades'>
       <>
       <div className={styles.birthContainer}>
       <div className={styles.birthRow} style={{fontWeight:'bold'}}>
           <p >Fecha</p>
-          <p >Hasta</p>
+          {/* <p >Hasta</p> */}
           <p>Aplicó</p>
           <p>Descripción</p>
         </div>

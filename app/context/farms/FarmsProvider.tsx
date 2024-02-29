@@ -271,7 +271,23 @@ export const FarmsProvider = ({children}:Props) => {
          }
          setIsLoading(false)
          return ok
-   //  return await getPostLoadingOrError('/farms/pigs',setPigs,payload,state.pigs,'id_pig',true)
+  };
+  const postPiglets = async(payload:IPiglets):Promise<boolean> =>{
+   // if(!userAccess.find(u=>u.id_access===5)&& user?.id_role!==1){
+   //    setAccessError('Credenciales inválidas')
+   //    return true
+   //  }
+    setIsLoading(true)
+         const {ok,data}=await postFarmsRequest('/farms/piglets',payload)
+         if(ok){
+            setPiglets(returnArray(payload,data as IPiglets,state.piglets,'id_lot_piglets'))
+            setPiglet(data as IPiglets)
+         }
+         else{
+          setError(data as string)
+         }
+         setIsLoading(false)
+         return ok
   };
 
   const postRoleAccess = async(payload:IRoleAccess):Promise<boolean> =>{
@@ -328,13 +344,19 @@ export const FarmsProvider = ({children}:Props) => {
    //  }
     return await getPostLoadingOrError('/farms/births',setBirths,payload,state.births,'id_birth',true)
   };
-  const postPiglets = async(payload:IPiglets):Promise<boolean> =>{
-   // if(!userAccess.find(u=>u.id_access===16)&& user?.id_role!==1){
-   //    setAccessError('Credenciales inválidas')
-   //    return true 
-   //  }
-    return await getPostLoadingOrError('/farms/piglets',setPiglets,payload,state.piglets,'id_lot_piglets',true)
-  };
+  
+  const updateBirth = async(payload:IPiglets) =>{
+      setIsLoading(true)
+       const {ok,data}=await postFarmsRequest(`/farms/births/1`,payload)
+       if(ok){
+  
+       }
+       else{
+        setError(data as string)
+       }
+       setIsLoading(false)
+    };
+
 
   const postNewPiglets = async(payload:IPiglets):Promise<boolean | number> =>{
     setIsLoading(true)
@@ -668,7 +690,8 @@ export const FarmsProvider = ({children}:Props) => {
       createTasksToDo,
       postPiglets,
       postNewPiglets,
-      setPiglet
+      setPiglet,
+      updateBirth
     }}>
       {children}
     </FarmsContext.Provider>

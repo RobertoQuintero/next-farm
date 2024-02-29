@@ -1,10 +1,10 @@
 'use client'
 import React, { useContext, useEffect } from 'react'
 import { BackButton, DeleteComponent } from '@/app/components';
-import { BirthsRow, InfoRow, TasksRow,UpdateBirthForm,UpdateConfirmForm,UpdateCrossingForm, UpdateLactation, UpdateTask } from '.';
+import { BirthsRow, InfoRow, TasksRow,UpdateBirthForm,UpdateConfirmForm,UpdateCrossingForm, UpdateLactation } from '.';
 import AppModal from '@/app/components/AppModal';
 import { FarmsContext } from '@/app/context/farms/FarmsContext';
-import { PostUpdatePig } from '../../components';
+import { PostUpdatePig, UpdateComment, UpdateTask } from '../../components';
 import Cookies from 'js-cookie'
 import { ITask } from '@/interfaces';
 import { useUi } from '@/app/context/ui/useUi';
@@ -60,6 +60,9 @@ const HistoryPage = () => {
           }
           {
             farmAction==='COMMENT'?<UpdateBirthForm/>:<></>
+          }
+          {
+            farmAction==='COMMENT-TASK'?<UpdateComment/>:<></>
           }
           {
             farmAction==='LACTATION'?<UpdateLactation/>:<></>

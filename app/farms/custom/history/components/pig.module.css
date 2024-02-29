@@ -9,19 +9,22 @@
   padding-bottom: .5rem;
 }
 
-.birthRow{
+.birthRow,.taskRow{
   padding: 1rem 0 0;
   display:flex;
   width: 900px;
   font-size:14px;
   border-bottom: 1px solid #ccc;
 }
-.birthRow:nth-child(1){
+.birthRow:nth-child(1),.taskRow:nth-child(1){
   border: none;
   padding-bottom:.6rem;
 }
-.birthRow >p{
+.birthRow >p,.taskRow >p{
   flex-basis: 10%;
+}
+.taskRow >p:nth-child(3){
+  flex-basis: 28%;
 }
 
 .underline{

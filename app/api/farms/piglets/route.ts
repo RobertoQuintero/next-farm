@@ -41,6 +41,7 @@ export const GET = async(req:Request) =>{
 
 export const POST = async(req:Request) =>{
   const body = await req.json();
+  console.log(body)
   const {id_lot_piglets,closed,code,created_at,id_birth,id_farm,id_pig_stage,id_ubication,id_user,quantity,status,close_date }= body as IPiglets;
     
   return await postRequest(`

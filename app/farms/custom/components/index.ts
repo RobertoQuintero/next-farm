@@ -1,3 +1,7 @@
+export * from "./UpdateTask";
+
+export * from "./UpdateComment";
+
 export * from "./SearchPigForm";
 
 export * from "./SearchPigButton";

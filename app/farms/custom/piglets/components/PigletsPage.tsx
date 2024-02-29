@@ -29,15 +29,17 @@ const PigletsPage = () => {
 
   return (
     <>
-     <div className='actionCreateContainer'>
+     <div className='actionCreateContainer' >
         {/* <BackButton/> */}
         <div></div>
+        
         <Button 
           onClick={onAdd}
           variant='contained' 
           color='success'
           size='small'>Nuevo</Button>
       </div>
+      <h3 style={{padding:'0 0 1rem',textAlign:'center'}} >Lechones</h3>
       <div>
       <div style={{display:'flex',fontWeight:'bold',fontSize:'14px',paddingLeft:'.5rem'}}>
         <p style={{width:'100px'}}>Ingresado</p>
