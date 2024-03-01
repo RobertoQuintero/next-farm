@@ -18,7 +18,8 @@ export const UpdateTask = () => {
   } = useForm<ITask>()
 
   const values={
-    start_date:task?task.start_date:new Date()
+    start_date:task?task.start_date:new Date(),
+    comment:task?task.comment:''
   } as ITask
 
   const [addedDate, setAddedDate] = useState<Date | null>(new Date(values.start_date))

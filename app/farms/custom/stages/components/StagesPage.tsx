@@ -4,11 +4,11 @@ import AppModal from '@/app/components/AppModal'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { useContext } from 'react'
 import { StageRow } from '.'
-import { PostUpdateStage } from './PostUpdateStage'
+// import { PostUpdateStage } from './PostUpdateStage'
 
 const StagesPage = () => {
 
-  const {farmAction,getNewStages,pigStages} = useContext(FarmsContext)
+  const {farmAction,pigStages} = useContext(FarmsContext)
 
   // const onCharge = async() =>{
   //    getNewStages()
@@ -37,7 +37,7 @@ const StagesPage = () => {
       </div>
       <AppModal>
         {
-          farmAction==='EDIT' || farmAction===undefined ?<PostUpdateStage/>:<></>
+          // farmAction==='EDIT' || farmAction===undefined ?<PostUpdateStage/>:<></>
         }
         {
           farmAction==='FORM'?<p></p>:<></>

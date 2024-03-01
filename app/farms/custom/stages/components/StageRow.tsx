@@ -1,4 +1,4 @@
-import { IPigStage, IStage } from '@/interfaces'
+import { IPigStage} from '@/interfaces'
 import React, { useContext } from 'react'
 import { RowButton } from '../../components'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
@@ -9,7 +9,7 @@ interface Props{
 }
 
 export const StageRow = ({stage}:Props) => {
-  const {setStage,setFarmAction} = useContext(FarmsContext)
+  const {setFarmAction} = useContext(FarmsContext)
   const {toggleModal} = useContext(UiContext)
 
   const onClick = async(action:string) =>{

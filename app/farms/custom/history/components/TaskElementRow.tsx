@@ -4,6 +4,7 @@ import { RowButton } from '../../components'
 import { useContext } from 'react'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
+import { CheckCircleOutline } from '@mui/icons-material'
 
 interface Props{
   task:ITask
@@ -31,7 +32,7 @@ export const TaskElementRow = ({task}:Props) => {
             <RowButton onClick={()=>onClick('UPDATE-TASK')} label="aplicar"/>
             <RowButton onClick={()=>onClick('DELETE-TASK')} label="borrar" color='red'/>
           </>
-          :<></>
+          :<div style={{textAlign:'center',flexBasis:'10%',color:'green'}}><CheckCircleOutline fontSize='small'/></div>
       }
     </div>
   )
