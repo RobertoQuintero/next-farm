@@ -84,6 +84,7 @@ interface ContextProps{
   postNewPiglets: (payload: IPiglets) => Promise<boolean | number>;
   setPiglet: (payload: IPiglets | undefined) => void;
   updateBirth: (payload: IPiglets) => Promise<void>;
+  movePiglets: (payload: IPiglets) => Promise<boolean>;
 }
 
 export const FarmsContext = createContext({} as ContextProps)

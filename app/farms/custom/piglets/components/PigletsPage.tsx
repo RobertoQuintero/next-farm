@@ -5,14 +5,16 @@ import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { Button } from '@mui/material'
 import { useContext } from 'react'
-import { PigletsCard } from '.'
+import { PigletsCard, PostUpdatePiglets } from '.'
 
 const PigletsPage = () => {
   const {toggleModal} = useContext(UiContext)
-  const {piglets} = useContext(FarmsContext)
+  const {piglets,setFarmAction,farmAction,getCode} = useContext(FarmsContext)
 
   const onAdd = async() =>{
-     toggleModal()
+    await getCode('lot')
+    setFarmAction(undefined)
+    toggleModal()
   };
 
   const onDelete = async() =>{
@@ -54,11 +56,10 @@ const PigletsPage = () => {
         }
       </div>
       <AppModal>
-        <></>
         {
-          // action==='EDIT' || action===undefined
-              // ?<PostUpdate/>
-              // :<DeleteComponent onDelete={onDelete} loading={} error={}/>
+          farmAction===undefined
+              ?<PostUpdatePiglets/>
+              :<></>
         }
       </AppModal>
     </>

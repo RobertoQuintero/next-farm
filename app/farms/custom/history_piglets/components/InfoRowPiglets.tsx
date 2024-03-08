@@ -22,13 +22,14 @@ export const InfoRowPiglets = () => {
           <p>Código: <strong>{piglet?.code}</strong></p>
           <p>Ingresado: <strong>{new Date(piglet?.created_at!).toLocaleString().split(',')[0]}</strong></p>
           <p>Ubicación: <strong>{piglet?.ubication}</strong></p>
-          <p>Padre: <strong>{piglet?.stallion}</strong></p>
+          {/* <p>Padre: <strong>{piglet?.stallion}</strong></p> */}
           <p>Cantidad: <strong>{piglet?.quantity}</strong></p>
           <p>Etapa: <strong>{piglet?.stage}</strong></p>
           <p>Modificó: <strong>{piglet?.user}</strong></p>
         </div>
-        <div>
+        <div style={{display:'flex', flexDirection:'column', gap:'.3rem'}}>
           <Button size='small' color='warning' onClick={()=>onClick('EDIT')} variant='contained'>Editar</Button>
+          <Button size='small' onClick={()=>onClick('MOVE')} variant='outlined'>Mover</Button>
         </div>
       </div>
     </AccordionElement>

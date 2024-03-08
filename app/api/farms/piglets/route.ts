@@ -18,7 +18,7 @@ LP.id_farm,
 RU.name [user],
 CU.description ubication,
 PS.description stage,
-MS.name stallion,
+--MS.name stallion,
 DATEDIFF(DAY,LP.created_at,GETUTCDATE()) [days]
 from MOD.Lot_Piglets LP
 INNER JOIN RH.Users RU
@@ -27,10 +27,10 @@ INNER JOIN CAT.Ubications CU
 on CU.id_ubication=LP.id_ubication
 INNER JOIN CAT.Pig_stages PS
 on PS.id_pig_stage=LP.id_pig_stage
-INNER JOIN MOD.Births MB
-on MB.id_birth=LP.id_birth
-INNER JOIN MOD.Stallions MS
-on MS.id_stallion=MB.id_stallion
+--INNER JOIN MOD.Births MB
+--on MB.id_birth=LP.id_birth
+--INNER JOIN MOD.Stallions MS
+--on MS.id_stallion=MB.id_stallion
 `
 
 export const GET = async(req:Request) =>{

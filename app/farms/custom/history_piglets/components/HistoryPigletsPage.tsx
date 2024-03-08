@@ -1,7 +1,7 @@
 'use client'
 import { BackButton } from '@/app/components'
 import React, { useContext, useEffect } from 'react'
-import { InfoRowPiglets, TasksRowPiglets, UpdatePiglets } from '.'
+import { InfoRowPiglets, MovePiglets, TasksRowPiglets, UpdatePiglets } from '.'
 import AppModal from '@/app/components/AppModal'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UpdateComment, UpdateTask } from '../../components'
@@ -31,6 +31,9 @@ const HistoryPigletsPage = () => {
       }
       {
         farmAction==='EDIT'?<UpdatePiglets/>:<></>
+      }
+      {
+        farmAction==='MOVE'?<MovePiglets/>:<></>
       }
       </AppModal>
     </>

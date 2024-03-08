@@ -372,6 +372,21 @@ export const FarmsProvider = ({children}:Props) => {
 
   };
 
+  
+  const movePiglets = async(payload:IPiglets) =>{
+      setIsLoading(true)
+       const {ok,data}=await postFarmsRequest(`/`,payload)
+       if(ok){
+         
+       }
+       else{
+        setError(data as string)
+       }
+       setIsLoading(false)
+       return ok
+    };
+  
+
   const postCrossingDate = async(payload:{id_stallion:number,crossing_date:string,id_pig:number,id_user:number,id_fertilization_type:number}) =>{
       setIsLoading(true)
        const {ok,data}=await postFarmsRequest(`/farms/crossing`,payload)
@@ -691,7 +706,8 @@ export const FarmsProvider = ({children}:Props) => {
       postPiglets,
       postNewPiglets,
       setPiglet,
-      updateBirth
+      updateBirth,
+      movePiglets
     }}>
       {children}
     </FarmsContext.Provider>
