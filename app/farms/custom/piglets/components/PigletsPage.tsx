@@ -5,7 +5,7 @@ import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { Button } from '@mui/material'
 import { useContext } from 'react'
-import { PigletsCard, PostUpdatePiglets } from '.'
+import { PigletsCard, PostUpdateGrowingPigs, PostUpdatePiglets } from '.'
 
 const PigletsPage = () => {
   const {toggleModal} = useContext(UiContext)
@@ -59,7 +59,7 @@ const PigletsPage = () => {
         {
           farmAction===undefined
               ?<PostUpdatePiglets/>
-              :<></>
+              :<PostUpdateGrowingPigs/>
         }
       </AppModal>
     </>

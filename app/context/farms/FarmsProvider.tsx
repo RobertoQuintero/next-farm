@@ -9,6 +9,7 @@ import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess,
 import { AuthContext } from '../auth/AuthContext'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
+import { IGrowingPigs } from '@/interfaces/growing_pigs'
 
 interface Props{
   children:JSX.Element|JSX.Element[]
@@ -54,6 +55,8 @@ export interface UsersState{
   piggletCode: string | undefined;
   piglets:IPiglets[]
   piglet:IPiglets | undefined;
+  growing_pigs:IGrowingPigs[]
+  growing_pig:IGrowingPigs | undefined;
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -95,7 +98,9 @@ const UI_INITIAL_STATE:UsersState={
   birthTypes:[],
   piggletCode: undefined,
   piglets:[],
-  piglet: undefined
+  piglet: undefined,
+  growing_pigs:[],
+  growing_pig:undefined
 }
 
 export const FarmsProvider = ({children}:Props) => {
@@ -136,6 +141,7 @@ export const FarmsProvider = ({children}:Props) => {
       getFarmsRequest(`/farms/catalog/stage_task_types`),
       getFarmsRequest(`/farms/catalog/pig_tasks?id_farm=${idFarm}`),
       getFarmsRequest(`/farms/piglets?id_farm=${idFarm}`),
+      getFarmsRequest(`/farms/growing_pigs?id_farm=${idFarm}`),
      ]).then((resp)=>{
       setPigTypes(resp[0].data as IPigType[])
       setRaces(resp[1].data as IRace[])
@@ -151,6 +157,7 @@ export const FarmsProvider = ({children}:Props) => {
       setStageTaskTypes(resp[11].data as IStageTaskType[])
       setPigTasks(resp[12].data as IPigTask[])
       setPiglets(resp[13].data as IPiglets[])
+      setGrowingPigs(resp[14].data as IGrowingPigs[])
       setIsLoading(false)
      })
      .catch(error=>{
@@ -646,6 +653,18 @@ export const FarmsProvider = ({children}:Props) => {
       payload
      })
   };
+  const setGrowingPigs = (payload: IGrowingPigs[] ) =>{
+     dispatch({
+      type:'[Farms] - setGrowingPigs',
+      payload
+     })
+  };
+  const setGrowingPig = (payload: IGrowingPigs | undefined ) =>{
+     dispatch({
+      type:'[Farms] - setGrowingPig',
+      payload
+     })
+  };
 
 
   const getPostLoadingOrError = async<T,K extends keyof T>(
@@ -707,7 +726,9 @@ export const FarmsProvider = ({children}:Props) => {
       postNewPiglets,
       setPiglet,
       updateBirth,
-      movePiglets
+      movePiglets,
+      setGrowingPig,
+      setGrowingPigs
     }}>
       {children}
     </FarmsContext.Provider>
