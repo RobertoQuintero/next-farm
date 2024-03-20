@@ -6,11 +6,12 @@ import { DatePickerElement, SaveButton } from '@/app/components'
 import { IGrowingPigs } from '@/interfaces/growing_pigs'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { AuthContext } from '@/app/context/auth/AuthContext'
+import { IPiglets } from '@/interfaces'
 
 export const PostUpdateGrowingPigs = () => {
   const {toggleModal} = useContext(UiContext)
   const {user} = useContext(AuthContext)
-  const {growing_pig,ubications,pigStages,farmsLoading} = useContext(FarmsContext)
+  const {growing_pig,ubications,pigStages,farmsLoading,postGrowingPigs,piglet,postPiglets} = useContext(FarmsContext)
   const [date, setDate] = useState<Date | null>(new Date())
   const {
     register,
@@ -36,10 +37,31 @@ export const PostUpdateGrowingPigs = () => {
 
   const onSubmit=async(data:IGrowingPigs)=>{
     console.log(data)
-    // const ok= await post(data)
-    // if(ok){
-    //   toggleModal()
-    // }
+    const newDate= new Date(date!)
+    newDate.setMonth(newDate.getMonth()+5)
+
+    const newAdd={
+      ...values,
+      ...data,
+      start_date:date,
+      exit_date:newDate
+    } as IGrowingPigs
+    // console.log(newAdd)
+    const newPiglet={
+      ...piglet,
+      closed:true,
+      id_user:user?.id_user!
+    } as IPiglets
+    // console.log(piglet)
+    // return
+    Promise.all([
+      postPiglets(newPiglet),
+      postGrowingPigs(newAdd)
+    ]).then(res=>{
+      toggleModal()
+
+    })
+    
   }
   return (
     <form className='Form' onSubmit={handleSubmit(onSubmit)}>
@@ -84,15 +106,15 @@ export const PostUpdateGrowingPigs = () => {
          <TextField 
           size="small"
           fullWidth
-          label='Cantidad'
+          label='Peso promedio'
           type="number"
-          defaultValue={values.quantity}
-          {...register('quantity',{
+          defaultValue={values.average_weight}
+          {...register('average_weight',{
             required:'Este campo es requerido',
             min:1
           })}
-          error={!!errors.quantity}
-          helperText={errors.quantity?.message}
+          error={!!errors.average_weight}
+          helperText={errors.average_weight?.message}
           />
           <div style={{display:'flex',justifyContent:'flex-end', gap:'.5rem'}}>
           <p style={{fontSize:'14px',padding:'.5rem 0 0 0'}}>Fecha Ingreso</p>
