@@ -309,6 +309,25 @@ export const FarmsProvider = ({children}:Props) => {
          setIsLoading(false)
          return ok
   };
+
+  const getPiglets = async(payload:number):Promise<boolean> =>{
+   // if(!userAccess.find(u=>u.id_access===5)&& user?.id_role!==1){
+   //    setAccessError('Credenciales inválidas')
+   //    return true
+   //  }
+    setIsLoading(true)
+         const {ok,data}=await getFarmsRequest(`/farms/piglets?id_farm=${payload}`,)
+         if(ok){
+            
+            setPiglets(data as IPiglets[])
+         }
+         else{
+          setError(data as string)
+         }
+         setIsLoading(false)
+         return ok
+  };
+
   const postGrowingPigs = async(payload:IGrowingPigs):Promise<boolean> =>{
    // if(!userAccess.find(u=>u.id_access===5)&& user?.id_role!==1){
    //    setAccessError('Credenciales inválidas')
@@ -412,9 +431,9 @@ export const FarmsProvider = ({children}:Props) => {
   
   const movePiglets = async(payload:IPiglets) =>{
       setIsLoading(true)
-       const {ok,data}=await postFarmsRequest(`/`,payload)
+       const {ok,data}=await postFarmsRequest(`/farms/piglets`,payload)
        if(ok){
-         
+         await getPiglets(payload.id_farm)
        }
        else{
         setError(data as string)
@@ -760,7 +779,9 @@ export const FarmsProvider = ({children}:Props) => {
       setGrowingPig,
       setGrowingPigs,
       postGrowingPigs,
-      getGrowingPigs
+      getGrowingPigs,
+      getPiglets,
+      setPiglets
     }}>
       {children}
     </FarmsContext.Provider>

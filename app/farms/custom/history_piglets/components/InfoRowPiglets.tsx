@@ -3,14 +3,16 @@ import { FarmsContext } from '@/app/context/farms/FarmsContext';
 import { Button } from '@mui/material';
 import { AccordionElement } from '@/app/components';
 import { useUi } from '@/app/context/ui/useUi';
+import styles from './piglets.module.css'
 
 export const InfoRowPiglets = () => {
-  const {setFarmAction,piglet} = useContext(FarmsContext)
+  const {setFarmAction,piglet,setPiglet} = useContext(FarmsContext)
   const {toggleModal} = useUi()
-
+  const isStage=piglet?.id_pig_stage===7
 
   const onClick =(action:string) =>{
      setFarmAction(action)
+     setPiglet(piglet)
      toggleModal()
   };
 
@@ -24,11 +26,11 @@ export const InfoRowPiglets = () => {
           <p>Ubicación: <strong>{piglet?.ubication}</strong></p>
           {/* <p>Padre: <strong>{piglet?.stallion}</strong></p> */}
           <p>Cantidad: <strong>{piglet?.quantity}</strong></p>
-          <p>Etapa: <strong>{piglet?.stage}</strong></p>
+          <p >Etapa: <strong className={isStage?styles.underline:''} onClick={()=>{if(piglet?.id_pig_stage===7){onClick('EDIT')}}}>{piglet?.stage}</strong></p>
           <p>Modificó: <strong>{piglet?.user}</strong></p>
         </div>
         <div style={{display:'flex', flexDirection:'column', gap:'.3rem'}}>
-          <Button size='small' color='warning' onClick={()=>onClick('EDIT')} variant='contained'>Editar</Button>
+          {/* <Button size='small' color='warning' onClick={()=>onClick('EDIT')} variant='contained'>Editar</Button> */}
           <Button size='small' onClick={()=>onClick('MOVE')} variant='outlined'>Mover</Button>
         </div>
       </div>

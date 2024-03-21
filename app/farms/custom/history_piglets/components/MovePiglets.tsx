@@ -9,7 +9,7 @@ import { FarmsContext } from '@/app/context/farms/FarmsContext'
 
 export const MovePiglets = () => {
   const {toggleModal} = useContext(UiContext)
-  const {ubications,farmsLoading} = useContext(FarmsContext)
+  const {farmsLoading,piglets,piglet,postPiglets,movePiglets} = useContext(FarmsContext)
 
   const {
     register,
@@ -19,16 +19,30 @@ export const MovePiglets = () => {
 
   const values={
     quantity:0,
-    id_ubication:ubications.filter(u=>u.id_pig_type!==2)[0].id_ubication
+    id_ubication:piglets.filter(p=>p.id_lot_piglets!==piglet?.id_lot_piglets)[0].id_lot_piglets
   } as IPiglets
-
 
   const onSubmit=async(data:IPiglets)=>{
     console.log(data)
-    // const ok= await post(data)
-    // if(ok){
-    //   toggleModal()
-    // }
+
+    const newPiglets={
+      ...piglet,
+      quantity:piglet!.quantity-data.quantity
+    } as IPiglets
+    const newMovingPiglet=piglets.find(p=>p.id_lot_piglets===Number(data.id_ubication))!
+    const movingPiglets={
+      ...newMovingPiglet,
+      quantity: newMovingPiglet.quantity+Number(data.quantity)
+    } as IPiglets
+
+    Promise.all([
+      postPiglets(newPiglets),
+      movePiglets(movingPiglets),
+    ]).then(async res=>{
+
+      toggleModal()
+    })
+
   }
   return (
     <form className='Form' onSubmit={handleSubmit(onSubmit)}>
@@ -53,12 +67,12 @@ export const MovePiglets = () => {
           {...register('id_ubication')} 
           select >
           {
-            ubications.filter(u=>u.id_pig_type!==2).length
-            ?ubications.filter(u=>u.id_pig_type!==2).map(item=>(
+            piglets.filter(p=>p.id_lot_piglets!==piglet?.id_lot_piglets).length
+            ?piglets.filter(p=>p.id_lot_piglets!==piglet?.id_lot_piglets).map(item=>(
               <MenuItem 
-                key={item.id_ubication} 
-                value={item.id_ubication}>
-                {item.description}
+                key={item.id_lot_piglets} 
+                value={item.id_lot_piglets}>
+                {item.ubication}
               </MenuItem>
             ))
             :<div></div>

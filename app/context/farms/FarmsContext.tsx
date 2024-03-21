@@ -92,6 +92,8 @@ interface ContextProps{
   setGrowingPig: (payload: IGrowingPigs | undefined) => void;
   postGrowingPigs: (payload: IGrowingPigs) => Promise<boolean>;
   getGrowingPigs: (payload: number) => Promise<void>;
+  getPiglets: (payload: number) => Promise<boolean>;
+  setPiglets: (payload: IPiglets[]) => void;
 }
 
 export const FarmsContext = createContext({} as ContextProps)
