@@ -333,17 +333,21 @@ export const FarmsProvider = ({children}:Props) => {
    //    setAccessError('Credenciales inválidas')
    //    return true
    //  }
-    setIsLoading(true)
-         const {ok,data}=await postFarmsRequest('/farms/growing_pigs',payload)
-         if(ok){
-            // setPiglets(returnArray(payload,data as IPiglets,state.piglets,'id_lot_piglets'))
-            // setPiglet(data as IPiglets)
-         }
-         else{
-          setError(data as string)
-         }
-         setIsLoading(false)
-         return ok
+
+   return await getPostLoadingOrError(`/farms/growing_pigs?id_farm=${payload.id_farm}`,setGrowingPigs,payload,state.growing_pigs,'id_growing_lot',true)
+   //  setIsLoading(true)
+   //       const {ok,data}=await postFarmsRequest(`/farms/growing_pigs?id_farm=${payload.id_farm}`,payload)
+   //       if(ok){
+
+   //          setGrowingPigs([...state.growing_pigs,data as IGrowingPigs])
+   //          // setPiglets(returnArray(payload,data as IPiglets,state.piglets,'id_lot_piglets'))
+   //          // setPiglet(data as IPiglets)
+   //       }
+   //       else{
+   //        setError(data as string)
+   //       }
+   //       setIsLoading(false)
+   //       return ok
   };
 
   const postRoleAccess = async(payload:IRoleAccess):Promise<boolean> =>{

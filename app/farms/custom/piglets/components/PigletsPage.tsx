@@ -50,8 +50,8 @@ const PigletsPage = () => {
         <p style={{width:'50px'}}>Cantidad</p>
       </div>
         {
-          piglets.length
-            ?piglets.map(a=><PigletsCard piglet={a} key={a.id_lot_piglets}/>)
+          piglets.filter(p=>!p.closed).length
+            ?piglets.filter(p=>!p.closed).map(a=><PigletsCard piglet={a} key={a.id_lot_piglets}/>)
             :<EmptyPage/>
         }
       </div>

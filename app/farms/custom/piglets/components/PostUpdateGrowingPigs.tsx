@@ -10,7 +10,7 @@ import { IPiglets } from '@/interfaces'
 
 export const PostUpdateGrowingPigs = () => {
   const {toggleModal} = useContext(UiContext)
-  const {user} = useContext(AuthContext)
+  const {user,idFarm} = useContext(AuthContext)
   const {growing_pig,ubications,pigStages,farmsLoading,postGrowingPigs,piglet,postPiglets} = useContext(FarmsContext)
   const [date, setDate] = useState<Date | null>(new Date())
   const {
@@ -31,12 +31,11 @@ export const PostUpdateGrowingPigs = () => {
     closed:growing_pig?growing_pig.closed: false,
     status:growing_pig?growing_pig.status: true,
     average_weight:growing_pig?growing_pig.average_weight: '',
-    id_farm:growing_pig?growing_pig.id_farm: user?.id_farm,
+    id_farm:growing_pig?growing_pig.id_farm: idFarm,
   } as IGrowingPigs
 
 
   const onSubmit=async(data:IGrowingPigs)=>{
-    console.log(data)
     const newDate= new Date(date!)
     newDate.setMonth(newDate.getMonth()+5)
 
@@ -44,22 +43,21 @@ export const PostUpdateGrowingPigs = () => {
       ...values,
       ...data,
       start_date:date,
-      exit_date:newDate
+      exit_date:newDate,
+      quantity:piglet?.quantity
     } as IGrowingPigs
-    // console.log(newAdd)
+
     const newPiglet={
       ...piglet,
       closed:true,
       id_user:user?.id_user!
     } as IPiglets
-    // console.log(piglet)
-    // return
+   
     Promise.all([
       postPiglets(newPiglet),
       postGrowingPigs(newAdd)
     ]).then(res=>{
       toggleModal()
-
     })
     
   }

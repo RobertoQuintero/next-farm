@@ -27,7 +27,7 @@ on CU.id_ubication=GP.id_ubication
 export const GET = async(req:Request) =>{
   const {searchParams}= new URL(req.url)
   const id_farm=searchParams.get('id_farm')
-  return   await getRequestQuery(`${query} where GP.status='true' and GP.id_farm=${id_farm}`)
+  return   await getRequestQuery(`${query} where GP.status='true' and GP.id_farm=${id_farm} and closed='false'`)
 }
 
 export const POST = async(req:Request) =>{

@@ -37,6 +37,7 @@ interface FarmsResponse{
       | IPiglets
       | IPiglets[]
       | IGrowingPigs[]
+      | IGrowingPigs
 }
 
 export const getFarmsRequest = async (url: string): Promise<FarmsResponse> => {

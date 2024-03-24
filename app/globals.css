@@ -368,3 +368,8 @@ background: #d4d4d4;
 .datePikerRow{
   height: 41px;
 }
+
+.underlined:hover{
+  text-decoration: underline;
+  cursor: pointer;
+}

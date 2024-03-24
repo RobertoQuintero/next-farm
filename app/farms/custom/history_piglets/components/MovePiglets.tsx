@@ -10,7 +10,7 @@ import { FarmsContext } from '@/app/context/farms/FarmsContext'
 export const MovePiglets = () => {
   const {toggleModal} = useContext(UiContext)
   const {farmsLoading,piglets,piglet,postPiglets,movePiglets} = useContext(FarmsContext)
-
+  const ubication=piglets.filter(p=>p.id_lot_piglets!==piglet?.id_lot_piglets)[0]?.id_lot_piglets
   const {
     register,
     handleSubmit,
@@ -19,9 +19,9 @@ export const MovePiglets = () => {
 
   const values={
     quantity:0,
-    id_ubication:piglets.filter(p=>p.id_lot_piglets!==piglet?.id_lot_piglets)[0].id_lot_piglets
+    id_ubication:ubication
   } as IPiglets
-
+  console.log(ubication)
   const onSubmit=async(data:IPiglets)=>{
     console.log(data)
 
@@ -61,7 +61,7 @@ export const MovePiglets = () => {
         />
         <TextField
           size="small"
-          label='Valor'
+          label='Ubicación'
           fullWidth
           defaultValue={values.id_ubication}
           {...register('id_ubication')} 
@@ -78,7 +78,7 @@ export const MovePiglets = () => {
             :<div></div>
           }
         </TextField>
-        <SaveButton loading={farmsLoading}/>
+        <SaveButton loading={farmsLoading || !ubication}/>
     </form>
   )
 }
