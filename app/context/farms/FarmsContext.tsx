@@ -94,6 +94,7 @@ interface ContextProps{
   getGrowingPigs: (payload: number) => Promise<void>;
   getPiglets: (payload: number) => Promise<boolean>;
   setPiglets: (payload: IPiglets[]) => void;
+  getAllTasks: ({ startDate, endDate }: {startDate: string;endDate: string}) => Promise<void>
 }
 
 export const FarmsContext = createContext({} as ContextProps)
