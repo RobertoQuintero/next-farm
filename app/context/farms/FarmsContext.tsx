@@ -1,5 +1,5 @@
 'use client'
-import { IBirth, IBirthType, ILossReason, IPig, IPigStage, IPigTask, IPigType, IPigWeight, IPiglets, IRace, IStageTaskType, IStallion, ITask, ITaskType, IUbication, IfertilizationType } from '@/interfaces'
+import { IBirth, IBirthType, ILossReason, IPig, IPigStage, IPigTask, IPigType, IPigWeight, IPiglets, IQuantity, IRace, IStageTaskType, IStallion, ITask, ITaskType, IUbication, IfertilizationType } from '@/interfaces'
 import { IFarm } from '@/interfaces/farm'
 import { IGrowingPigs } from '@/interfaces/growing_pigs'
 import { IAccess,  IRole, IRoleAccess } from '@/interfaces/user'
@@ -48,6 +48,7 @@ interface ContextProps{
   stageTaskTypes:IStageTaskType[];  
   growing_pigs:IGrowingPigs[]
   growing_pig:IGrowingPigs | undefined;
+  statics_quantities:IQuantity[]
 
   //methods
   setFarm: (payload: IFarm | undefined) => void;
@@ -95,6 +96,7 @@ interface ContextProps{
   getPiglets: (payload: number) => Promise<boolean>;
   setPiglets: (payload: IPiglets[]) => void;
   getAllTasks: ({ startDate, endDate }: {startDate: string;endDate: string}) => Promise<void>
+  getQuantities: () => Promise<void>;
 }
 
 export const FarmsContext = createContext({} as ContextProps)

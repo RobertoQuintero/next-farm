@@ -22,8 +22,8 @@ export const TasksRowPiglets = () => {
   return (
     <AccordionElement title='Actividades'>
       <>
-      <div className={styles.birthContainer}>
-      <div className={styles.birthRow} style={{fontWeight:'bold'}}>
+      <div className={styles.birthContainer} style={{width:'100%'}}>
+      <div className={styles.taskRow} style={{fontWeight:'bold'}}>
           <p >Fecha</p>
           <p>Aplicó</p>
           <p>Descripción</p>

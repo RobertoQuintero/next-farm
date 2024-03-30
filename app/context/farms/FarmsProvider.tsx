@@ -5,7 +5,7 @@ import {  usersReducer } from './farmsReducer'
 import { IFarm } from '@/interfaces/farm'
 import { getFarmsRequest, postFarmsRequest } from './farmsRequest'
 import { returnArray } from '../auth/authRequest'
-import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing, IPigWeight, IPigStage, IPigTask, IStageTaskType, IBirthType, IPiglets } from '@/interfaces'
+import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing, IPigWeight, IPigStage, IPigTask, IStageTaskType, IBirthType, IPiglets, IQuantity } from '@/interfaces'
 import { AuthContext } from '../auth/AuthContext'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
@@ -57,6 +57,7 @@ export interface UsersState{
   piglet:IPiglets | undefined;
   growing_pigs:IGrowingPigs[]
   growing_pig:IGrowingPigs | undefined;
+  statics_quantities:IQuantity[];
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -100,7 +101,8 @@ const UI_INITIAL_STATE:UsersState={
   piglets:[],
   piglet: undefined,
   growing_pigs:[],
-  growing_pig:undefined
+  growing_pig:undefined,
+  statics_quantities:[]
 }
 
 export const FarmsProvider = ({children}:Props) => {
@@ -240,6 +242,19 @@ export const FarmsProvider = ({children}:Props) => {
          }
          setIsLoading(false)
       };
+   
+   
+   const getQuantities = async() =>{
+       setIsLoading(true)
+        const {ok,data}=await getFarmsRequest(`/farms/statics`)
+        if(ok){
+         setStaticsQuantities(data as IQuantity[])
+        }
+        else{
+         setError(data as string)
+        }
+        setIsLoading(false)
+     };
 
 
   const updateTasks = async(payload:ITask) =>{
@@ -733,6 +748,12 @@ export const FarmsProvider = ({children}:Props) => {
       payload
      })
   };
+  const setStaticsQuantities = (payload: IQuantity[] ) =>{
+     dispatch({
+      type:'[Farms] - setStaticsQuantities',
+      payload
+     })
+  };
 
 
   const getPostLoadingOrError = async<T,K extends keyof T>(
@@ -801,7 +822,8 @@ export const FarmsProvider = ({children}:Props) => {
       getGrowingPigs,
       getPiglets,
       setPiglets,
-      getAllTasks
+      getAllTasks,
+      getQuantities
     }}>
       {children}
     </FarmsContext.Provider>

@@ -22,11 +22,11 @@ export const TasksRow = () => {
     <AccordionElement title='Actividades'>
       <>
       <div className={styles.birthContainer}>
-      <div className={styles.birthRow} style={{fontWeight:'bold'}}>
+      <div className={styles.taskRow} style={{fontWeight:'bold'}}>
           <p >Fecha</p>
-          {/* <p >Hasta</p> */}
           <p>Aplicó</p>
           <p>Descripción</p>
+          <p>Comentario</p>
         </div>
         {
           tasks.filter(t=>t.status&&!t.id_lot_piglets).length
