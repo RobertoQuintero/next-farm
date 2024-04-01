@@ -7,14 +7,15 @@ import { UiContext } from '@/app/context/ui/UiContext'
 import { Button } from '@mui/material'
 import { useContext, useEffect } from 'react'
 import { GrowingPigCard, GrowingPigsChangeStage, GrowingPigsCloseConfirm } from '.'
+import { IGrowingPigs } from '@/interfaces/growing_pigs'
 
 const GrowingPigsPage = () => {
   const {toggleModal} = useContext(UiContext)
-  const {getGrowingPigs,growing_pigs,farmAction} = useContext(FarmsContext)
-  const {user} = useContext(AuthContext)
+  const {getGrowingPigs,growing_pigs,farmAction,farmsLoading,farmsError,postGrowingPigs,growing_pig} = useContext(FarmsContext)
+  const {idFarm} = useContext(AuthContext)
 
   useEffect(() => {
-    getGrowingPigs(user?.id_user!)
+    getGrowingPigs(idFarm!)
   }, [])
   
 
@@ -24,14 +25,15 @@ const GrowingPigsPage = () => {
 
   const onDelete = async() =>{
 
-    // const new ={
-    //   status:false
-    // } as 
+    const newGrowing ={
+      ...growing_pig,
+      status:false
+    } as IGrowingPigs
      
-    // const ok=await post(new)
-    //  if(ok){
-    //   toggleModal()
-    //  }
+    const ok=await postGrowingPigs(newGrowing)
+     if(ok){
+      toggleModal()
+     }
   };
 
   return (
@@ -48,7 +50,6 @@ const GrowingPigsPage = () => {
       <div>
       <h3 style={{padding:'0 0 1rem',textAlign:'center'}} >Crecimiento</h3>
       <div 
-        // style={{display:'flex',fontWeight:'bold',fontSize:'14px',paddingLeft:'.5rem'}}
         className='pigData'
         style={{padding:'0 0 0 .4rem',fontWeight:'bold'}}
         >
@@ -60,8 +61,8 @@ const GrowingPigsPage = () => {
         <p>Etapa</p>
       </div>
         {
-          growing_pigs.filter(g=>!g.closed).length
-            ?growing_pigs.filter(g=>!g.closed).map(a=><GrowingPigCard growingPig={a} key={a.id_growing_lot}/>)
+          growing_pigs.filter(g=>!g.closed&&g.status).length
+            ?growing_pigs.filter(g=>!g.closed&&g.status).map(a=><GrowingPigCard growingPig={a} key={a.id_growing_lot}/>)
             :<EmptyPage/>
         }
       </div>
@@ -72,6 +73,9 @@ const GrowingPigsPage = () => {
         }
         {
           farmAction==='CLOSE'?<GrowingPigsCloseConfirm />:<></>
+        }
+        {
+          farmAction==='DELETE'?<DeleteComponent onDelete={onDelete} loading={farmsLoading} error={farmsError}/>:<></>
         }
       </AppModal>
     </>

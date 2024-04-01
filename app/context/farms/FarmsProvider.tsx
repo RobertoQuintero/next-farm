@@ -142,8 +142,7 @@ export const FarmsProvider = ({children}:Props) => {
       getFarmsRequest(`/farms/catalog/pig_stages`),
       getFarmsRequest(`/farms/catalog/stage_task_types`),
       getFarmsRequest(`/farms/catalog/pig_tasks?id_farm=${idFarm}`),
-      getFarmsRequest(`/farms/piglets?id_farm=${idFarm}`),
-      getFarmsRequest(`/farms/growing_pigs?id_farm=${idFarm}`),
+
      ]).then((resp)=>{
       setPigTypes(resp[0].data as IPigType[])
       setRaces(resp[1].data as IRace[])
@@ -158,8 +157,7 @@ export const FarmsProvider = ({children}:Props) => {
       setPigStages(resp[10].data as IPigStage[])
       setStageTaskTypes(resp[11].data as IStageTaskType[])
       setPigTasks(resp[12].data as IPigTask[])
-      setPiglets(resp[13].data as IPiglets[])
-      setGrowingPigs(resp[14].data as IGrowingPigs[])
+
       setIsLoading(false)
      })
      .catch(error=>{
@@ -246,7 +244,7 @@ export const FarmsProvider = ({children}:Props) => {
    
    const getQuantities = async() =>{
        setIsLoading(true)
-        const {ok,data}=await getFarmsRequest(`/farms/statics`)
+        const {ok,data}=await postFarmsRequest(`/farms/statics`,{})
         if(ok){
          setStaticsQuantities(data as IQuantity[])
         }

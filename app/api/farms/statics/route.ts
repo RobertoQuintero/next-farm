@@ -6,7 +6,7 @@ export interface IQuantity {
   pigs:         number;
 }
 
-export const GET = async(req:Request) =>{
+export const POST = async(req:Request) =>{
   // const body = await req.json();
   // const { }= body;
 

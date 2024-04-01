@@ -1,15 +1,22 @@
 'use client'
-import { BackButton, EmptyPage,DeleteComponent } from '@/app/components'
+import { EmptyPage,DeleteComponent } from '@/app/components'
 import AppModal from '@/app/components/AppModal'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { Button } from '@mui/material'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { PigletsCard, PostUpdateGrowingPigs, PostUpdatePiglets } from '.'
+import { IPiglets } from '@/interfaces'
+import { AuthContext } from '@/app/context/auth/AuthContext'
 
 const PigletsPage = () => {
   const {toggleModal} = useContext(UiContext)
-  const {piglets,setFarmAction,farmAction,getCode} = useContext(FarmsContext)
+  const {idFarm} = useContext(AuthContext)
+  const {piglets,setFarmAction,farmAction,getCode,farmsLoading,farmsError,piglet,postPiglets,getPiglets} = useContext(FarmsContext)
+  useEffect(() => {
+    getPiglets(idFarm!)
+  }, [])
+  
 
   const onAdd = async() =>{
     await getCode('lot')
@@ -19,22 +26,21 @@ const PigletsPage = () => {
 
   const onDelete = async() =>{
 
-    // const new ={
-    //   status:false
-    // } as 
+    const newPiglet ={
+      ...piglet,
+      status:false
+    } as IPiglets
      
-    // const ok=await post(new)
-    //  if(ok){
-    //   toggleModal()
-    //  }
+    const ok=await postPiglets(newPiglet)
+     if(ok){
+      toggleModal()
+     }
   };
 
   return (
     <>
      <div className='actionCreateContainer' >
-        {/* <BackButton/> */}
-        <div></div>
-        
+        <div></div>     
         <Button 
           onClick={onAdd}
           variant='contained' 
@@ -50,8 +56,8 @@ const PigletsPage = () => {
         <p style={{width:'50px'}}>Cantidad</p>
       </div>
         {
-          piglets.filter(p=>!p.closed).length
-            ?piglets.filter(p=>!p.closed).map(a=><PigletsCard piglet={a} key={a.id_lot_piglets}/>)
+          piglets.filter(p=>!p.closed&&p.status).length
+            ?piglets.filter(p=>!p.closed&&p.status).map(a=><PigletsCard piglet={a} key={a.id_lot_piglets}/>)
             :<EmptyPage/>
         }
       </div>
@@ -59,7 +65,17 @@ const PigletsPage = () => {
         {
           farmAction===undefined
               ?<PostUpdatePiglets/>
-              :<PostUpdateGrowingPigs/>
+              :<></>
+        }
+        {
+          farmAction==='CLOSE'
+              ?<PostUpdateGrowingPigs/>
+              :<></>
+        }
+        {
+          farmAction==='DELETE'
+              ?<DeleteComponent onDelete={onDelete} loading={farmsLoading} error={farmsError}/>
+              :<></>
         }
       </AppModal>
     </>

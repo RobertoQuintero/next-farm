@@ -30,6 +30,7 @@ export const GrowingPigCard = ({growingPig}:Props) => {
       </div>
       <div style={{display:'flex', gap:'.2rem',paddingRight:'.5rem'}}>
         <RowButton onClick={()=>onClick('CLOSE')} label="cerrar"/>
+        <RowButton onClick={()=>onClick('DELETE')} label="borrar" color='red'/>
       </div>
     </div>
   )

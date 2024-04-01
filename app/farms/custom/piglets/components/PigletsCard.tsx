@@ -37,6 +37,7 @@ export const PigletsCard = ({piglet}:Props) => {
       <div style={{display:'flex', gap:'.2rem',paddingRight:'.5rem'}}>
         <RowButton onClick={()=>onClick('GO')} label="ver"/>
         <RowButton onClick={()=>onClick('CLOSE')} label="cerrar"/>
+        <RowButton onClick={()=>onClick('DELETE')} label="borrar" color='red'/>
       </div>
     </div>
   )
