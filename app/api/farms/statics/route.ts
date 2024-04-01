@@ -7,16 +7,16 @@ export interface IQuantity {
 }
 
 export const POST = async(req:Request) =>{
-  // const body = await req.json();
-  // const { }= body;
+  const {searchParams}= new URL(req.url)
+  const id_farm=searchParams.get('id_farm')
 
   try {
     const quantity= await db.query(`
     create table #quantity(piglets int,growing_pigs int, pigs int)
     insert into #quantity(piglets,growing_pigs,pigs) values(
-    (select SUM(quantity) from MOD.Lot_Piglets where closed='false' and status='true'),
-    (select SUM(quantity) from MOD.Growing_pigs where closed='false' and status='true'),
-    (select COUNT(*) from MOD.Pigs where status='true'))
+    (select SUM(quantity) from MOD.Lot_Piglets where closed='false' and status='true' and id_farm=${id_farm}),
+    (select SUM(quantity) from MOD.Growing_pigs where closed='false' and status='true' and id_farm=${id_farm}),
+    (select COUNT(*) from MOD.Pigs where status='true' and id_farm=${id_farm}))
     select * from #quantity
     drop table #quantity
     `) as unknown as IQuantity[]

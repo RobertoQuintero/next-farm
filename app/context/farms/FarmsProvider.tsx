@@ -242,9 +242,9 @@ export const FarmsProvider = ({children}:Props) => {
       };
    
    
-   const getQuantities = async() =>{
+   const getQuantities = async(payload:number) =>{
        setIsLoading(true)
-        const {ok,data}=await postFarmsRequest(`/farms/statics`,{})
+        const {ok,data}=await postFarmsRequest(`/farms/statics?id_farm=${payload}`,{})
         if(ok){
          setStaticsQuantities(data as IQuantity[])
         }

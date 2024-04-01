@@ -1,12 +1,15 @@
 'use client'
+import { AuthContext } from '@/app/context/auth/AuthContext'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { BarChart } from '@mui/x-charts'
 import React, { useContext, useEffect } from 'react'
+import Cookies from 'js-cookie'
 
 const StaticsPage = () => {
   const {statics_quantities,getQuantities} = useContext(FarmsContext)
+  const {idFarm} = useContext(AuthContext)
   useEffect(() => {
-    getQuantities()
+    getQuantities(idFarm|| +Cookies.get('id_farm')!)
   }, [])
 
   if(!statics_quantities.length){
