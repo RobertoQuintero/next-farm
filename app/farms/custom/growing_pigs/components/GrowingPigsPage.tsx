@@ -77,7 +77,6 @@ const GrowingPigsPage = () => {
       </div>
         <h3>Crecimiento</h3>
         </div>
-
       <div 
         className='pigData'
         style={{padding:'0 0 0 .4rem',fontWeight:'bold'}}
