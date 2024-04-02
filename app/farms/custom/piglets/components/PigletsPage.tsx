@@ -8,6 +8,8 @@ import { useContext, useEffect } from 'react'
 import { PigletsCard, PostUpdateGrowingPigs, PostUpdatePiglets } from '.'
 import { IPiglets } from '@/interfaces'
 import { AuthContext } from '@/app/context/auth/AuthContext'
+import { RowButton } from '../../components'
+import * as XLSX from 'xlsx'
 
 const PigletsPage = () => {
   const {toggleModal} = useContext(UiContext)
@@ -37,6 +39,24 @@ const PigletsPage = () => {
      }
   };
 
+  const getExcel = () =>{
+
+    const newPigs=piglets.map(p=>{
+      return {
+        'Número':p.code,
+        'Ingresado':new Date(p.created_at).toLocaleString().split(',')[0],
+        'Días':p.days,
+        'Ubicación':p.ubication,
+        'Cantidad':p.quantity
+      }
+    })
+    const wb = XLSX.utils.book_new()
+    const  ws = XLSX.utils.json_to_sheet(newPigs)
+
+    XLSX.utils.book_append_sheet(wb,ws,"Hoja1")
+    XLSX.writeFile(wb,'Lechones.xlsx')
+  };
+
   return (
     <>
      <div className='actionCreateContainer' >
@@ -47,7 +67,14 @@ const PigletsPage = () => {
           color='success'
           size='small'>Nuevo</Button>
       </div>
-      <h3 style={{padding:'0 0 1rem',textAlign:'center'}} >Lechones</h3>
+
+      <div style={{textAlign:'center',padding:'0 0 1rem 0',fontWeight:'bold',position:'relative'}}>
+      <div style={{display:'flex', gap:'.2rem',paddingRight:'.5rem', position:'absolute', left:0,top:'50%',transform:'translateY(-50%)'}}>
+        {/* <RowButton onClick={()=>{}} label="PDF"/> */}
+        <RowButton onClick={getExcel} label="Excel"/>
+      </div>
+        <h3>Lechones</h3>
+        </div>
       <div>
       <div style={{display:'flex',fontWeight:'bold',fontSize:'14px',paddingLeft:'.5rem'}}>
         <p style={{width:'100px'}}>Ingresado</p>

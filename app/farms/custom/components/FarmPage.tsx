@@ -3,7 +3,7 @@ import { AccessErrorComponent,  BackToFarms, DeleteComponent, EmptyPage, Loading
 import AppModal from '@/app/components/AppModal'
 import { Button, CardActionArea } from '@mui/material'
 import { CSSProperties, useContext, useEffect, useState } from 'react'
-import { PigCard, PostUpdatePig, SearchPigButton, SearchPigForm } from '.'
+import { PigCard, PostUpdatePig, RowButton, SearchPigButton, SearchPigForm } from '.'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { AuthContext } from '@/app/context/auth/AuthContext'
 import { IPig } from '@/interfaces'
@@ -11,6 +11,7 @@ import Cookie from 'js-cookie'
 import Link from 'next/link'
 import { CachedOutlined } from '@mui/icons-material'
 import { useUi } from '@/app/context/ui/useUi'
+import * as XLSX from 'xlsx'
 
 const style={
   backgroundColor:'#fff',
@@ -71,6 +72,23 @@ const FarmPage = () => {
     getCode('pig')
   };
 
+  const getExcel = () =>{
+
+    const newPigs=pigs.map(p=>{
+      return {
+        'Número':p.code,
+        'Ubicación':p.pig_ubication,
+        'Raza':p.pig_race,
+        'Situación':p.pig_stage
+      }
+    })
+    const wb = XLSX.utils.book_new()
+    const  ws = XLSX.utils.json_to_sheet(newPigs)
+
+    XLSX.utils.book_append_sheet(wb,ws,"Hoja1")
+    XLSX.writeFile(wb,'GestionYMaternidad.xlsx')
+  };
+
   return (
     <>
      <div className='actionCreateContainer'>
@@ -98,7 +116,12 @@ const FarmPage = () => {
           size='small'>Nuevo</Button>
         </div>
       </div>
-      <p style={{textAlign:'center',padding:'0 0 1rem 0',fontWeight:'bold'}}>{farm?.name}</p>
+      <div style={{textAlign:'center',padding:'0 0 1rem 0',fontWeight:'bold',position:'relative'}}>
+      <div style={{display:'flex', gap:'.2rem',paddingRight:'.5rem', position:'absolute', left:0,top:'50%',transform:'translateY(-50%)'}}>
+        {/* <RowButton onClick={()=>{}} label="PDF"/> */}
+        <RowButton onClick={getExcel} label="Excel"/>
+      </div>
+        <p>{farm?.name}</p></div>
       <div>
         <div className="pigData pigDataHeader">
           <p>Número</p>

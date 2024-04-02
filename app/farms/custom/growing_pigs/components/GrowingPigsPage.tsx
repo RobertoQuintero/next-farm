@@ -8,6 +8,8 @@ import { Button } from '@mui/material'
 import { useContext, useEffect } from 'react'
 import { GrowingPigCard, GrowingPigsChangeStage, GrowingPigsCloseConfirm } from '.'
 import { IGrowingPigs } from '@/interfaces/growing_pigs'
+import { RowButton } from '../../components'
+import * as XLSX from 'xlsx'
 
 const GrowingPigsPage = () => {
   const {toggleModal} = useContext(UiContext)
@@ -36,6 +38,25 @@ const GrowingPigsPage = () => {
      }
   };
 
+  const getExcel = () =>{
+
+    const newPigs=growing_pigs.map(p=>{
+      return {
+        'Ingresado':new Date(p.created_at).toLocaleString().split(',')[0],
+        'Salida':new Date(p.exit_date).toLocaleString().split(',')[0],
+        'Ubicación':p.ubication,
+        'Cantidad':p.quantity,
+        'Peso':p.average_weight,
+        'Etapa':p.pig_stage
+      }
+    })
+    const wb = XLSX.utils.book_new()
+    const  ws = XLSX.utils.json_to_sheet(newPigs)
+
+    XLSX.utils.book_append_sheet(wb,ws,"Hoja1")
+    XLSX.writeFile(wb,'Crecimiento.xlsx')
+  };
+
   return (
     <>
      <div className='actionCreateContainer'>
@@ -48,7 +69,15 @@ const GrowingPigsPage = () => {
           size='small'>Nuevo</Button>
       </div>
       <div>
-      <h3 style={{padding:'0 0 1rem',textAlign:'center'}} >Crecimiento</h3>
+
+      <div style={{textAlign:'center',padding:'0 0 1rem 0',fontWeight:'bold',position:'relative'}}>
+      <div style={{display:'flex', gap:'.2rem',paddingRight:'.5rem', position:'absolute', left:0,top:'50%',transform:'translateY(-50%)'}}>
+        {/* <RowButton onClick={()=>{}} label="PDF"/> */}
+        <RowButton onClick={getExcel} label="Excel"/>
+      </div>
+        <h3>Crecimiento</h3>
+        </div>
+
       <div 
         className='pigData'
         style={{padding:'0 0 0 .4rem',fontWeight:'bold'}}
