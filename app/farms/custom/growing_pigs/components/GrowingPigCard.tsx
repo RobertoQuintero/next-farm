@@ -5,10 +5,11 @@ import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
 
 interface Props{
-  growingPig:IGrowingPigs
+  growingPig:IGrowingPigs;
+  print:boolean;
 }
 
-export const GrowingPigCard = ({growingPig}:Props) => {
+export const GrowingPigCard = ({growingPig,print}:Props) => {
   const {setFarmAction,setGrowingPig} = useContext(FarmsContext)
   const {toggleModal} = useContext(UiContext)
 
@@ -19,7 +20,7 @@ export const GrowingPigCard = ({growingPig}:Props) => {
   };
 
   return (
-    <div className="rowCard">
+    <div className={`rowCard ${print&&'odd'}`}>
       <div className="pigData">
         <p>{new Date(growingPig.start_date).toLocaleString().split(',')[0]}</p>
         <p>{new Date(growingPig.exit_date).toLocaleString().split(',')[0]}</p>
@@ -28,7 +29,7 @@ export const GrowingPigCard = ({growingPig}:Props) => {
         <p>{growingPig.average_weight}</p>
         <p className='underlined' onClick={()=>onClick('STAGE')}>{growingPig.pig_stage}</p>
       </div>
-      <div style={{display:'flex', gap:'.2rem',paddingRight:'.5rem'}}>
+      <div style={{display:print?'none':'flex', gap:'.2rem',paddingRight:'.5rem'}}>
         <RowButton onClick={()=>onClick('CLOSE')} label="cerrar"/>
         <RowButton onClick={()=>onClick('DELETE')} label="borrar" color='red'/>
       </div>

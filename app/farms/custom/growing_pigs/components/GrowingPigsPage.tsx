@@ -5,16 +5,26 @@ import { AuthContext } from '@/app/context/auth/AuthContext'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { Button } from '@mui/material'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { GrowingPigCard, GrowingPigsChangeStage, GrowingPigsCloseConfirm } from '.'
 import { IGrowingPigs } from '@/interfaces/growing_pigs'
 import { RowButton } from '../../components'
 import * as XLSX from 'xlsx'
+import { useReactToPrint } from 'react-to-print'
 
 const GrowingPigsPage = () => {
   const {toggleModal} = useContext(UiContext)
   const {getGrowingPigs,growing_pigs,farmAction,farmsLoading,farmsError,postGrowingPigs,growing_pig} = useContext(FarmsContext)
   const {idFarm} = useContext(AuthContext)
+  const [print, setPrint] = useState(false)
+
+  const componentRef = useRef(null);
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+    onAfterPrint:()=>{
+      setPrint(false)
+    },
+  });
 
   useEffect(() => {
     getGrowingPigs(idFarm!)
@@ -72,8 +82,13 @@ const GrowingPigsPage = () => {
 
       <div style={{textAlign:'center',padding:'0 0 1rem 0',fontWeight:'bold',position:'relative'}}>
       <div style={{display:'flex', gap:'.2rem',paddingRight:'.5rem', position:'absolute', left:0,top:'50%',transform:'translateY(-50%)'}}>
-        {/* <RowButton onClick={()=>{}} label="PDF"/> */}
         <RowButton onClick={getExcel} label="Excel"/>
+        <RowButton onClick={()=>{
+          setPrint(true)
+          setTimeout(() => {
+            handlePrint()
+          }, 200);
+        }} label="PDF"/>
       </div>
         <h3>Crecimiento</h3>
         </div>
@@ -90,10 +105,29 @@ const GrowingPigsPage = () => {
       </div>
         {
           growing_pigs.filter(g=>!g.closed&&g.status).length
-            ?growing_pigs.filter(g=>!g.closed&&g.status).map(a=><GrowingPigCard growingPig={a} key={a.id_growing_lot}/>)
+            ?growing_pigs.filter(g=>!g.closed&&g.status).map(a=><GrowingPigCard growingPig={a} key={a.id_growing_lot} print={print}/>)
             :<EmptyPage/>
         }
       </div>
+
+      <div style={{display:'none'}}>
+      <div ref={componentRef} style={{padding:'.5rem'}}>
+        <div className="pigData pigDataHeader" style={{padding:'1rem .5rem', color:'#fff',backgroundColor:'#2d4154'}}>
+        <p >Ingresado</p>
+        <p>Salida</p>
+        <p>Ubicación</p>
+        <p>Cantidad</p>
+        <p>Peso prom.</p>
+        <p>Etapa</p>
+        </div>
+        {
+          growing_pigs.filter(g=>!g.closed&&g.status).length
+            ?growing_pigs.filter(g=>!g.closed&&g.status).map(a=><GrowingPigCard growingPig={a} key={a.id_growing_lot} print={print}/>)
+            :<EmptyPage/>
+        }
+      </div>
+      </div>
+
       <AppModal>
         <></>
         {

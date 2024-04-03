@@ -5,7 +5,7 @@ import {  usersReducer } from './farmsReducer'
 import { IFarm } from '@/interfaces/farm'
 import { getFarmsRequest, postFarmsRequest } from './farmsRequest'
 import { returnArray } from '../auth/authRequest'
-import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing, IPigWeight, IPigStage, IPigTask, IStageTaskType, IBirthType, IPiglets, IQuantity } from '@/interfaces'
+import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing, IPigWeight, IPigStage, IPigTask, IStageTaskType, IBirthType, IPiglets, IQuantity, IStaticPig } from '@/interfaces'
 import { AuthContext } from '../auth/AuthContext'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
@@ -58,6 +58,9 @@ export interface UsersState{
   growing_pigs:IGrowingPigs[]
   growing_pig:IGrowingPigs | undefined;
   statics_quantities:IQuantity[];
+  staticPigs:IStaticPig[];
+  staticPiglets:IStaticPig[];
+  staticGrowingPigs:IStaticPig[]
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -102,7 +105,10 @@ const UI_INITIAL_STATE:UsersState={
   piglet: undefined,
   growing_pigs:[],
   growing_pig:undefined,
-  statics_quantities:[]
+  statics_quantities:[],
+  staticPigs:[],
+  staticPiglets:[],
+  staticGrowingPigs:[]
 }
 
 export const FarmsProvider = ({children}:Props) => {
@@ -247,6 +253,39 @@ export const FarmsProvider = ({children}:Props) => {
         const {ok,data}=await postFarmsRequest(`/farms/statics?id_farm=${payload}`,{})
         if(ok){
          setStaticsQuantities(data as IQuantity[])
+        }
+        else{
+         setError(data as string)
+        }
+        setIsLoading(false)
+     };
+   const getStaticPigs = async(payload:number) =>{
+       setIsLoading(true)
+        const {ok,data}=await postFarmsRequest(`/farms/statics/pigs?id_farm=${payload}`,{})
+        if(ok){
+         setStaticPigs(data as IStaticPig[])
+        }
+        else{
+         setError(data as string)
+        }
+        setIsLoading(false)
+     };
+   const getStaticPiglets = async(payload:number) =>{
+       setIsLoading(true)
+        const {ok,data}=await postFarmsRequest(`/farms/statics/piglets?id_farm=${payload}`,{})
+        if(ok){
+         setStaticPiglets(data as IStaticPig[])
+        }
+        else{
+         setError(data as string)
+        }
+        setIsLoading(false)
+     };
+   const getStaticGrowingPigs = async(payload:number) =>{
+       setIsLoading(true)
+        const {ok,data}=await postFarmsRequest(`/farms/statics/growing?id_farm=${payload}`,{})
+        if(ok){
+         setStaticGrowingPigs(data as IStaticPig[])
         }
         else{
          setError(data as string)
@@ -752,6 +791,24 @@ export const FarmsProvider = ({children}:Props) => {
       payload
      })
   };
+  const setStaticPigs = (payload: IStaticPig[] ) =>{
+     dispatch({
+      type:'[Farms] - setStaticPigs',
+      payload
+     })
+  };
+  const setStaticPiglets = (payload: IStaticPig[] ) =>{
+     dispatch({
+      type:'[Farms] - setStaticPiglets',
+      payload
+     })
+  };
+  const setStaticGrowingPigs = (payload: IStaticPig[] ) =>{
+     dispatch({
+      type:'[Farms] - setStaticGrowingPigs',
+      payload
+     })
+  };
 
 
   const getPostLoadingOrError = async<T,K extends keyof T>(
@@ -821,7 +878,10 @@ export const FarmsProvider = ({children}:Props) => {
       getPiglets,
       setPiglets,
       getAllTasks,
-      getQuantities
+      getQuantities,
+      getStaticPigs,
+     getStaticPiglets,
+     getStaticGrowingPigs
     }}>
       {children}
     </FarmsContext.Provider>

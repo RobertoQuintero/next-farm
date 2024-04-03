@@ -2,7 +2,7 @@
 import { AccessErrorComponent,  BackToFarms, DeleteComponent, EmptyPage, LoadingComponent } from '@/app/components'
 import AppModal from '@/app/components/AppModal'
 import { Button, CardActionArea } from '@mui/material'
-import { CSSProperties, useContext, useEffect, useState } from 'react'
+import { CSSProperties, useContext, useEffect, useRef, useState } from 'react'
 import { PigCard, PostUpdatePig, RowButton, SearchPigButton, SearchPigForm } from '.'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { AuthContext } from '@/app/context/auth/AuthContext'
@@ -12,6 +12,8 @@ import Link from 'next/link'
 import { CachedOutlined } from '@mui/icons-material'
 import { useUi } from '@/app/context/ui/useUi'
 import * as XLSX from 'xlsx'
+import { addZero } from '@/utils'
+import { useReactToPrint } from 'react-to-print'
 
 const style={
   backgroundColor:'#fff',
@@ -26,6 +28,16 @@ const FarmPage = () => {
   const {farmsLoading,pigs,getPigs,setPig,setFarmAction,farmAction,farmsError,pig,postPig,getFarm,farm,getCode,stallions,ubications} = useContext(FarmsContext)
   const [error, setError] = useState(false)
   const [error2, setError2] = useState(false)
+  const [print, setPrint] = useState(false)
+
+  const componentRef = useRef(null);
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+    onAfterPrint:()=>{
+      setPrint(false)
+    },
+  });
+
   useEffect(() => {
     if(idFarm){
       getFarm(idFarm)
@@ -76,6 +88,7 @@ const FarmPage = () => {
 
     const newPigs=pigs.map(p=>{
       return {
+        'Ingreso':addZero(new Date(p.created_at)).split('-').reverse().join('-'),
         'Número':p.code,
         'Ubicación':p.pig_ubication,
         'Raza':p.pig_race,
@@ -118,12 +131,18 @@ const FarmPage = () => {
       </div>
       <div style={{textAlign:'center',padding:'0 0 1rem 0',fontWeight:'bold',position:'relative'}}>
       <div style={{display:'flex', gap:'.2rem',paddingRight:'.5rem', position:'absolute', left:0,top:'50%',transform:'translateY(-50%)'}}>
-        {/* <RowButton onClick={()=>{}} label="PDF"/> */}
         <RowButton onClick={getExcel} label="Excel"/>
+        <RowButton onClick={()=>{
+          setPrint(true)
+          setTimeout(() => {
+            handlePrint()
+          }, 200);
+        }} label="pdf"/>
       </div>
         <p>{farm?.name}</p></div>
       <div>
         <div className="pigData pigDataHeader">
+          <p>Ingreso</p>
           <p>Número</p>
           <p>Ubicación</p>
           <p>Raza</p>
@@ -131,9 +150,25 @@ const FarmPage = () => {
         </div>
         {
           pigs.filter(p=>p.status).length
-            ?pigs.filter(p=>p.status).map(a=><PigCard pig={a} key={a.id_pig}/>)
+            ?pigs.filter(p=>p.status).map(a=><PigCard pig={a} key={a.id_pig} print={print}/>)
             :<EmptyPage/>
         }
+      </div>
+      <div style={{display:'none'}}>
+      <div ref={componentRef} style={{padding:'.5rem'}}>
+        <div className="pigData pigDataHeader" style={{padding:'1rem .5rem', color:'#fff',backgroundColor:'#2d4154'}}>
+          <p>Ingreso</p>
+          <p>Número</p>
+          <p>Ubicación</p>
+          <p>Raza</p>
+          <p>Situación</p>
+        </div>
+          {
+            pigs.filter(p=>p.status).length
+              ?pigs.filter(p=>p.status).map(a=><PigCard pig={a} key={a.id_pig} print={print}/>)
+              :<EmptyPage/>
+          }
+      </div>
       </div>
       <AppModal>
         {

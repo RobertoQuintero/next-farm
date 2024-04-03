@@ -304,11 +304,11 @@ background: #d4d4d4;
 .pigData > p {
   width: 100px;
 }
-.pigData p:nth-child(3){
+.pigData p:nth-child(4){
   width: 130px;
 }
 .pigData p:nth-child(1){
-  width: 70px;
+  width: 100px;
 }
 
 .rowButton{
@@ -372,4 +372,8 @@ background: #d4d4d4;
 .underlined:hover{
   text-decoration: underline;
   cursor: pointer;
+}
+
+.odd:nth-child(odd){
+  background-color: #ccc;
 }

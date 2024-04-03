@@ -1,5 +1,5 @@
 'use client'
-import { IAccess, IBirth, IBirthType, ILossReason, IPig, IPigStage, IPigTask, IPigType, IPigWeight, IPiglets, IQuantity, IRace, IRole, IRoleAccess, IStage,  IStageTaskType,  IStallion,  ITask,  ITaskType,  IUbication, IfertilizationType } from '@/interfaces';
+import { IAccess, IBirth, IBirthType, ILossReason, IPig, IPigStage, IPigTask, IPigType, IPigWeight, IPiglets, IQuantity, IRace, IRole, IRoleAccess, IStage,  IStageTaskType,  IStallion,  IStaticPig,  ITask,  ITaskType,  IUbication, IfertilizationType } from '@/interfaces';
 import { UsersState } from './FarmsProvider'
 import { IFarm } from '@/interfaces/farm';
 import { IGrowingPigs } from '@/interfaces/growing_pigs';
@@ -48,6 +48,9 @@ import { IGrowingPigs } from '@/interfaces/growing_pigs';
         | {type:'[Farms] - setGrowingPig'; payload:IGrowingPigs | undefined }
         | {type:'[Farms] - setGrowingPigs'; payload:IGrowingPigs[] }
         | {type:'[Farms] - setStaticsQuantities'; payload:IQuantity[] }
+        | {type:'[Farms] - setStaticPigs'; payload:IStaticPig[] }
+        | {type:'[Farms] - setStaticPiglets'; payload:IStaticPig[] }
+        | {type:'[Farms] - setStaticGrowingPigs'; payload:IStaticPig[] }
         
         
 export const usersReducer = (state:UsersState,action:UsersActionType):UsersState => {
@@ -286,6 +289,21 @@ export const usersReducer = (state:UsersState,action:UsersActionType):UsersState
       return {
         ...state,
         statics_quantities:action.payload
+      }
+    case '[Farms] - setStaticPigs':
+      return {
+        ...state,
+        staticPigs:action.payload
+      }
+    case '[Farms] - setStaticPiglets':
+      return {
+        ...state,
+        staticPiglets:action.payload
+      }
+    case '[Farms] - setStaticGrowingPigs':
+      return {
+        ...state,
+        staticGrowingPigs:action.payload
       }
   
     default:

@@ -7,10 +7,11 @@ import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
 
 interface Props{
-  piglet:IPiglets
+  piglet:IPiglets;
+  print:boolean;
 }
 
-export const PigletsCard = ({piglet}:Props) => {
+export const PigletsCard = ({piglet,print}:Props) => {
   const {toggleModal}= useUi()
   const {setFarmAction,setPiglet} = useContext(FarmsContext)
   const router= useRouter()
@@ -27,14 +28,15 @@ export const PigletsCard = ({piglet}:Props) => {
   };
 
   return (
-    <div className='rowCard' style={{fontSize:'14px'}}>
+    <div className={`rowCard ${print&&'odd'}`} style={{fontSize:'14px'}}>
       <div style={{display:'flex'}}>
         <p style={{width:'100px'}}>{new Date(piglet.created_at).toLocaleString().split(',')[0]}</p>
         <p style={{width:'50px'}}>{piglet.days}</p>
         <p style={{width:'100px'}}>{piglet.ubication}</p>
-        <p style={{width:'50px'}}>{piglet.quantity}</p>
+        <p style={{width:'70px'}}>{piglet.quantity}</p>
+        <p style={{width:'70px'}}>{piglet.stage}</p>
       </div>
-      <div style={{display:'flex', gap:'.2rem',paddingRight:'.5rem'}}>
+      <div style={{display:print?'none':'flex', gap:'.2rem',paddingRight:'.5rem'}}>
         <RowButton onClick={()=>onClick('GO')} label="ver"/>
         <RowButton onClick={()=>onClick('CLOSE')} label="cerrar"/>
         <RowButton onClick={()=>onClick('DELETE')} label="borrar" color='red'/>
