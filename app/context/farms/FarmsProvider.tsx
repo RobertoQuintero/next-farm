@@ -5,7 +5,7 @@ import {  usersReducer } from './farmsReducer'
 import { IFarm } from '@/interfaces/farm'
 import { getFarmsRequest, postFarmsRequest } from './farmsRequest'
 import { returnArray } from '../auth/authRequest'
-import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing, IPigWeight, IPigStage, IPigTask, IStageTaskType, IBirthType, IPiglets, IQuantity, IStaticPig } from '@/interfaces'
+import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing, IPigWeight, IPigStage, IPigTask, IStageTaskType, IBirthType, IPiglets, IQuantity, IStaticPig, IProduct } from '@/interfaces'
 import { AuthContext } from '../auth/AuthContext'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
@@ -60,7 +60,9 @@ export interface UsersState{
   statics_quantities:IQuantity[];
   staticPigs:IStaticPig[];
   staticPiglets:IStaticPig[];
-  staticGrowingPigs:IStaticPig[]
+  staticGrowingPigs:IStaticPig[];
+  products:IProduct[];
+  product:IProduct | undefined;
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -108,7 +110,9 @@ const UI_INITIAL_STATE:UsersState={
   statics_quantities:[],
   staticPigs:[],
   staticPiglets:[],
-  staticGrowingPigs:[]
+  staticGrowingPigs:[],
+  products:[],
+  product: undefined
 }
 
 export const FarmsProvider = ({children}:Props) => {
@@ -394,6 +398,22 @@ export const FarmsProvider = ({children}:Props) => {
          setIsLoading(false)
          return ok
   };
+
+  const getProducts = async(payload:number) =>{
+   // if(!userAccess.find(u=>u.id_access===11)&& user?.id_role!==1){
+   //    setAccessError('Credenciales inválidas')
+   //    return 
+   //  }
+    await getPostLoadingOrError(`/farms/products?id_farm=${payload}`,setProducts)
+    };
+
+  const postProduct = async(payload:IProduct) =>{
+   // if(!userAccess.find(u=>u.id_access===11)&& user?.id_role!==1){
+   //    setAccessError('Credenciales inválidas')
+   //    return 
+   //  }
+   return await getPostLoadingOrError(`/farms/products`,setProducts,payload,state.products,'id_product',true)
+    };
 
   const postGrowingPigs = async(payload:IGrowingPigs):Promise<boolean> =>{
    // if(!userAccess.find(u=>u.id_access===5)&& user?.id_role!==1){
@@ -809,6 +829,18 @@ export const FarmsProvider = ({children}:Props) => {
       payload
      })
   };
+  const setProducts = (payload: IProduct[] ) =>{
+     dispatch({
+      type:'[Farms] - setProducts',
+      payload
+     })
+  };
+  const setProduct = (payload: IProduct | undefined ) =>{
+     dispatch({
+      type:'[Farms] - setProduct',
+      payload
+     })
+  };
 
 
   const getPostLoadingOrError = async<T,K extends keyof T>(
@@ -881,7 +913,10 @@ export const FarmsProvider = ({children}:Props) => {
       getQuantities,
       getStaticPigs,
      getStaticPiglets,
-     getStaticGrowingPigs
+     getStaticGrowingPigs,
+     setProduct,
+     getProducts,
+     postProduct
     }}>
       {children}
     </FarmsContext.Provider>

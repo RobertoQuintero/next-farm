@@ -8,3 +8,13 @@ export const addZero = (today:Date):string => {
   }).reverse().join('-')
   return converted
 };
+
+export const buildDate=(date:Date)=>{
+  return `${addZero(date)} ${date.toLocaleTimeString()}`
+}
+
+export const buildDateReverse=(date:string)=>{
+  const day = date.split('T')[0]
+  const hour=date.split('T')[1].split('.')[0]
+  return `${day} ${hour}`
+}

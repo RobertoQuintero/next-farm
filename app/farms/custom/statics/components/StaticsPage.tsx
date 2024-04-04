@@ -4,7 +4,7 @@ import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { BarChart } from '@mui/x-charts'
 import React, { useContext, useEffect } from 'react'
 import Cookies from 'js-cookie'
-import { CircularProgress } from '@mui/material'
+import { LoadingComponent } from '@/app/components'
 
 const StaticsPage = () => {
   const {statics_quantities,getQuantities,staticPigs,getStaticPigs,getStaticPiglets,staticPiglets,getStaticGrowingPigs,staticGrowingPigs} = useContext(FarmsContext)
@@ -17,7 +17,7 @@ const StaticsPage = () => {
   }, [])
 
   if(!statics_quantities.length){
-    return <CircularProgress/>
+    return <LoadingComponent/>
   }
   if(!staticPigs.length || !statics_quantities.length || !staticPiglets.length ||  !staticGrowingPigs.length){
     return <></>
@@ -31,7 +31,6 @@ const StaticsPage = () => {
       {
         id: 'barCategories',
         data: statics_quantities.map(s=>s.name),
-        // data: ['bar A', 'bar B', 'bar C'],
         scaleType: 'band',
       },
     ]}

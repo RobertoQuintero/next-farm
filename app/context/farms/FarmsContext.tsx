@@ -1,5 +1,5 @@
 'use client'
-import { IBirth, IBirthType, ILossReason, IPig, IPigStage, IPigTask, IPigType, IPigWeight, IPiglets, IQuantity, IRace, IStageTaskType, IStallion, IStaticPig, ITask, ITaskType, IUbication, IfertilizationType } from '@/interfaces'
+import { IBirth, IBirthType, ILossReason, IPig, IPigStage, IPigTask, IPigType, IPigWeight, IPiglets, IProduct, IQuantity, IRace, IStageTaskType, IStallion, IStaticPig, ITask, ITaskType, IUbication, IfertilizationType } from '@/interfaces'
 import { IFarm } from '@/interfaces/farm'
 import { IGrowingPigs } from '@/interfaces/growing_pigs'
 import { IAccess,  IRole, IRoleAccess } from '@/interfaces/user'
@@ -51,7 +51,9 @@ interface ContextProps{
   statics_quantities:IQuantity[]
   staticPigs:IStaticPig[]
   staticPiglets:IStaticPig[]
-  staticGrowingPigs:IStaticPig[]
+  staticGrowingPigs:IStaticPig[];
+  products:IProduct[];
+  product:IProduct | undefined;
 
   //methods
   setFarm: (payload: IFarm | undefined) => void;
@@ -103,6 +105,9 @@ interface ContextProps{
   getStaticPigs: (payload: number) => Promise<void>;
   getStaticPiglets: (payload: number) => Promise<void>;
   getStaticGrowingPigs: (payload: number) => Promise<void>;
+  setProduct: (payload: IProduct | undefined) => void;
+  getProducts: (payload: number) => Promise<void>;
+  postProduct: (payload: IProduct) => Promise<boolean>;
 }
 
 export const FarmsContext = createContext({} as ContextProps)
