@@ -51,7 +51,7 @@ export const MovePiglets = () => {
         fullWidth
         label='Cantidad'
         type="text"
-        defaultValue={values.quantity}
+        defaultValue={values.quantity||''}
         {...register('quantity',{
           required:'Este campo es requerido',
           min:1

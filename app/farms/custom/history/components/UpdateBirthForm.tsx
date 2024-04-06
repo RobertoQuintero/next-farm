@@ -152,7 +152,7 @@ export const UpdateBirthForm = () => {
               label='Hijos vivos'
               type="number"
               defaultValue={values.alive}
-              {...register('alive')}
+              {...register('alive',{min:1})}
             />
             <TextField 
               size="small"
@@ -160,7 +160,7 @@ export const UpdateBirthForm = () => {
               label='Hijos muertos'
               type="number"
               defaultValue={values.dead}
-              {...register('dead')}
+              {...register('dead',{min:0})}
             />
                 <div style={{display:'flex',justifyContent:'flex-end', gap:'.5rem'}}>
                   <p style={{fontSize:'14px',padding:'.5rem 0 0 0'}}>Fecha parto</p>
