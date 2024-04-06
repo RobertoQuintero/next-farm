@@ -1,9 +1,13 @@
 import { 
   AccountBoxOutlined,
+  AddTaskOutlined,
+  EqualizerOutlined,
   FormatListNumberedOutlined,
   GroupAddOutlined, 
+  InventoryOutlined, 
   PlaylistAddCheckOutlined, 
   RequestQuoteOutlined,
+  SavingsOutlined,
   TaskAltOutlined} from '@mui/icons-material';
 
 interface MenuLinkElement {
@@ -17,6 +21,31 @@ export const menuLinksArray:MenuLinkElement[]=[
     label:'Bitácora cerdas',
     href:'/farms/custom',
     icon: <PlaylistAddCheckOutlined />
+  },
+  {
+    label:'Bitácora Lechones',
+    href:'/farms/custom/piglets',
+    icon: <FormatListNumberedOutlined />
+  },
+  {
+    label:'Bitácora Crecimiento',
+    href:'/farms/custom/growing_pigs',
+    icon: <SavingsOutlined />
+  },
+  {
+    label:'Bitácora Actividades',
+    href:'/farms/custom/tasks',
+    icon: <AddTaskOutlined />
+  },
+  {
+    label:'Estadísticas',
+    href:'/farms/custom/statics',
+    icon: <EqualizerOutlined />
+  },
+  {
+    label:'Productos',
+    href:'/farms/custom/products',
+    icon: <InventoryOutlined />
   },
   {
     label:'Usuarios',
