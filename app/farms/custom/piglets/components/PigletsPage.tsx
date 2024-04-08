@@ -12,6 +12,7 @@ import { RowButton } from '../../components'
 import * as XLSX from 'xlsx'
 import { useReactToPrint } from 'react-to-print'
 import { MovePiglets } from '../../history_piglets/components'
+import Cookies from 'js-cookie'
 
 const PigletsPage = () => {
   const {toggleModal} = useContext(UiContext)
@@ -19,7 +20,7 @@ const PigletsPage = () => {
   const {piglets,setFarmAction,farmAction,getCode,farmsLoading,farmsError,piglet,postPiglets,getPiglets} = useContext(FarmsContext)
   const [print, setPrint] = useState(false)
   useEffect(() => {
-    getPiglets(idFarm!)
+    getPiglets(idFarm || Number(Cookies.get('id_farm')))
   }, [])
 
   const componentRef = useRef(null);

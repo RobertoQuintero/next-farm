@@ -11,6 +11,7 @@ import { IGrowingPigs } from '@/interfaces/growing_pigs'
 import { RowButton } from '../../components'
 import * as XLSX from 'xlsx'
 import { useReactToPrint } from 'react-to-print'
+import Cookies from 'js-cookie'
 
 const GrowingPigsPage = () => {
   const {toggleModal} = useContext(UiContext)
@@ -27,7 +28,7 @@ const GrowingPigsPage = () => {
   });
 
   useEffect(() => {
-    getGrowingPigs(idFarm!)
+    getGrowingPigs(idFarm!|| Number(Cookies.get('id_farm')))
   }, [])
   
 
