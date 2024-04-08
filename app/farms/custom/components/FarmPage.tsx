@@ -29,6 +29,7 @@ const FarmPage = () => {
   const [error, setError] = useState(false)
   const [error2, setError2] = useState(false)
   const [print, setPrint] = useState(false)
+  const [stage, setStage] = useState(0)
 
   const componentRef = useRef(null);
   const handlePrint = useReactToPrint({
@@ -96,12 +97,11 @@ const FarmPage = () => {
       }
     })
     const wb = XLSX.utils.book_new()
-    const  ws = XLSX.utils.json_to_sheet(newPigs)
-
+    const  ws = XLSX.utils.json_to_sheet(newPigs,{cellStyles:true,})
+    ws['!cols'] = [{wch: 18},{wch: 18},{wch: 18},{wch: 18},{wch: 18}]
     XLSX.utils.book_append_sheet(wb,ws,"Hoja1")
     XLSX.writeFile(wb,'GestionYMaternidad.xlsx')
   };
-
   return (
     <>
      <div className='actionCreateContainer'>
@@ -129,6 +129,14 @@ const FarmPage = () => {
           size='small'>Nuevo</Button>
         </div>
       </div>
+      <div style={{display:'flex',gap:'.5rem', fontSize:'14px'}} >
+        <p onClick={()=>setStage(2)} className='underlined'>Vacía <strong>{pigs.filter(p=>p.status&&p.id_pig_stage===2).length}</strong></p>
+        <p onClick={()=>setStage(3)} className='underlined'>Montada <strong>{pigs.filter(p=>p.status&&p.id_pig_stage===3).length}</strong></p>
+        <p onClick={()=>setStage(4)} className='underlined'>Sin confirmar <strong>{pigs.filter(p=>p.status&&p.id_pig_stage===4).length}</strong></p>
+        <p onClick={()=>setStage(5)} className='underlined'>Cargada <strong>{pigs.filter(p=>p.status&&p.id_pig_stage===5).length}</strong></p>
+        <p onClick={()=>setStage(6)} className='underlined'>Destetando <strong>{pigs.filter(p=>p.status&&p.id_pig_stage===6).length}</strong></p>
+        <p onClick={()=>setStage(0)} className='underlined'>Todas <strong>{pigs.filter(p=>p.status).length}</strong></p>
+      </div>
       <div style={{textAlign:'center',padding:'0 0 1rem 0',fontWeight:'bold',position:'relative'}}>
       <div style={{display:'flex', gap:'.2rem',paddingRight:'.5rem', position:'absolute', left:0,top:'50%',transform:'translateY(-50%)'}}>
         <RowButton onClick={getExcel} label="Excel"/>
@@ -150,7 +158,7 @@ const FarmPage = () => {
         </div>
         {
           pigs.filter(p=>p.status).length
-            ?pigs.filter(p=>p.status).map(a=><PigCard pig={a} key={a.id_pig} print={print}/>)
+            ?pigs.filter(p=>p.status).filter(f=>stage===0?f:f.id_pig_stage===stage).map(a=><PigCard pig={a} key={a.id_pig} print={print}/>)
             :<EmptyPage/>
         }
       </div>
@@ -165,7 +173,7 @@ const FarmPage = () => {
         </div>
           {
             pigs.filter(p=>p.status).length
-              ?pigs.filter(p=>p.status).map(a=><PigCard pig={a} key={a.id_pig} print={print}/>)
+              ?pigs.filter(p=>p.status).filter(f=>stage===0?f:f.id_pig_stage===stage).map(a=><PigCard pig={a} key={a.id_pig} print={print}/>)
               :<EmptyPage/>
           }
       </div>
@@ -177,6 +185,9 @@ const FarmPage = () => {
         {
           farmAction==='DELETE'?<DeleteComponent onDelete={onDelete} loading={farmsLoading} error={farmsError}/>:<></>
         }
+        {/* {
+          farmAction==='EDIT'?<DeleteComponent onDelete={onDelete} loading={farmsLoading} error={farmsError}/>:<></>
+        } */}
         {
           farmAction==='SEARCH-PIG'?<SearchPigForm/>:<></>
         }

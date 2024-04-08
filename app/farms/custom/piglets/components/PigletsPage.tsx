@@ -11,6 +11,7 @@ import { AuthContext } from '@/app/context/auth/AuthContext'
 import { RowButton } from '../../components'
 import * as XLSX from 'xlsx'
 import { useReactToPrint } from 'react-to-print'
+import { MovePiglets } from '../../history_piglets/components'
 
 const PigletsPage = () => {
   const {toggleModal} = useContext(UiContext)
@@ -62,7 +63,7 @@ const PigletsPage = () => {
     })
     const wb = XLSX.utils.book_new()
     const  ws = XLSX.utils.json_to_sheet(newPigs)
-
+    ws['!cols'] = [{wch: 18},{wch: 18},{wch: 18},{wch: 18},{wch: 18}]
     XLSX.utils.book_append_sheet(wb,ws,"Hoja1")
     XLSX.writeFile(wb,'Lechones.xlsx')
   };
@@ -134,6 +135,11 @@ const PigletsPage = () => {
         {
           farmAction==='DELETE'
               ?<DeleteComponent onDelete={onDelete} loading={farmsLoading} error={farmsError}/>
+              :<></>
+        }
+        {
+          farmAction==='EDIT'
+              ?<MovePiglets/>
               :<></>
         }
       </AppModal>

@@ -19,7 +19,7 @@ export const PigCard = ({pig,print}:Props) => {
 
   const onClick = async(action:string) =>{
     setPig(pig)
-    if(action==='DELETE'){
+    if(action==='DELETE' || action==='EDIT'){
       setFarmAction(action)
       toggleModal()
     }else{
@@ -33,14 +33,14 @@ export const PigCard = ({pig,print}:Props) => {
     <div className={`rowCard ${print&&'odd'}`}>
       <div className="pigData">
         <p>{addZero(new Date(pig.created_at)).split('-').reverse().join('-')}</p>
-        <p>{pig.code}</p>
+        <p onClick={()=>onClick('EDIT')} className="underlined">{pig.code}</p>
         <p>{pig.pig_ubication}</p>
         <p>{pig.pig_race}</p>
         <p>{pig.pig_stage}</p>
       </div>
       <div style={{display:print?'none':'flex', gap:'.2rem',paddingRight:'.5rem'}}>
         <RowButton onClick={()=>onClick('GO')} label="ver"/>
-        <RowButton onClick={()=>onClick('DELETE')} label="borrar"/>
+        <RowButton onClick={()=>onClick('DELETE')} label="borrar" color="red"/>
       </div>
     </div>
   )

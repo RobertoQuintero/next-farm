@@ -26,6 +26,7 @@ const StaticsPage = () => {
   return (
     <div style={{display:'flex',flexWrap:'wrap'}}>
     <div>
+    <h4 style={{textAlign:'center'}}>Total: {statics_quantities.reduce((acc,current)=>current.quantity+acc,0)}</h4>
       <BarChart
     xAxis={[
       {
@@ -44,6 +45,7 @@ const StaticsPage = () => {
   />
   </div>
     <div>
+      <h4 style={{textAlign:'center'}}>Gestantes: {staticPigs.reduce((acc,current)=>current.quantity+acc,0)}</h4>
       <BarChart
     xAxis={[
       {
@@ -64,6 +66,7 @@ const StaticsPage = () => {
   />
   </div>
     <div>
+    <h4 style={{textAlign:'center'}}>Lechones: {staticPiglets.reduce((acc,current)=>current.quantity+acc,0)}</h4>
       <BarChart
     xAxis={[
       {
@@ -84,6 +87,7 @@ const StaticsPage = () => {
   />
   </div>
     <div>
+    <h4 style={{textAlign:'center'}}>Crecimiento: {staticGrowingPigs.reduce((acc,current)=>current.quantity+acc,0)}</h4>
       <BarChart
     xAxis={[
       {

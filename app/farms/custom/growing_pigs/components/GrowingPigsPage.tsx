@@ -62,7 +62,7 @@ const GrowingPigsPage = () => {
     })
     const wb = XLSX.utils.book_new()
     const  ws = XLSX.utils.json_to_sheet(newPigs)
-
+    ws['!cols'] = [{wch: 18},{wch: 18},{wch: 18},{wch: 18},{wch: 18},{wch: 18}]
     XLSX.utils.book_append_sheet(wb,ws,"Hoja1")
     XLSX.writeFile(wb,'Crecimiento.xlsx')
   };

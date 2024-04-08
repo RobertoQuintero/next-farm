@@ -33,7 +33,7 @@ export const PigletsCard = ({piglet,print}:Props) => {
         <p style={{width:'100px'}}>{new Date(piglet.created_at).toLocaleString().split(',')[0]}</p>
         <p style={{width:'50px'}}>{piglet.days}</p>
         <p style={{width:'100px'}}>{piglet.ubication}</p>
-        <p style={{width:'70px'}}>{piglet.quantity}</p>
+        <p onClick={()=>onClick('EDIT')}  style={{width:'70px'}} className='underlined'>{piglet.quantity}</p>
         <p style={{width:'70px'}}>{piglet.stage}</p>
       </div>
       <div style={{display:print?'none':'flex', gap:'.2rem',paddingRight:'.5rem'}}>
