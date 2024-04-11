@@ -62,7 +62,7 @@ export const UsersProvider = ({children}:Props) => {
         return
       }
       setAccessError(undefined)
-      await getPostLoadingOrError(`/users?idFarm=${payload}`,setUsers)
+      await getPostLoadingOrError(`/users?idFarm=${payload}&id_user=${user?.id_user}`,setUsers)
     };
 
   const postUser = async(payload:IUser):Promise<boolean> =>{
