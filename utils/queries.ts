@@ -52,7 +52,8 @@ CU.description pig_ubication,
 CR.description pig_race,
 CS.description pig_stage,
 WS.description pig_weight,
-MS.name stallion
+MS.name stallion,
+(select top 1 birth_date from MOD.Births MB where is_positive='true' and MB.id_pig=MP.id_pig order by birth_date desc) birth_date
 FROM MOD.Pigs MP
 inner join CAT.Pig_types PT
 on PT.id_pig_type=MP.id_pig_type

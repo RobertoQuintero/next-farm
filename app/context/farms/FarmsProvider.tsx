@@ -299,10 +299,10 @@ export const FarmsProvider = ({children}:Props) => {
 
 
   const updateTasks = async(payload:ITask) =>{
-   // if(!userAccess.find(u=>u.id_access===11)&& user?.id_role!==1){
-   //    setAccessError('Credenciales inválidas')
-   //    return 
-   //  }
+   if(!userAccess.find(u=>u.id_access===21)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return true
+    }
     return await getPostLoadingOrError(`/farms/tasks`,setTasks,payload,state.tasks,'id_task',true)
     };
 
@@ -364,10 +364,10 @@ export const FarmsProvider = ({children}:Props) => {
          return ok
   };
   const postPiglets = async(payload:IPiglets):Promise<boolean> =>{
-   // if(!userAccess.find(u=>u.id_access===5)&& user?.id_role!==1){
-   //    setAccessError('Credenciales inválidas')
-   //    return true
-   //  }
+   if(!userAccess.find(u=>u.id_access===18)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return true
+    }
     setIsLoading(true)
          const {ok,data}=await postFarmsRequest('/farms/piglets',payload)
          if(ok){
@@ -382,10 +382,10 @@ export const FarmsProvider = ({children}:Props) => {
   };
 
   const getPiglets = async(payload:number):Promise<boolean> =>{
-   // if(!userAccess.find(u=>u.id_access===5)&& user?.id_role!==1){
-   //    setAccessError('Credenciales inválidas')
-   //    return true
-   //  }
+   if(!userAccess.find(u=>u.id_access===17)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return true
+    }
     setIsLoading(true)
          const {ok,data}=await getFarmsRequest(`/farms/piglets?id_farm=${payload}`,)
          if(ok){
@@ -400,41 +400,28 @@ export const FarmsProvider = ({children}:Props) => {
   };
 
   const getProducts = async(payload:number) =>{
-   // if(!userAccess.find(u=>u.id_access===11)&& user?.id_role!==1){
-   //    setAccessError('Credenciales inválidas')
-   //    return 
-   //  }
+   if(!userAccess.find(u=>u.id_access===24)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return 
+    }
     await getPostLoadingOrError(`/farms/products?id_farm=${payload}`,setProducts)
     };
 
   const postProduct = async(payload:IProduct) =>{
-   // if(!userAccess.find(u=>u.id_access===11)&& user?.id_role!==1){
-   //    setAccessError('Credenciales inválidas')
-   //    return 
-   //  }
+   if(!userAccess.find(u=>u.id_access===25)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return true
+    }
    return await getPostLoadingOrError(`/farms/products`,setProducts,payload,state.products,'id_product',true)
     };
 
   const postGrowingPigs = async(payload:IGrowingPigs):Promise<boolean> =>{
-   // if(!userAccess.find(u=>u.id_access===5)&& user?.id_role!==1){
-   //    setAccessError('Credenciales inválidas')
-   //    return true
-   //  }
+   if(!userAccess.find(u=>u.id_access===19)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return true
+    }
 
    return await getPostLoadingOrError(`/farms/growing_pigs?id_farm=${payload.id_farm}`,setGrowingPigs,payload,state.growing_pigs,'id_growing_lot',true)
-   //  setIsLoading(true)
-   //       const {ok,data}=await postFarmsRequest(`/farms/growing_pigs?id_farm=${payload.id_farm}`,payload)
-   //       if(ok){
-
-   //          setGrowingPigs([...state.growing_pigs,data as IGrowingPigs])
-   //          // setPiglets(returnArray(payload,data as IPiglets,state.piglets,'id_lot_piglets'))
-   //          // setPiglet(data as IPiglets)
-   //       }
-   //       else{
-   //        setError(data as string)
-   //       }
-   //       setIsLoading(false)
-   //       return ok
   };
 
   const postRoleAccess = async(payload:IRoleAccess):Promise<boolean> =>{
@@ -485,10 +472,10 @@ export const FarmsProvider = ({children}:Props) => {
   };
 
   const postBirth = async(payload:IBirth):Promise<boolean> =>{
-   // if(!userAccess.find(u=>u.id_access===16)&& user?.id_role!==1){
-   //    setAccessError('Credenciales inválidas')
-   //    return true 
-   //  }
+   if(!userAccess.find(u=>u.id_access===23)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return true 
+    }
     return await getPostLoadingOrError('/farms/births',setBirths,payload,state.births,'id_birth',true)
   };
   
