@@ -1,5 +1,5 @@
 'use client'
-import { IAccess, IBirth, IBirthType, ILossReason, IPig, IPigStage, IPigTask, IPigType, IPigWeight, IPiglets, IProduct, IQuantity, IRace, IRole, IRoleAccess, IStage,  IStageTaskType,  IStallion,  IStaticPig,  ITask,  ITaskType,  IUbication, IfertilizationType } from '@/interfaces';
+import { IAccess, IBirth, IBirthType, IComment, ILossReason, IPig, IPigStage, IPigTask, IPigType, IPigWeight, IPiglets, IProduct, IQuantity, IRace, IRole, IRoleAccess, IStage,  IStageTaskType,  IStallion,  IStaticPig,  ITask,  ITaskType,  IUbication, IfertilizationType } from '@/interfaces';
 import { UsersState } from './FarmsProvider'
 import { IFarm } from '@/interfaces/farm';
 import { IGrowingPigs } from '@/interfaces/growing_pigs';
@@ -53,6 +53,8 @@ import { IGrowingPigs } from '@/interfaces/growing_pigs';
         | {type:'[Farms] - setStaticGrowingPigs'; payload:IStaticPig[] }
         | {type:'[Farms] - setProducts'; payload:IProduct[] }
         | {type:'[Farms] - setProduct'; payload:IProduct | undefined }
+        | {type:'[Farms] - setComments'; payload:IComment[] }
+        | {type:'[Farms] - setComment'; payload:IComment | undefined }
         
         
 export const usersReducer = (state:UsersState,action:UsersActionType):UsersState => {
@@ -316,6 +318,17 @@ export const usersReducer = (state:UsersState,action:UsersActionType):UsersState
       return {
         ...state,
         product:action.payload
+      }
+    case '[Farms] - setComments':
+      return {
+        ...state,
+        comments:action.payload
+      }
+
+    case '[Farms] - setComment':
+      return {
+        ...state,
+        comment:action.payload
       }
   
     default:

@@ -2,7 +2,7 @@ import { DatePickerElement, SaveButton } from '@/app/components'
 import { AuthContext } from '@/app/context/auth/AuthContext'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
-import { IPig } from '@/interfaces'
+import { IPig, IUbication } from '@/interfaces'
 import {  MenuItem, TextField } from '@mui/material'
 import React, { useContext, useEffect, useState} from 'react'
 import { useForm } from "react-hook-form"
@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form"
 export const PostUpdatePig = () => {
   const {idFarm} = useContext(AuthContext)
   const {toggleModal} = useContext(UiContext)
-  const {farmsLoading,ubications,races,pig,postPig,stallions,getCode,code,weightTypes} = useContext(FarmsContext)
+  const {farmsLoading,ubications,races,pig,postPig,stallions,getCode,code,weightTypes,pigs} = useContext(FarmsContext)
 
   const {
     register,
@@ -18,10 +18,23 @@ export const PostUpdatePig = () => {
     formState: { errors },
   } = useForm<IPig>()
 
+  const newUbications = () =>{
+    const array=[] as IUbication[]
+    for (const p of ubications.filter(f=>f.id_pig_type===3)) {
+      if(!pigs.find(a=>a.id_ubication===p.id_ubication)){
+          array.push(p)
+      }
+    }
+    if(pig){
+      array.push(ubications.find(u=>u.id_ubication===pig.id_ubication)!)
+    }
+    return array
+  };
+
   const values={
     id_pig:pig?pig.id_pig:0,
     id_pig_type:3,
-    id_ubication:pig?pig.id_ubication:ubications[0]?.id_ubication,
+    id_ubication:pig?pig.id_ubication:newUbications()[0]?.id_ubication,
     id_race:pig?pig.id_race:races[0]?.id_race,
     code:pig?pig.code:code,
     added_date:pig?new Date(pig.added_date):new Date(),
@@ -37,6 +50,7 @@ export const PostUpdatePig = () => {
   const [newCode, setNewCode] = useState(values.code)
   const [submit, setSubmit] = useState(false)
   const [barcode, setBarcode] = useState(values.bar_code)
+
 
   const onSubmit=async(data:IPig)=>{
     data.id_pig=values.id_pig
@@ -138,8 +152,8 @@ export const PostUpdatePig = () => {
           {...register('id_ubication')} 
           select >
           {
-            ubications.length
-            ?ubications.map(item=>(
+            newUbications().length
+            ?newUbications().map(item=>(
               <MenuItem 
                 key={item.id_ubication} 
                 value={item.id_ubication}>

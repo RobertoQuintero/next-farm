@@ -5,7 +5,7 @@ import {  usersReducer } from './farmsReducer'
 import { IFarm } from '@/interfaces/farm'
 import { getFarmsRequest, postFarmsRequest } from './farmsRequest'
 import { returnArray } from '../auth/authRequest'
-import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing, IPigWeight, IPigStage, IPigTask, IStageTaskType, IBirthType, IPiglets, IQuantity, IStaticPig, IProduct } from '@/interfaces'
+import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing, IPigWeight, IPigStage, IPigTask, IStageTaskType, IBirthType, IPiglets, IQuantity, IStaticPig, IProduct, IComment } from '@/interfaces'
 import { AuthContext } from '../auth/AuthContext'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
@@ -63,6 +63,8 @@ export interface UsersState{
   staticGrowingPigs:IStaticPig[];
   products:IProduct[];
   product:IProduct | undefined;
+  comments:IComment[];
+  comment:IComment | undefined;
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -112,7 +114,9 @@ const UI_INITIAL_STATE:UsersState={
   staticPiglets:[],
   staticGrowingPigs:[],
   products:[],
-  product: undefined
+  product: undefined,
+  comments:[],
+  comment:undefined
 }
 
 export const FarmsProvider = ({children}:Props) => {
@@ -238,6 +242,22 @@ export const FarmsProvider = ({children}:Props) => {
     await getPostLoadingOrError(`/farms/tasks?id=${id}&pig=${pig}`,setTasks)
     };
 
+  const getComments = async(payload:number) =>{
+   // if(!userAccess.find(u=>u.id_access===11)&& user?.id_role!==1){
+   //    setAccessError('Credenciales inválidas')
+   //    return 
+   //  }
+   return await getPostLoadingOrError(`/farms/comments?id_pig=${payload}`,setComments)
+    };
+
+  const postComments = async(payload:IComment) =>{
+   // if(!userAccess.find(u=>u.id_access===11)&& user?.id_role!==1){
+   //    setAccessError('Credenciales inválidas')
+   //    return 
+   //  }
+   return await getPostLoadingOrError(`/farms/comments`,setComments,payload,state.comments,'id_comment',true)
+    };
+
     
     const getAllTasks = async({startDate,endDate}:{startDate:string;endDate:string}) =>{
         setIsLoading(true)
@@ -250,6 +270,8 @@ export const FarmsProvider = ({children}:Props) => {
          }
          setIsLoading(false)
       };
+
+
    
    
    const getQuantities = async(payload:number) =>{
@@ -829,6 +851,20 @@ export const FarmsProvider = ({children}:Props) => {
      })
   };
 
+  const setComments = (payload: IComment[] ) =>{
+     dispatch({
+      type:'[Farms] - setComments',
+      payload
+     })
+  };
+
+  const setComment = (payload: IComment | undefined ) =>{
+     dispatch({
+      type:'[Farms] - setComment',
+      payload
+     })
+  };
+
 
   const getPostLoadingOrError = async<T,K extends keyof T>(
       endpoint:string,setState:(payload: T[]) => void,payload?:T,state?:T[],id?:K,wich?:boolean
@@ -903,7 +939,10 @@ export const FarmsProvider = ({children}:Props) => {
      getStaticGrowingPigs,
      setProduct,
      getProducts,
-     postProduct
+     postProduct,
+     getComments,
+     setComment,
+     postComments
     }}>
       {children}
     </FarmsContext.Provider>
