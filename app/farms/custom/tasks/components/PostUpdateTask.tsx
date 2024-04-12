@@ -3,7 +3,7 @@ import { AuthContext } from '@/app/context/auth/AuthContext'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { IPigTask} from '@/interfaces'
-import {  MenuItem, TextField } from '@mui/material'
+import {  MenuItem, Switch, TextField } from '@mui/material'
 import React, { useContext, useState } from 'react'
 import { useForm } from "react-hook-form"
 
@@ -27,28 +27,38 @@ export const PostUpdateTask = () => {
     while_days:pigTask?pigTask.while_days:0,
     id_farm:pigTask?pigTask.id_farm:idFarm ,
     id_stage_task_type:pigTask?pigTask.id_stage_task_type:3,
+    change_to_stage:pigTask?pigTask.change_to_stage:null,
+    end_stage:pigTask?pigTask.end_stage:false,
+    
   } as IPigTask
 
   const [pigType, setPigType] = useState(pigStages.find( p=>p.id_pig_stage===values.id_pig_stage)?.id_pig_type)
   const [newStages, setNewStages] = useState(pigStages.filter(p=>p.id_pig_type===pigType))
   const [pigStage, setpigStage] = useState(values.id_pig_stage)
- 
+  const [checked, setChecked] = React.useState(values.end_stage);
 
   const onSubmit=async(data:IPigTask)=>{
     const date= new Date()
-    data.id_pig_task=values.id_pig_task
-    data.status=values.status
     data.created_at=date
-    data.id_farm=values.id_farm
     data.id_pig_stage=pigStage
+    const newTask={
+      ...values,
+      ...data,
+      end_stage:checked
 
-    // console.log(data)
+    } as IPigTask
+
+    // console.log(newTask)
     // return
-    const ok=await postTask(data)
+    const ok=await postTask(newTask)
     if(ok){
       toggleModal()
     }
   }
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked);
+  };
 
   return (
     <form className='Form' onSubmit={handleSubmit(onSubmit)}>
@@ -151,6 +161,37 @@ export const PostUpdateTask = () => {
         error={!!errors.while_days}
         helperText={errors.while_days?.message}
         />
+        <div style={{display:'flex', alignItems:'center',width:'100%',justifyContent:'flex-end'}}>
+        <p>{checked?'Es fin de etapa':'No es fin de etapa'}</p>
+        <Switch
+          checked={checked}
+          onChange={handleChange}
+          inputProps={{ 'aria-label': 'controlled' }}
+        />
+        </div>
+        {
+          checked
+            ?<TextField
+            size="small"
+            label='Pasar a etapa'
+            fullWidth
+            defaultValue={values.change_to_stage|| newStages[0].id_pig_stage}
+            {...register('change_to_stage')}
+            select >
+            {
+              newStages.length
+              ?newStages.map(item=>(
+                <MenuItem 
+                  key={item.id_pig_stage} 
+                  value={item.id_pig_stage}>
+                  {item.description}
+                </MenuItem>
+              ))
+              :<div></div>
+            }
+          </TextField>
+          :<></>
+        }
         <SaveButton loading={farmsLoading}/>
     </form>
   )

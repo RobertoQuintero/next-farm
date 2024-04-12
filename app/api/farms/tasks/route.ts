@@ -15,7 +15,9 @@ id_task,
   MT.status,
   PT.description,
   id_lot_piglets,
-  RU.name 
+  RU.name,
+  PT.change_to_stage,
+  PT.end_stage 
 FROM MOD.Tasks MT
 inner join CAT.Pig_tasks PT
 on PT.id_pig_task=MT.id_pig_task

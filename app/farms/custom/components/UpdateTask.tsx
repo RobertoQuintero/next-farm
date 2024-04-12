@@ -3,13 +3,13 @@ import React, { useContext, useState } from 'react'
 import { useForm } from "react-hook-form"
 import { UiContext } from '@/app/context/ui/UiContext'
 import { DatePickerElement, SaveButton } from '@/app/components'
-import { ITask } from '@/interfaces'
+import { IPig, IPiglets, ITask } from '@/interfaces'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { AuthContext } from '@/app/context/auth/AuthContext'
 
 export const UpdateTask = () => {
   const {toggleModal} = useContext(UiContext)
-  const {farmsLoading,task,updateTasks} = useContext(FarmsContext)
+  const {farmsLoading,task,updateTasks,pig,postPig,piglet,postPiglets} = useContext(FarmsContext)
   const {user} = useContext(AuthContext)
   const {
     register,
@@ -32,8 +32,41 @@ export const UpdateTask = () => {
       done:true,
       id_user:user?.id_user
     } as ITask
+    let ok=false
+    if(newTask.end_stage){
+      if(newTask.id_pig){
+        const newPig={
+          ...pig,
+          id_pig_stage:newTask.change_to_stage
+        } as IPig
+        Promise.all([
+          postPig(newPig),
+          updateTasks(newTask)
+        ]).then(res=>{
+          toggleModal()
+          return
+        })
 
-    const ok=await updateTasks(newTask)
+      }else if(newTask.id_lot_piglets){
+        const newLot={
+          ...piglet,
+          id_pig_stage:newTask.change_to_stage
+        } as IPiglets
+
+        Promise.all([
+          postPiglets(newLot),
+          updateTasks(newTask)
+        ]).then(res=>{
+          toggleModal()
+          return
+        })
+      }
+
+    }else{
+
+      ok=await updateTasks(newTask)
+    }
+
     if(ok){
       toggleModal()
     }

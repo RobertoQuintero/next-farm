@@ -62,6 +62,8 @@ export interface ITask {
   description?:string;
   name?:string;
   id_lot_piglets:number;
+  end_stage:boolean;
+  change_to_stage: null | number | string;
 }
 
 export interface ITaskType {
@@ -107,6 +109,8 @@ export interface IPigTask {
   days:               number;
   while_days:         number;
   id_stage_task_type: number;
+  end_stage:boolean;
+  change_to_stage: null | number | string;
 }
 
 

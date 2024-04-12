@@ -10,7 +10,7 @@ import { AuthContext } from '@/app/context/auth/AuthContext'
 export const UpdateBirthForm = () => {
   const {user} = useContext(AuthContext)
   const {toggleModal} = useContext(UiContext)
-  const {birth,birthTypes,farmsLoading,pig,postPig,postBirth,createTasksToDo,piggletCode,postNewPiglets,farmAction} = useContext(FarmsContext)
+  const {birth,birthTypes,farmsLoading,pig,postPig,postBirth,createTasksToDo,piggletCode,postNewPiglets,farmAction,getTasks} = useContext(FarmsContext)
   const [date, setDate] = useState<Date | null>(new Date(birth?.birth_date!))
   const {
     register,
@@ -83,6 +83,10 @@ export const UpdateBirthForm = () => {
       id_farm:pig?.id_farm
     } as IPiglets
     // console.log(piglets)
+    // console.log(is_normal)
+    // if(is_normal){
+    //   console.log({id_pig:newPig.id_pig,id_pig_stage:newPig.id_pig_stage,id_user:user?.id_user!,id_lot_piglets:0})
+    // }
     // return
     
           Promise.all([
@@ -96,6 +100,7 @@ export const UpdateBirthForm = () => {
             })
           ])
             .then(res=>{
+              getTasks(newPig.id_pig,'pig')
               toggleModal()
             })
             .catch(error=>{

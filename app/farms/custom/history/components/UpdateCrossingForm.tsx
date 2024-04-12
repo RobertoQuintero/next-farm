@@ -24,7 +24,7 @@ export const UpdateCrossingForm = () => {
       id_user:user?.id_user,
       id_fertilization_type:fertilizationType
     } as {id_stallion:number,crossing_date:string,id_pig:number,id_user:number,id_fertilization_type:number}
-
+ 
     Promise.all([
       postCrossingDate(data),
       createTasksToDo({id_pig:pig?.id_pig!,id_pig_stage:3,id_user:user?.id_user!,id_lot_piglets:0})
