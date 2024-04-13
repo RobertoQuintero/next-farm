@@ -6,11 +6,13 @@ import { AccordionElement } from '@/app/components';
 import { useUi } from '@/app/context/ui/useUi';
 
 export const InfoRow = () => {
-  const {pig,setFarmAction} = useContext(FarmsContext)
+  const {pig,setFarmAction,setGrowingPig,setPiglet} = useContext(FarmsContext)
   const {toggleModal} = useUi()
 
   const onClick =(action:string) =>{
      setFarmAction(action)
+     setGrowingPig(undefined)
+     setPiglet(undefined)
      toggleModal()
   };
 
@@ -31,8 +33,9 @@ export const InfoRow = () => {
           }
           <p>ID: <strong>{pig?.bar_code}</strong></p>
         </div>
-        <div>
+        <div style={{display:'flex', flexDirection:'column', gap:'.5rem'}}>
           <Button size='small' color='warning' onClick={()=>onClick('EDIT')} variant='contained'>Editar</Button>
+          <Button size='small' onClick={()=>onClick('LOSS')} variant='outlined'>Baja</Button>
         </div>
       </div>
     </AccordionElement>

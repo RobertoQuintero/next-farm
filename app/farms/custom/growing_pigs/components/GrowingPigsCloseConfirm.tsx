@@ -8,7 +8,7 @@ export const GrowingPigsCloseConfirm = () => {
   const {toggleModal} = useContext(UiContext)
   const{growing_pig,postGrowingPigs}= useContext(FarmsContext)
   const onClick = async() =>{
-    console.log(growing_pig)
+
     const growing={
       ...growing_pig,
       closed:true

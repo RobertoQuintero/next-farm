@@ -5,7 +5,7 @@ import {  usersReducer } from './farmsReducer'
 import { IFarm } from '@/interfaces/farm'
 import { getFarmsRequest, postFarmsRequest } from './farmsRequest'
 import { returnArray } from '../auth/authRequest'
-import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing, IPigWeight, IPigStage, IPigTask, IStageTaskType, IBirthType, IPiglets, IQuantity, IStaticPig, IProduct, IComment } from '@/interfaces'
+import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing, IPigWeight, IPigStage, IPigTask, IStageTaskType, IBirthType, IPiglets, IQuantity, IStaticPig, IProduct, IComment, ILoss } from '@/interfaces'
 import { AuthContext } from '../auth/AuthContext'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
@@ -65,6 +65,8 @@ export interface UsersState{
   product:IProduct | undefined;
   comments:IComment[];
   comment:IComment | undefined;
+  losses:ILoss[]
+  loss:ILoss | undefined;
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -116,7 +118,9 @@ const UI_INITIAL_STATE:UsersState={
   products:[],
   product: undefined,
   comments:[],
-  comment:undefined
+  comment:undefined,
+  losses:[],
+  loss:undefined
 }
 
 export const FarmsProvider = ({children}:Props) => {
@@ -258,6 +262,25 @@ export const FarmsProvider = ({children}:Props) => {
    return await getPostLoadingOrError(`/farms/comments`,setComments,payload,state.comments,'id_comment',true)
     };
 
+    const getLosses = async(payload:ILoss) =>{
+      // if(!userAccess.find(u=>u.id_access===11)&& user?.id_role!==1){
+      //    setAccessError('Credenciales inválidas')
+      //    return 
+      //  }
+      const {id_pig,id_growing_lot,id_lot_piglets}= payload
+      return await getPostLoadingOrError(`/farms/losses?id_pig=${id_pig}&id_growing_lot=${id_growing_lot}&id_lot_piglets=${id_lot_piglets}`,setLosses)
+       };
+
+       const postLosses = async(payload:ILoss) =>{
+         // if(!userAccess.find(u=>u.id_access===11)&& user?.id_role!==1){
+         //    setAccessError('Credenciales inválidas')
+         //    return 
+         //  }
+         return await getPostLoadingOrError(`/farms/losses`,setLosses,payload,state.losses,'id_loss',true)
+          };
+
+
+
     
     const getAllTasks = async({startDate,endDate}:{startDate:string;endDate:string}) =>{
         setIsLoading(true)
@@ -344,7 +367,6 @@ export const FarmsProvider = ({children}:Props) => {
         setIsLoading(true)
          const {ok,data}=await getFarmsRequest(`/farms/growing_pigs?id_farm=${payload}`)
          if(ok){
-            console.log(data)
             setGrowingPigs(data as IGrowingPigs[])
          }
          else{
@@ -865,6 +887,20 @@ export const FarmsProvider = ({children}:Props) => {
      })
   };
 
+  const setLosses = (payload: ILoss[] ) =>{
+     dispatch({
+      type:'[Farms] - setLosses',
+      payload
+     })
+  };
+
+  const setLoss = (payload: ILoss | undefined ) =>{
+     dispatch({
+      type:'[Farms] - setLoss',
+      payload
+     })
+  };
+
 
   const getPostLoadingOrError = async<T,K extends keyof T>(
       endpoint:string,setState:(payload: T[]) => void,payload?:T,state?:T[],id?:K,wich?:boolean
@@ -942,7 +978,10 @@ export const FarmsProvider = ({children}:Props) => {
      postProduct,
      getComments,
      setComment,
-     postComments
+     postComments,
+     setLoss,
+     getLosses,
+     postLosses
     }}>
       {children}
     </FarmsContext.Provider>

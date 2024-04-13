@@ -32,8 +32,6 @@ export const PostUpdateRace = () => {
     data.id_farm=values.id_farm
     data.created_at=date
     data.updated_at=date
-    // console.log(data)
-    // return
 
     const ok = await postRace(data)
     if(ok){

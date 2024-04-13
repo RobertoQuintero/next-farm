@@ -22,7 +22,6 @@ export const TaskElementRow = ({task}:Props) => {
   return (
     <div className={styles.taskRow}>
       <p>{new Date(task.start_date).toLocaleString().split(',')[0]}</p>
-      {/* <p>{new Date(task.end_date).toLocaleString().split(',')[0]}</p> */}
       <p style={{textTransform:'capitalize'}}>{task.name?.split(' ')[0]}</p>
       <p >{task.description}</p>
       <p onClick={()=>onClick('COMMENT-TASK')} className={styles.comment}>... {task.comment?.length?<span>{task.comment}</span>:''}</p>

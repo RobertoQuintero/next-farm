@@ -11,7 +11,6 @@ interface Props{
 export const PigsTasks = ({changeAction}:Props) => {
   const {tasks} = useContext(FarmsContext)
 
-  console.log(changeAction)
   return (
     <AccordionElement title='Gestantes'>
       <div className={styles.birthContainer} style={{width:'100%'}}>

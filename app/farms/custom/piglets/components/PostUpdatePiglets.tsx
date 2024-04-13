@@ -4,13 +4,13 @@ import React, { useContext, useState } from 'react'
 import { useForm } from "react-hook-form"
 import { UiContext } from '@/app/context/ui/UiContext'
 import { DatePickerElement, SaveButton } from '@/app/components'
-import { IPiglets } from '@/interfaces'
+import { IPiglets, IUbication } from '@/interfaces'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { AuthContext } from '@/app/context/auth/AuthContext'
 
 export const PostUpdatePiglets = () => {
   const {toggleModal} = useContext(UiContext)
-  const {farmsLoading,farmsError,ubications,piglet,pigStages,piggletCode,postNewPiglets,postPiglets} = useContext(FarmsContext)
+  const {farmsLoading,farmsError,ubications,piglet,pigStages,piggletCode,postNewPiglets,postPiglets,piglets} = useContext(FarmsContext)
   const {user,idFarm} = useContext(AuthContext)
   const [date, setDate] = useState<Date | null>(new Date())
 
@@ -20,8 +20,21 @@ export const PostUpdatePiglets = () => {
     formState: { errors },
   } = useForm<IPiglets>()
 
+  const newUbications = () =>{
+    const array=[] as IUbication[]
+    for (const p of ubications.filter(f=>f.id_pig_type!==2)) {
+      if(!piglets.find(a=>a.id_ubication===p.id_ubication)){
+          array.push(p)
+      }
+    }
+    if(piglet){
+      array.push(ubications.find(u=>u.id_ubication===piglet.id_ubication)!)
+    }
+    return array
+  };
+
   const values={
-    id_ubication:piglet?piglet.id_ubication:ubications.filter(u=>u.id_pig_type!==2)[0].id_ubication,
+    id_ubication:piglet?piglet.id_ubication:newUbications()[0].id_ubication,
     id_pig_stage:piglet?piglet.id_ubication:pigStages.filter(u=>u.id_pig_type===1)[0].id_pig_stage,
   } as IPiglets
 
@@ -44,7 +57,6 @@ export const PostUpdatePiglets = () => {
 
     } as IPiglets
 
-    // console.log(newPiglets)
     const ok= await postPiglets(newPiglets)
     if(ok){
       toggleModal()
@@ -61,8 +73,8 @@ export const PostUpdatePiglets = () => {
           {...register('id_ubication')} 
           select >
           {
-            ubications.length
-            ?ubications.filter(u=>u.id_pig_type!==2).map(item=>(
+            newUbications().length
+            ?newUbications().filter(u=>u.id_pig_type!==2).map(item=>(
               <MenuItem 
                 key={item.id_ubication} 
                 value={item.id_ubication}>

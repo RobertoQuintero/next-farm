@@ -53,6 +53,7 @@ CR.description pig_race,
 CS.description pig_stage,
 WS.description pig_weight,
 MS.name stallion,
+MOD.getIsActive(MP.id_pig,MP.id_pig_stage) is_active,
 (select top 1 birth_date from MOD.Births MB where is_positive='true' and MB.id_pig=MP.id_pig order by birth_date desc) birth_date
 FROM MOD.Pigs MP
 inner join CAT.Pig_types PT

@@ -1,3 +1,5 @@
+export * from "./LossForm";
+
 export * from "./UpdateTask";
 
 export * from "./UpdateComment";

@@ -1,10 +1,10 @@
 'use client'
 import { BackButton } from '@/app/components'
 import React, { useContext, useEffect } from 'react'
-import { InfoRowPiglets, MovePiglets, TasksRowPiglets, UpdatePiglets } from '.'
+import { InfoRowPiglets, LossRowPiglets, MovePiglets, TasksRowPiglets, UpdatePiglets } from '.'
 import AppModal from '@/app/components/AppModal'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
-import { UpdateComment, UpdateTask } from '../../components'
+import { LossForm, UpdateComment, UpdateTask } from '../../components'
 import Cookies from 'js-cookie'
 
 const HistoryPigletsPage = () => {
@@ -21,6 +21,7 @@ const HistoryPigletsPage = () => {
     <>
       <BackButton/>
       <InfoRowPiglets/>
+      <LossRowPiglets/>
       <TasksRowPiglets/>
       <AppModal>
       {
@@ -34,6 +35,9 @@ const HistoryPigletsPage = () => {
       }
       {
         farmAction==='MOVE'?<MovePiglets/>:<></>
+      }
+      {
+        farmAction==='LOSS'?<LossForm/>:<></>
       }
       </AppModal>
     </>

@@ -16,8 +16,6 @@ export const UpdateComment = () => {
     
     const newTask= {...task,comment:comment.trim()} as ITask
 
-    // console.log(newTask)
-    // return
     if(task?.comment===newTask.comment){
       toggleModal()
       return

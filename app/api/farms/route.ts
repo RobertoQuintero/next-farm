@@ -4,7 +4,6 @@ import { getRequestQuery, postRequest } from "@/utils/getRequest";
 export const GET = async(req:Request) =>{
   const {searchParams}= new URL(req.url)
     const id_user=searchParams.get('id_user')
-    console.log({id_user})
   return await getRequestQuery(`SELECT * FROM RH.Farms where id_user=${id_user} and status='true'`)
 }
 

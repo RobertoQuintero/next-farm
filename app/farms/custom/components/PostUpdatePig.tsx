@@ -64,8 +64,6 @@ export const PostUpdatePig = () => {
     data.bar_code=barcode
     data.code=newCode
 
-    // console.log(data)
-    // return
     setSubmit(true)
     const ok=await postPig(data)
     if(ok){

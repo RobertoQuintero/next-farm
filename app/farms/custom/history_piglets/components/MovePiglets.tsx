@@ -21,9 +21,7 @@ export const MovePiglets = () => {
     quantity:0,
     id_ubication:ubication
   } as IPiglets
-  console.log(ubication)
   const onSubmit=async(data:IPiglets)=>{
-    console.log(data)
 
     const newPiglets={
       ...piglet,
@@ -54,7 +52,8 @@ export const MovePiglets = () => {
         defaultValue={values.quantity||''}
         {...register('quantity',{
           required:'Este campo es requerido',
-          min:1
+          min:1,
+          max:piglet?.quantity
         })}
         error={!!errors.quantity}
         helperText={errors.quantity?.message}

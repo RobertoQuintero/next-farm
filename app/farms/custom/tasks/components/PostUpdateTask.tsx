@@ -48,8 +48,6 @@ export const PostUpdateTask = () => {
 
     } as IPigTask
 
-    // console.log(newTask)
-    // return
     const ok=await postTask(newTask)
     if(ok){
       toggleModal()

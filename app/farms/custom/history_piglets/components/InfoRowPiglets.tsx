@@ -6,13 +6,15 @@ import { useUi } from '@/app/context/ui/useUi';
 import styles from './piglets.module.css'
 
 export const InfoRowPiglets = () => {
-  const {setFarmAction,piglet,setPiglet} = useContext(FarmsContext)
+  const {setFarmAction,piglet,setPiglet,setPig,setGrowingPig} = useContext(FarmsContext)
   const {toggleModal} = useUi()
   const isStage=piglet?.id_pig_stage===7
 
   const onClick =(action:string) =>{
      setFarmAction(action)
      setPiglet(piglet)
+     setGrowingPig(undefined)
+     setPig(undefined)
      toggleModal()
   };
 
@@ -32,6 +34,7 @@ export const InfoRowPiglets = () => {
         <div style={{display:'flex', flexDirection:'column', gap:'.3rem'}}>
           {/* <Button size='small' color='warning' onClick={()=>onClick('EDIT')} variant='contained'>Editar</Button> */}
           <Button size='small' onClick={()=>onClick('MOVE')} variant='outlined'>Mover</Button>
+          <Button size='small' onClick={()=>onClick('LOSS')} variant='outlined'>Baja</Button>
         </div>
       </div>
     </AccordionElement>

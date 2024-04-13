@@ -33,9 +33,7 @@ export const PostUpdateUbication = () => {
     data.created_at=date
     data.status=values.status
     data.id_farm=values.id_farm
-    console.log(data)
-    // return
-
+  
     const ok= await postUbication(data)
     if(ok){
       toggleModal()

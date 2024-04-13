@@ -30,8 +30,7 @@ export const GrowingPigsChangeStage = () => {
       ...growing_pig,
       ...data
      } as IGrowingPigs
-    //  console.log(growing)
-    //  return
+  
      const ok= await postGrowingPigs(growing)
      if(ok){
       toggleModal()

@@ -37,7 +37,6 @@ export const PostUpdateComment = () => {
       updated_at:date,
       id_user:user?.id_user
     } as IComment
-    console.log(newComment)
     const ok= await postComments(newComment)
     if(ok){
       toggleModal()

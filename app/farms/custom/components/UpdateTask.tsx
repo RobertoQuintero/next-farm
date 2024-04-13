@@ -9,7 +9,7 @@ import { AuthContext } from '@/app/context/auth/AuthContext'
 
 export const UpdateTask = () => {
   const {toggleModal} = useContext(UiContext)
-  const {farmsLoading,task,updateTasks,pig,postPig,piglet,postPiglets} = useContext(FarmsContext)
+  const {farmsLoading,task,updateTasks,pig,postPig,piglet,postPiglets,createTasksToDo} = useContext(FarmsContext)
   const {user} = useContext(AuthContext)
   const {
     register,
@@ -32,6 +32,7 @@ export const UpdateTask = () => {
       done:true,
       id_user:user?.id_user
     } as ITask
+
     let ok=false
     if(newTask.end_stage){
       if(newTask.id_pig){
@@ -41,7 +42,8 @@ export const UpdateTask = () => {
         } as IPig
         Promise.all([
           postPig(newPig),
-          updateTasks(newTask)
+          updateTasks(newTask),
+          createTasksToDo({id_lot_piglets:0,id_user:user?.id_user!,id_pig:newPig.id_pig,id_pig_stage:newPig.id_pig_stage})
         ]).then(res=>{
           toggleModal()
           return
@@ -55,7 +57,8 @@ export const UpdateTask = () => {
 
         Promise.all([
           postPiglets(newLot),
-          updateTasks(newTask)
+          updateTasks(newTask),
+          createTasksToDo({id_lot_piglets:newLot.id_lot_piglets,id_user:user?.id_user!,id_pig:0,id_pig_stage:newLot.id_pig_stage})
         ]).then(res=>{
           toggleModal()
           return
