@@ -27,6 +27,9 @@ export const MovePiglets = () => {
       ...piglet,
       quantity:piglet!.quantity-data.quantity
     } as IPiglets
+    if(!newPiglets.quantity){
+      newPiglets.status=false
+    }
     const newMovingPiglet=piglets.find(p=>p.id_lot_piglets===Number(data.id_ubication))!
     const movingPiglets={
       ...newMovingPiglet,

@@ -22,6 +22,8 @@ export interface IPig {
   id_weight_type:number;
   pig_weight?:string;
   is_active:boolean;
+  next_birth:string | Date | null;
+  month_name:string | null
 }
 
 export interface IStallion {
