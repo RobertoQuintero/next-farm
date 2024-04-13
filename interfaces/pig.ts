@@ -21,6 +21,7 @@ export interface IPig {
   stallion?:     string;
   id_weight_type:number;
   pig_weight?:string;
+  is_active:boolean;
 }
 
 export interface IStallion {

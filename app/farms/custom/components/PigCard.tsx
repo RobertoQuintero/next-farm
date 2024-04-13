@@ -20,8 +20,15 @@ export const PigCard = ({pig,print}:Props) => {
   const onClick = async(action:string) =>{
     setPig(pig)
     if(action==='DELETE' || action==='EDIT'){
-      setFarmAction(action)
-      toggleModal()
+      if(print){
+        // setFarmAction(undefined)
+      Cookies.set('pig',JSON.stringify(pig))
+      router.push('/farms/custom/history')
+      }else{
+
+        setFarmAction(action)
+        toggleModal()
+      }
     }else{
       setFarmAction(undefined)
       Cookies.set('pig',JSON.stringify(pig))
