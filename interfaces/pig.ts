@@ -24,7 +24,10 @@ export interface IPig {
   is_active:boolean;
   next_birth:string | Date | null;
   month_name:string | null
-  counting_days: string | null
+  counting_days: string | null;
+  births:number;
+  piglets:number;
+  gate_piglets:number;
 }
 
 export interface IStallion {
