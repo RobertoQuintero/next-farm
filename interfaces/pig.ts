@@ -24,6 +24,7 @@ export interface IPig {
   is_active:boolean;
   next_birth:string | Date | null;
   month_name:string | null
+  counting_days: string | null
 }
 
 export interface IStallion {

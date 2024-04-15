@@ -4,12 +4,13 @@ import { IFarm } from "@/interfaces/farm";
 import { IGrowingPigs } from "@/interfaces/growing_pigs";
 
 
-interface FarmsResponse{
+export interface FarmsResponse{
   ok:boolean;
   data: IFarm[]
       | IFarm
       | string
       | IUbication[]
+      | IUbication
       | IStage[]
       | IRace[]
       | IPigType[]

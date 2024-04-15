@@ -117,7 +117,8 @@ interface ContextProps{
   postComments: (payload: IComment) => Promise<boolean>;
   setLoss: (payload: ILoss | undefined) => void;
   getLosses: (payload: ILoss) => Promise<boolean>;
-  postLosses: (payload: ILoss) => Promise<boolean>
+  postLosses: (payload: ILoss) => Promise<boolean>;
+  postUbicationForm: (payload: IUbication) => Promise<{ok: boolean;data: IUbication | string;}>
 }
 
 export const FarmsContext = createContext({} as ContextProps)

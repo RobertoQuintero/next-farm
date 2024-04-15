@@ -1,3 +1,4 @@
+import db from "@/database/connection";
 import { IUbication } from "@/interfaces";
 import { getRequestQuery, postRequest } from "@/utils/getRequest";
 
@@ -25,6 +26,18 @@ export const GET = async(req:Request) =>{
 export const POST = async(req:Request) =>{
   const body = await req.json();
   const { id_ubication,created_at,description,id_farm,id_pig_type,status,updated_at}= body as IUbication;
+
+  if(!id_ubication){
+    try {
+      const resp= await db.query(`select * from CAT.Ubications where status='true' and description='${description}'`)
+      if(resp.length){
+        return Response.json({ok:false,data:'Ya existe esa ubicación'},{status:401})
+      }
+    } catch (error) {
+      console.log(error)
+      return Response.json({ok:false,data:'Error el agregar registro'},{status:500})
+    }  
+  }
 
   return await postRequest(`  
     declare @const int 

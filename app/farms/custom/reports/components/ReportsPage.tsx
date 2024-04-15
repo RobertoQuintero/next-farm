@@ -48,7 +48,7 @@ const ReportsPage = () => {
       <div style={styles}>
         <h4>Cargadas {charged}</h4>
         {
-          pigs.filter(p=>p.status&&p.id_pig_stage===5).map(p=><PigCard pig={p} print key={p.id_pig}/>)
+          pigs.filter(p=>p.status&&p.id_pig_stage===5).map(p=><PigCard pig={p} report print key={p.id_pig}/>)
         }
       </div>
       <div style={styles}>

@@ -5,14 +5,15 @@ import { useContext } from "react"
 import { RowButton } from "."
 import { useRouter } from "next/navigation"
 import Cookies from 'js-cookie'
-import { addZero } from "@/utils"
+import { addZero, buildDateReverse } from "@/utils"
 
 interface Props {
   pig:IPig;
   print:boolean;
+  report?:boolean
 }
 
-export const PigCard = ({pig,print}:Props) => {
+export const PigCard = ({pig,print,report=false}:Props) => {
   const {setFarmAction,setPig} = useContext(FarmsContext)
   const {toggleModal} = useContext(UiContext)
   const router= useRouter()
@@ -44,6 +45,12 @@ export const PigCard = ({pig,print}:Props) => {
         <p>{pig.pig_ubication}</p>
         <p>{pig.pig_race}</p>
         <p>{pig.pig_stage}</p>
+        {report
+          ?<>
+            <p>{addZero(new Date(buildDateReverse(pig.next_birth as string)))}</p>
+            <p>{pig.counting_days}</p>
+          </>
+          :<></>}
       </div>
       <div style={{display:print?'none':'flex', gap:'.2rem',paddingRight:'.5rem'}}>
         <RowButton onClick={()=>onClick('GO')} label="ver"/>

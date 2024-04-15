@@ -57,6 +57,7 @@ MOD.getIsActive(MP.id_pig,MP.id_pig_stage) is_active,
 --(select top 1 birth_date from MOD.Births MB where is_positive='true' and MB.id_pig=MP.id_pig order by birth_date desc) birth_date,
 isnull((select SUM(alive) from MOD.Births MB where MB.id_pig=MP.id_pig),0) piglets,
 convert(datetime,MOD.getBirthDay(MP.id_pig,MP.id_pig_stage)) next_birth,
+datediff(day,getdate(),convert(datetime,MOD.getBirthDay(MP.id_pig,MP.id_pig_stage))) counting_days,
 MOD.setMonthName(DATEPART(MONTH,(select top 1 birth_date from MOD.Births MB where is_positive='true' and MB.id_pig=MP.id_pig order by birth_date desc)),MP.id_pig_stage) month_name
 FROM MOD.Pigs MP
 inner join CAT.Pig_types PT

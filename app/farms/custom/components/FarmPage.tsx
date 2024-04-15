@@ -1,8 +1,8 @@
 'use client'
 import { AccessErrorComponent,  BackToFarms, DeleteComponent, EmptyPage, LoadingComponent } from '@/app/components'
 import AppModal from '@/app/components/AppModal'
-import { Button, CardActionArea } from '@mui/material'
-import { CSSProperties, useContext, useEffect, useRef, useState } from 'react'
+import { Button, CardActionArea, TextField } from '@mui/material'
+import { CSSProperties, SyntheticEvent, useContext, useEffect, useRef, useState } from 'react'
 import { PigCard, PostUpdatePig, RowButton, SearchPigButton, SearchPigForm } from '.'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { AuthContext } from '@/app/context/auth/AuthContext'
@@ -14,6 +14,7 @@ import { useUi } from '@/app/context/ui/useUi'
 import * as XLSX from 'xlsx'
 import { addZero } from '@/utils'
 import { useReactToPrint } from 'react-to-print'
+import { useRouter } from 'next/navigation'
 
 const style={
   backgroundColor:'#fff',
@@ -30,6 +31,8 @@ const FarmPage = () => {
   const [error2, setError2] = useState(false)
   const [print, setPrint] = useState(false)
   const [stage, setStage] = useState(0)
+  const [text, setText] = useState('')
+  const router= useRouter()
 
   const componentRef = useRef(null);
   const handlePrint = useReactToPrint({
@@ -106,6 +109,7 @@ const FarmPage = () => {
     <>
      <div className='actionCreateContainer'>
       <AccessErrorComponent/>
+      <div style={{display:'flex',gap:'.5rem'}}>
         <div style={{display:'flex',gap:'.5rem'}}>
           {user?.id_role===1&&<BackToFarms/>}
           <CardActionArea
@@ -115,6 +119,29 @@ const FarmPage = () => {
           </CardActionArea>
           <SearchPigButton/>
         </div>
+        <form onSubmit={(e:SyntheticEvent)=>{
+          e.preventDefault()
+          const thisPig= pigs.find(p=>p.pig_ubication===text.toUpperCase())
+          if(thisPig){
+            setPig(thisPig)
+            Cookie.set('pig',JSON.stringify(pig))
+            router.push('/farms/custom/history')
+          } 
+        }}>
+        <TextField 
+          sx={{width:'150px'}}
+          size="small"
+          fullWidth
+          label='Filtra jaula'          
+          type="text"
+          value={text}
+          onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{
+            setText(e.target.value)
+          }}
+        />
+        </form>
+
+      </div>
         <div style={{display:'flex',alignItems:'center',gap:'1rem',color:'red'}}>
         {
             error?<p style={{fontSize:'14px'}}>Debe agregar un Semental <Link href='/farms/custom/stallions' style={{textDecoration:'underline'}}>Click!</Link></p>:<></>
@@ -158,7 +185,11 @@ const FarmPage = () => {
         </div>
         {
           pigs.filter(p=>p.status).length
-            ?pigs.filter(p=>p.status).filter(f=>stage===0?f:f.id_pig_stage===stage).map(a=><PigCard pig={a} key={a.id_pig} print={print}/>)
+            ?pigs
+              .filter(p=>p.status)
+              .filter(f=>stage===0?f:f.id_pig_stage===stage)
+              .filter(f=>text.length?f.pig_ubication===text ||f.pig_ubication.toLowerCase()===text.toLocaleLowerCase():f)
+              .map(a=><PigCard pig={a} key={a.id_pig} print={print}/>)
             :<EmptyPage/>
         }
       </div>

@@ -483,6 +483,26 @@ export const FarmsProvider = ({children}:Props) => {
     return await getPostLoadingOrError('/farms/catalog/ubications',setUbications,payload,state.ubications,'id_ubication',true)
   };
 
+  const postUbicationForm = async(payload:IUbication):Promise<{ok:boolean;data:IUbication | string}> =>{
+   if(!userAccess.find(u=>u.id_access===10)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return {ok:true, data:{} as IUbication} 
+    }
+    setIsLoading(true)
+         const {ok,data}=await postFarmsRequest('/farms/catalog/ubications',payload)
+         if(ok){
+            
+         }
+         else{
+          setError(data as string)
+         }
+         setIsLoading(false)
+         return {ok,data:data as IUbication | string}
+    
+  };
+
+
+
   const postTask = async(payload:IPigTask):Promise<boolean> =>{
    if(!userAccess.find(u=>u.id_access===12)&& user?.id_role!==1){
       setAccessError('Credenciales inválidas')
@@ -981,7 +1001,8 @@ export const FarmsProvider = ({children}:Props) => {
      postComments,
      setLoss,
      getLosses,
-     postLosses
+     postLosses,
+     postUbicationForm
     }}>
       {children}
     </FarmsContext.Provider>

@@ -7,12 +7,16 @@ import { DatePickerElement, SaveButton } from '@/app/components'
 import { IPiglets, IUbication } from '@/interfaces'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { AuthContext } from '@/app/context/auth/AuthContext'
+import { buildDate } from '@/utils'
 
 export const PostUpdatePiglets = () => {
   const {toggleModal} = useContext(UiContext)
-  const {farmsLoading,farmsError,ubications,piglet,pigStages,piggletCode,postNewPiglets,postPiglets,piglets} = useContext(FarmsContext)
+  const {farmsLoading,farmsError,ubications,piglet,pigStages,piggletCode,postNewPiglets,postPiglets,piglets,postUbicationForm} = useContext(FarmsContext)
   const {user,idFarm} = useContext(AuthContext)
   const [date, setDate] = useState<Date | null>(new Date())
+  const [addUbication, setAddUbication] = useState(false)
+  const [newUbication, setNewUbication] = useState('')
+  const [error, setError] = useState<string | undefined>(undefined)
 
   const {
     register,
@@ -40,22 +44,42 @@ export const PostUpdatePiglets = () => {
 
 
   const onSubmit=async(data:IPiglets)=>{
-    
+    setError(undefined)
+    const newDate=buildDate(new Date())
     const newPiglets={
       id_lot_piglets:0,
       id_birth:0,
       quantity:0,
-      created_at:date,
+      created_at:buildDate(date as Date),
       id_user:user?.id_user,
       id_ubication:data.id_ubication,
       id_pig_stage:data.id_pig_stage,
       id_farm:idFarm,
       status:true,
       closed:false,
-      close_date:new Date(),
+      close_date:newDate,
       code:piggletCode
-
     } as IPiglets
+
+    if(addUbication){
+      const ubication={
+        id_ubication:0,
+        created_at:newDate,
+        description:newUbication.toUpperCase(),
+        id_farm:idFarm,
+        id_pig_type:1,
+        status:true,
+        updated_at:newDate
+      } as IUbication
+
+      const {ok,data:d} = await postUbicationForm(ubication)
+      if(ok){
+        newPiglets.id_ubication=(d as IUbication).id_ubication 
+      }else{
+        setError(d as string)
+        return
+      }
+    }
 
     const ok= await postPiglets(newPiglets)
     if(ok){
@@ -65,25 +89,42 @@ export const PostUpdatePiglets = () => {
   return (
     <form className='Form' onSubmit={handleSubmit(onSubmit)}>
       
-        <TextField
-          size="small"
-          label='Ubicación'
-          fullWidth
-          defaultValue={values.id_ubication}
-          {...register('id_ubication')} 
-          select >
-          {
-            newUbications().length
-            ?newUbications().filter(u=>u.id_pig_type!==2).map(item=>(
-              <MenuItem 
-                key={item.id_ubication} 
-                value={item.id_ubication}>
-                {item.description}
-              </MenuItem>
-            ))
-            :<div></div>
-          }
-        </TextField>
+      {addUbication?<></>:<p onClick={()=>setAddUbication(true)} style={{textAlign:'right', fontSize:'14px', textDecoration:'underline',cursor:'pointer'}}>Agregar</p>}
+        {
+          addUbication
+            ?<>
+              <TextField 
+                size="small"
+                fullWidth
+                label='Ubicación'
+                type="text"
+                value={newUbication}
+                onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{
+                  setNewUbication(e.target.value)
+                }}
+              />
+              {error?<p style={{fontSize:'13px', color:'red', textAlign:'center'}}>{error}</p>:<></>}
+            </>
+            :<TextField
+            size="small"
+            label='Ubicación'
+            fullWidth
+            defaultValue={values.id_ubication}
+            {...register('id_ubication')} 
+            select >
+            {
+              newUbications().length
+              ?newUbications().map(item=>(
+                <MenuItem 
+                  key={item.id_ubication} 
+                  value={item.id_ubication}>
+                  {item.description}
+                </MenuItem>
+              ))
+              :<div></div>
+            }
+          </TextField>
+        }
         <TextField
           size="small"
           label='Etapa'
