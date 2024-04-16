@@ -5,24 +5,12 @@ import { UiContext } from '@/app/context/ui/UiContext'
 import { SaveButton } from '@/app/components'
 import { IGrowingPigs } from '@/interfaces/growing_pigs'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
-import { IUbication } from '@/interfaces'
+import { AuthContext } from '@/app/context/auth/AuthContext'
 
 export const MoveGrowingPig = () => {
   const {toggleModal} = useContext(UiContext)
-  const {ubications,growing_pigs,growing_pig} = useContext(FarmsContext)
-
-  // const newUbications = () =>{
-  //   const array=[] as IUbication[]
-  //   for (const p of growing_pigs) {
-  //     if(!growing_pigs.find(a=>a.id_ubication===p.id_ubication)){
-  //         array.push(p)
-  //     }
-  //   }
-  //   if(piglet){
-  //     array.push(ubications.find(u=>u.id_ubication===piglet.id_ubication)!)
-  //   }
-  //   return array
-  // };
+  const {growing_pigs,growing_pig,farmsLoading,postGrowingPigs,getGrowingPigs} = useContext(FarmsContext)
+  const {idFarm} = useContext(AuthContext)
 
   const {
     register,
@@ -31,50 +19,65 @@ export const MoveGrowingPig = () => {
   } = useForm<IGrowingPigs>()
 
   const values={
-
+    id_ubication:growing_pigs.filter(g=>g.id_ubication!==growing_pig?.id_ubication)[0].id_ubication
   } as IGrowingPigs
 
 
   const onSubmit=async(data:IGrowingPigs)=>{
-    console.log(data)
-    // const ok= await post(data)
-    // if(ok){
-    //   toggleModal()
-    // }
+    const newgrowing={
+      ...growing_pig,
+      quantity:growing_pig?.quantity! - Number(data.quantity)
+    } as IGrowingPigs
+    console.log(newgrowing)
+
+    const growing= growing_pigs.find(g=>g.id_ubication===Number(data.id_ubication))
+    const newGrowing2={
+      ...growing,
+      quantity:growing?.quantity!+Number(data.quantity)
+    } as IGrowingPigs
+
+    
+    Promise.all([
+      postGrowingPigs(newGrowing2),
+      postGrowingPigs(newgrowing),
+    ]).then(async res=>{
+      await getGrowingPigs(idFarm!)
+      toggleModal()
+    })
+    
   }
   return (
     <form className='Form' onSubmit={handleSubmit(onSubmit)}>
       <TextField 
         size="small"
         fullWidth
-        label='Nombre'
-        type="text"
+        label='Cantidad'
+        type="number"
         defaultValue={values.quantity}
         {...register('quantity',{
           required:'Este campo es requerido',
         })}
-        
         />
-        {/* <TextField
+        <TextField
           size="small"
-          label='Valor'
+          label='Mover a'
           fullWidth
           defaultValue={values.id_ubication}
           {...register('id_ubication')} 
           select >
           {
-            arr.length
-            ?arr.map(item=>(
+            growing_pigs.filter(g=>g.id_ubication!==growing_pig?.id_ubication).length
+            ?growing_pigs.filter(g=>g.id_ubication!==growing_pig?.id_ubication).map(item=>(
               <MenuItem 
                 key={item.id_ubication} 
                 value={item.id_ubication}>
-                {item.description}
+                {item.ubication}
               </MenuItem>
             ))
             :<div></div>
           }
         </TextField>
-        <SaveButton loading={}/> */}
+        <SaveButton loading={farmsLoading}/>
     </form>
   )
 }

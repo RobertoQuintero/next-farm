@@ -6,7 +6,7 @@ import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { Button } from '@mui/material'
 import { useContext, useEffect, useRef, useState } from 'react'
-import { GrowingPigCard, GrowingPigsChangeStage, GrowingPigsCloseConfirm } from '.'
+import { GrowingPigCard, GrowingPigsChangeStage, GrowingPigsCloseConfirm, MoveGrowingPig } from '.'
 import { IGrowingPigs } from '@/interfaces/growing_pigs'
 import { RowButton } from '../../components'
 import * as XLSX from 'xlsx'
@@ -138,6 +138,9 @@ const GrowingPigsPage = () => {
         }
         {
           farmAction==='CLOSE'?<GrowingPigsCloseConfirm />:<></>
+        }
+        {
+          farmAction==='MOVE'?<MoveGrowingPig />:<></>
         }
         {
           farmAction==='DELETE'?<DeleteComponent onDelete={onDelete} loading={farmsLoading} error={farmsError}/>:<></>

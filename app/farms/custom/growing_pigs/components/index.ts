@@ -1,3 +1,5 @@
+export * from "./MoveGrowingPig";
+
 export * from "./GrowingPigsChangeStage";
 
 export * from "./GrowingPigsCloseConfirm";

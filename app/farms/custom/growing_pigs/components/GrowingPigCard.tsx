@@ -10,7 +10,7 @@ interface Props{
 }
 
 export const GrowingPigCard = ({growingPig,print}:Props) => {
-  const {setFarmAction,setGrowingPig} = useContext(FarmsContext)
+  const {setFarmAction,setGrowingPig,growing_pigs} = useContext(FarmsContext)
   const {toggleModal} = useContext(UiContext)
 
   const onClick =(action:string) =>{
@@ -25,7 +25,7 @@ export const GrowingPigCard = ({growingPig,print}:Props) => {
         <p>{new Date(growingPig.start_date).toLocaleString().split(',')[0]}</p>
         <p>{new Date(growingPig.exit_date).toLocaleString().split(',')[0]}</p>
         <p style={{width:'130px'}}>{growingPig.ubication}</p>
-        <p>{growingPig.quantity}</p>
+        <p onClick={()=>growing_pigs.length>1?onClick('MOVE'):{}} className='underlined'>{growingPig.quantity}</p>
         <p>{growingPig.average_weight}</p>
         <p className='underlined' onClick={()=>onClick('STAGE')}>{growingPig.pig_stage}</p>
       </div>
