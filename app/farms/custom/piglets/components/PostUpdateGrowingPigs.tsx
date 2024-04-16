@@ -7,6 +7,7 @@ import { IGrowingPigs } from '@/interfaces/growing_pigs'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { AuthContext } from '@/app/context/auth/AuthContext'
 import { IPiglets } from '@/interfaces'
+import { buildDate } from '@/utils'
 
 export const PostUpdateGrowingPigs = () => {
   const {toggleModal} = useContext(UiContext)
@@ -42,8 +43,8 @@ export const PostUpdateGrowingPigs = () => {
     const newAdd={
       ...values,
       ...data,
-      start_date:date,
-      exit_date:newDate,
+      start_date:buildDate(date!),
+      exit_date:buildDate(newDate!),
       quantity:piglet?.quantity
     } as IGrowingPigs
 

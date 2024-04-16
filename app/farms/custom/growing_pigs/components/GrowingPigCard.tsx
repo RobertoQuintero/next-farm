@@ -24,7 +24,7 @@ export const GrowingPigCard = ({growingPig,print}:Props) => {
       <div className="pigData">
         <p>{new Date(growingPig.start_date).toLocaleString().split(',')[0]}</p>
         <p>{new Date(growingPig.exit_date).toLocaleString().split(',')[0]}</p>
-        <p>{growingPig.ubication}</p>
+        <p style={{width:'130px'}}>{growingPig.ubication}</p>
         <p>{growingPig.quantity}</p>
         <p>{growingPig.average_weight}</p>
         <p className='underlined' onClick={()=>onClick('STAGE')}>{growingPig.pig_stage}</p>

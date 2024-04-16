@@ -15,7 +15,7 @@ import Cookies from 'js-cookie'
 
 const GrowingPigsPage = () => {
   const {toggleModal} = useContext(UiContext)
-  const {getGrowingPigs,growing_pigs,farmAction,farmsLoading,farmsError,postGrowingPigs,growing_pig} = useContext(FarmsContext)
+  const {getGrowingPigs,growing_pigs,farmAction,farmsLoading,farmsError,postGrowingPigs,growing_pig,setGrowingPig,setFarmAction} = useContext(FarmsContext)
   const {idFarm} = useContext(AuthContext)
   const [print, setPrint] = useState(false)
 
@@ -32,8 +32,10 @@ const GrowingPigsPage = () => {
   }, [])
   
 
-  const onAdd = async() =>{
-     toggleModal()
+  const onAdd = () =>{
+    setFarmAction(undefined)
+    setGrowingPig(undefined)
+    toggleModal()
   };
 
   const onDelete = async() =>{
@@ -99,7 +101,7 @@ const GrowingPigsPage = () => {
         >
         <p >Ingresado</p>
         <p>Salida</p>
-        <p>Ubicación</p>
+        <p style={{width:'130px'}}>Ubicación</p>
         <p>Cantidad</p>
         <p>Peso prom.</p>
         <p>Etapa</p>
@@ -132,7 +134,7 @@ const GrowingPigsPage = () => {
       <AppModal>
         <></>
         {
-          farmAction==='STAGE'?<GrowingPigsChangeStage/>:<></>
+          farmAction==='STAGE'|| farmAction===undefined?<GrowingPigsChangeStage/>:<></>
         }
         {
           farmAction==='CLOSE'?<GrowingPigsCloseConfirm />:<></>

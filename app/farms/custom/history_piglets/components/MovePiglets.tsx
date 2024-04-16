@@ -21,6 +21,7 @@ export const MovePiglets = () => {
     quantity:0,
     id_ubication:ubication
   } as IPiglets
+
   const onSubmit=async(data:IPiglets)=>{
 
     const newPiglets={

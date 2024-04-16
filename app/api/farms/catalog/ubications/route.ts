@@ -20,7 +20,7 @@ const query=`
 export const GET = async(req:Request) =>{
   const {searchParams}= new URL(req.url)
     const id_farm=searchParams.get('id_farm')
-  return await getRequestQuery(`${query} WHERE CU.id_farm=${id_farm}`)
+  return await getRequestQuery(`${query} WHERE CU.id_farm=${id_farm} and CU.status='true'`)
 }
 
 export const POST = async(req:Request) =>{
@@ -45,7 +45,7 @@ export const POST = async(req:Request) =>{
     if ${id_ubication} > 0
     begin
       UPDATE CAT.Ubications
-      SET description='${description}',
+      SET description='${description.toUpperCase()}',
           id_farm='${id_farm}',
           id_pig_type='${id_pig_type}',
           status='${status}',
@@ -67,7 +67,7 @@ export const POST = async(req:Request) =>{
         VALUES(
           @const,
           '${created_at}',
-          '${description}',
+          '${description.toUpperCase()}',
           '${id_farm}',
           '${id_pig_type}',
           '${status}',
