@@ -1,15 +1,24 @@
 'use client'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
-import React, { CSSProperties, useContext, useRef } from 'react'
+import React, { CSSProperties, useContext, useEffect, useRef } from 'react'
 import { PigCard, RowButton } from '../../components'
 import { useReactToPrint } from 'react-to-print'
 import { BarChart } from '@mui/x-charts'
+import { AuthContext } from '@/app/context/auth/AuthContext'
 
 
 const styles={border:'1px solid #ccc', padding:'1rem',borderRadius:'3px'} as CSSProperties
 
 const ReportsPage = () => {
-  const {pigs} = useContext(FarmsContext)
+  const {pigs,getPigs} = useContext(FarmsContext)
+  const {idFarm} = useContext(AuthContext)
+
+  useEffect(() => {
+    if(!pigs.length){
+      getPigs(idFarm!)
+    }
+  }, [idFarm])
+  
 
   const componentRef = useRef(null);
   const handlePrint = useReactToPrint({

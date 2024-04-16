@@ -40,7 +40,7 @@ const StaticsPage = () => {
         data: statics_quantities.map(s=>s.quantity),
       },
     ]}
-    width={400}
+    width={350}
     height={300}
   />
   </div>
@@ -61,7 +61,7 @@ const StaticsPage = () => {
         color:'#C16FF7'
       },
     ]}
-    width={400}
+    width={600}
     height={300}
   />
   </div>
@@ -82,7 +82,7 @@ const StaticsPage = () => {
         color:'#6FCCF7'
       },
     ]}
-    width={400}
+    width={350}
     height={300}
   />
   </div>
@@ -103,7 +103,7 @@ const StaticsPage = () => {
         color:'#C2C4F7'
       },
     ]}
-    width={400}
+    width={500}
     height={300}
   />
   </div>
