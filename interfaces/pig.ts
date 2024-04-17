@@ -28,6 +28,8 @@ export interface IPig {
   births:number;
   piglets:number;
   gate_piglets:number;
+  crossing_stallion:string|null;
+  crossing_date:string
 }
 
 export interface IStallion {

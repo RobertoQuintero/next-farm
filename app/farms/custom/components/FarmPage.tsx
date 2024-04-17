@@ -26,7 +26,7 @@ const style={
 const FarmPage = () => {
   const {toggleModal,isModalOpen} = useUi()
   const {idFarm,user} = useContext(AuthContext)
-  const {farmsLoading,pigs,getPigs,setPig,setFarmAction,farmAction,farmsError,pig,postPig,getFarm,farm,getCode,stallions,ubications} = useContext(FarmsContext)
+  const {farmsLoading,pigs,getPigs,setPig,setFarmAction,farmAction,farmsError,pig,postPig,getFarm,farm,getCode,stallions,ubications,setMonthBirth} = useContext(FarmsContext)
   const [error, setError] = useState(false)
   const [error2, setError2] = useState(false)
   const [print, setPrint] = useState(false)
@@ -54,6 +54,17 @@ const FarmPage = () => {
       getCode('pig')
     }    
   }, [idFarm])
+
+  const getChargePigs=()=>{
+    const newArr= pigs.filter(p=>p.id_pig_stage===5||p.id_pig_stage===6).map(p=>p.month_name) as string[]
+    const arr= [...new Set(newArr)].map(n=>{
+      return {
+        month:n,
+        quantity:pigs.filter(p=>(p.id_pig_stage===5||p.id_pig_stage===6)&&p.month_name===n).length,
+      }
+    })
+    return arr
+  }
 
   
   if(farmsLoading && !isModalOpen){
@@ -155,6 +166,22 @@ const FarmPage = () => {
           color='success'
           size='small'>Nuevo</Button>
         </div>
+      </div>
+      <div style={{display:'flex', gap:'.5rem',paddingBottom:'1rem'}}>
+        <p>Próximos partos</p>
+        {
+          getChargePigs()
+            .map(c=>
+              <span 
+                onClick={()=>{
+                  setMonthBirth(c)
+                  router.push('/farms/custom/next_births')
+                }}
+                key={c.month} 
+                style={{backgroundColor:'#0061f2',color:'#fff',padding:'.2rem .5rem',borderRadius:'5px',cursor:'pointer'}}>
+                  {c.month} ({c.quantity})
+              </span>)
+        }
       </div>
       <div style={{display:'flex',gap:'.5rem', fontSize:'14px'}} >
         <p onClick={()=>setStage(2)} className='underlined'>Vacía <strong>{pigs.filter(p=>p.status&&p.id_pig_stage===2).length}</strong></p>

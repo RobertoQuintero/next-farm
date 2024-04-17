@@ -20,7 +20,7 @@ const HistoryPage = () => {
       setPig(JSON.parse(Cookies.get('pig')!))
     }
     getCode('lot')
-  }, [])
+  }, [pig])
 
   const onDelete = async() =>{
      const newTask={...task, status:false} as ITask

@@ -10,3 +10,7 @@ export interface IFarm {
   created_at: string | Date;
 }
 
+export interface IMonthBirth{
+  month:string;
+  quantity:number;
+}

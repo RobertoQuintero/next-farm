@@ -2,7 +2,7 @@
 import  {  useContext, useEffect, useReducer} from 'react'
 import { FarmsContext} from './FarmsContext'
 import {  usersReducer } from './farmsReducer'
-import { IFarm } from '@/interfaces/farm'
+import { IFarm, IMonthBirth } from '@/interfaces/farm'
 import { getFarmsRequest, postFarmsRequest } from './farmsRequest'
 import { returnArray } from '../auth/authRequest'
 import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing, IPigWeight, IPigStage, IPigTask, IStageTaskType, IBirthType, IPiglets, IQuantity, IStaticPig, IProduct, IComment, ILoss } from '@/interfaces'
@@ -67,6 +67,7 @@ export interface UsersState{
   comment:IComment | undefined;
   losses:ILoss[]
   loss:ILoss | undefined;
+  monthBirth:IMonthBirth | undefined;
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -120,7 +121,8 @@ const UI_INITIAL_STATE:UsersState={
   comments:[],
   comment:undefined,
   losses:[],
-  loss:undefined
+  loss:undefined,
+  monthBirth:undefined
 }
 
 export const FarmsProvider = ({children}:Props) => {
@@ -921,6 +923,13 @@ export const FarmsProvider = ({children}:Props) => {
      })
   };
 
+  const setMonthBirth = (payload: IMonthBirth | undefined ) =>{
+     dispatch({
+      type:'[Farms] - setMonthBirth',
+      payload
+     })
+  };
+
 
   const getPostLoadingOrError = async<T,K extends keyof T>(
       endpoint:string,setState:(payload: T[]) => void,payload?:T,state?:T[],id?:K,wich?:boolean
@@ -1002,7 +1011,8 @@ export const FarmsProvider = ({children}:Props) => {
      setLoss,
      getLosses,
      postLosses,
-     postUbicationForm
+     postUbicationForm,
+     setMonthBirth
     }}>
       {children}
     </FarmsContext.Provider>
