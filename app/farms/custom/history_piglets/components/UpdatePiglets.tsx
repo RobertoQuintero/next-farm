@@ -34,7 +34,7 @@ export const UpdatePiglets = () => {
     Promise.all([
       postPiglets(newPiglet),
       // updateBirth(newPiglet)
-      createTasksToDo({id_pig:0,id_pig_stage:newPiglet.id_pig_stage,id_user:user?.id_user!,id_lot_piglets:newPiglet.id_lot_piglets})
+      // createTasksToDo({id_pig:0,id_pig_stage:newPiglet.id_pig_stage,id_user:user?.id_user!,id_lot_piglets:newPiglet.id_lot_piglets})
     ]).then(res=>{
       toggleModal()
       })

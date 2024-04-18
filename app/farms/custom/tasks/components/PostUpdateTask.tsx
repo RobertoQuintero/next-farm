@@ -29,13 +29,14 @@ export const PostUpdateTask = () => {
     id_stage_task_type:pigTask?pigTask.id_stage_task_type:3,
     change_to_stage:pigTask?pigTask.change_to_stage:null,
     end_stage:pigTask?pigTask.end_stage:false,
-    
+    is_movement_task:pigTask?pigTask.is_movement_task:false,
   } as IPigTask
 
   const [pigType, setPigType] = useState(pigStages.find( p=>p.id_pig_stage===values.id_pig_stage)?.id_pig_type)
   const [newStages, setNewStages] = useState(pigStages.filter(p=>p.id_pig_type===pigType))
   const [pigStage, setpigStage] = useState(values.id_pig_stage)
   const [checked, setChecked] = React.useState(values.end_stage);
+  const [isMovement, setIsMovement] = useState(values.is_movement_task)
 
   const onSubmit=async(data:IPigTask)=>{
     const date= new Date()
@@ -44,10 +45,11 @@ export const PostUpdateTask = () => {
     const newTask={
       ...values,
       ...data,
-      end_stage:checked
-
+      end_stage:checked,
+      is_movement_task:isMovement
     } as IPigTask
-
+    // console.log(newTask)
+    // return
     const ok=await postTask(newTask)
     if(ok){
       toggleModal()
@@ -56,6 +58,9 @@ export const PostUpdateTask = () => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
+  };
+  const handleMovement = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsMovement(event.target.checked);
   };
 
   return (
@@ -190,6 +195,14 @@ export const PostUpdateTask = () => {
           </TextField>
           :<></>
         }
+        <div style={{display:'flex', alignItems:'center',width:'100%',justifyContent:'flex-end'}}>
+        <p>{isMovement?'Es de movimiento':'No es de movimiento'}</p>
+        <Switch
+          checked={isMovement}
+          onChange={handleMovement}
+          inputProps={{ 'aria-label': 'controlled' }}
+        />
+        </div>
         <SaveButton loading={farmsLoading}/>
     </form>
   )

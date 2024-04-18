@@ -15,6 +15,7 @@ PT.id_stage_task_type,
 CP.description pig_type,
 PS.description stage,
 change_to_stage,
+is_movement_task,
 end_stage,
 ST.description task_type
 FROM CAT.Pig_tasks PT
@@ -35,8 +36,8 @@ export const GET = async(req:Request) =>{
 
 export const POST = async(req:Request) =>{
   const body = await req.json();
-  const {id_pig_task, created_at,days,description,id_farm,status,id_pig_stage,while_days,id_stage_task_type,change_to_stage,end_stage}= body as IPigTask;
-  console.log(body)
+  const {id_pig_task, created_at,days,description,id_farm,status,id_pig_stage,while_days,id_stage_task_type,change_to_stage,end_stage,is_movement_task}= body as IPigTask;
+  
   return await postRequest(`
   declare @const int 
   set @const=(SELECT isNull(max(id_pig_task),0)+1  FROM CAT.Pig_tasks)
@@ -50,7 +51,8 @@ export const POST = async(req:Request) =>{
         id_pig_stage='${id_pig_stage}',
         id_stage_task_type='${id_stage_task_type}',
         while_days='${while_days}',
-        change_to_stage='${change_to_stage===null?'NULL':change_to_stage}',
+        is_movement_task='${is_movement_task}',
+        change_to_stage=${change_to_stage===null?'NULL':change_to_stage},
         end_stage='${end_stage}'
     WHERE id_pig_task=${id_pig_task}
     ${query} WHERE id_pig_task=${id_pig_task}
@@ -68,6 +70,7 @@ export const POST = async(req:Request) =>{
       id_stage_task_type,
       while_days,
       change_to_stage,
+      is_movement_task,
       end_stage
     )
     VALUES(
@@ -81,6 +84,7 @@ export const POST = async(req:Request) =>{
       '${id_stage_task_type}',
       '${while_days}',
       '${change_to_stage}',
+      '${is_movement_task}',
       '${end_stage}'
     )
     ${query} WHERE id_pig_task=@const

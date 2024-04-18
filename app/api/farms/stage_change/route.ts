@@ -63,6 +63,7 @@ export const POST = async(req:Request) =>{
         comment,
         MT.status,
         PT.description,
+        PT.is_movement_task,
         RU.name 
       FROM MOD.Tasks MT
       inner join CAT.Pig_tasks PT

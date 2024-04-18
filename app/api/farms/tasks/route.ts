@@ -17,6 +17,7 @@ id_task,
   id_lot_piglets,
   RU.name,
   PT.change_to_stage,
+  PT.is_movement_task,
   PT.end_stage 
 FROM MOD.Tasks MT
 inner join CAT.Pig_tasks PT

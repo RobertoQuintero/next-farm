@@ -28,9 +28,11 @@ export const TaskRow = ({task}:Props) => {
         <span>{task.days}</span>
         <span>días</span>
       </p>
+      <p style={{width:'110px'}}>{task.end_stage?'✔️':''}</p>
+      <p style={{width:'100px'}}>{task.is_movement_task?'✔️':''}</p>
       </div>
       <div style={{display:'flex',alignItems:'center', gap:'.5rem'}}>
-      <RowButton onClick={()=>onClick('OPEN')} label="ver"/>
+      <RowButton onClick={()=>onClick('OPEN')} label="editar"/>
       <RowButton onClick={()=>onClick('DELETE')} label="Borrar" color='red'/>
       </div>
     </div>

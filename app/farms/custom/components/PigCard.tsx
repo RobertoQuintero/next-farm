@@ -14,12 +14,13 @@ interface Props {
 }
 
 export const PigCard = ({pig,print,report=false}:Props) => {
-  const {setFarmAction,setPig} = useContext(FarmsContext)
+  const {setFarmAction,setPig,setPiglet} = useContext(FarmsContext)
   const {toggleModal} = useContext(UiContext)
   const router= useRouter()
 
   const onClick = async(action:string) =>{
     setPig(pig)
+    setPiglet(undefined)
     if(action==='DELETE' || action==='EDIT'){
       if(print){
         // setFarmAction(undefined)

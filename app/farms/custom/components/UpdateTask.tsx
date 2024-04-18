@@ -1,16 +1,26 @@
-import { TextField } from '@mui/material'
+import { MenuItem, TextField } from '@mui/material'
 import React, { useContext, useState } from 'react'
 import { useForm } from "react-hook-form"
 import { UiContext } from '@/app/context/ui/UiContext'
 import { DatePickerElement, SaveButton } from '@/app/components'
-import { IPig, IPiglets, ITask } from '@/interfaces'
+import { IPig, IPiglets, ITask, IUbication } from '@/interfaces'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { AuthContext } from '@/app/context/auth/AuthContext'
 
 export const UpdateTask = () => {
   const {toggleModal} = useContext(UiContext)
-  const {farmsLoading,task,updateTasks,pig,postPig,piglet,postPiglets,createTasksToDo} = useContext(FarmsContext)
+  const {farmsLoading,task,updateTasks,pig,postPig,piglet,postPiglets,createTasksToDo,ubications,pigs,getTasks} = useContext(FarmsContext)
   const {user} = useContext(AuthContext)
+
+  const newUbications = () =>{
+    const array=[] as IUbication[]
+    for (const p of ubications.filter(f=>f.id_pig_type===3)) {
+      if(!pigs.find(a=>a.id_ubication===p.id_ubication)){
+          array.push(p)
+      }
+    }
+    return array
+  };
   const {
     register,
     handleSubmit,
@@ -23,6 +33,7 @@ export const UpdateTask = () => {
   } as ITask
 
   const [addedDate, setAddedDate] = useState<Date | null>(new Date(values.start_date))
+  const [idUbication, setIdUbication] = useState(newUbications()[0].id_ubication)
 
   const onSubmit=async(data:ITask)=>{
     const newTask={
@@ -33,13 +44,20 @@ export const UpdateTask = () => {
       id_user:user?.id_user
     } as ITask
 
-    let ok=false
+
+    // console.log(newTask)
+    // return
+
     if(newTask.end_stage){
       if(newTask.id_pig){
         const newPig={
           ...pig,
           id_pig_stage:newTask.change_to_stage
         } as IPig
+        if(task?.is_movement_task){
+         newPig.id_ubication=idUbication 
+        }
+        
         Promise.all([
           postPig(newPig),
           updateTasks(newTask),
@@ -54,25 +72,40 @@ export const UpdateTask = () => {
           ...piglet,
           id_pig_stage:newTask.change_to_stage
         } as IPiglets
+        if(task?.is_movement_task){
+          newLot.id_ubication=idUbication 
+         }
 
         Promise.all([
           postPiglets(newLot),
           updateTasks(newTask),
           createTasksToDo({id_lot_piglets:newLot.id_lot_piglets,id_user:user?.id_user!,id_pig:0,id_pig_stage:newLot.id_pig_stage})
-        ]).then(res=>{
+        ]).then(async res=>{
+          await getTasks(piglet?.id_lot_piglets!,'lot')
           toggleModal()
           return
         })
       }
 
     }else{
+      const taskPig={...pig,id_ubication:idUbication} as IPig
+      const taskPiglet={...piglet,id_ubication:idUbication} as IPiglets
 
-      ok=await updateTasks(newTask)
+      Promise.all([
+        updateTasks(newTask),
+        pig&&newTask.is_movement_task&&postPig(taskPig),
+        piglet&&newTask.is_movement_task&&postPiglets(taskPiglet),
+      ]).then(async res=>{
+        if(piglet){
+         await getTasks(piglet?.id_lot_piglets!,'lot')
+        }
+
+        toggleModal()
+      })
+
+      
     }
 
-    if(ok){
-      toggleModal()
-    }
   }
 
   return (
@@ -85,6 +118,31 @@ export const UpdateTask = () => {
         defaultValue={values.comment}
         {...register('comment')}
         />
+        {
+          task?.is_movement_task
+            ?<TextField
+            size="small"
+            label='Ubicación'
+            fullWidth
+            value={idUbication}
+            onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{
+              setIdUbication(+e.target.value)
+            }} 
+            select >
+            {
+              newUbications().length
+              ?newUbications().map(item=>(
+                <MenuItem 
+                  key={item.id_ubication} 
+                  value={item.id_ubication}>
+                  {item.description}
+                </MenuItem>
+              ))
+              :<div></div>
+            }
+          </TextField>
+            :<></>
+        }
         <div style={{display:'flex',justifyContent:'flex-end', gap:'.5rem'}}>
           <p style={{fontSize:'14px',padding:'.5rem 0 0 0'}}>Fecha aplicación</p>
           <DatePickerElement date={addedDate} setDate={setAddedDate}/>

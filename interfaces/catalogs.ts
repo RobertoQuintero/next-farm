@@ -64,6 +64,7 @@ export interface ITask {
   id_lot_piglets:number;
   end_stage:boolean;
   change_to_stage: null | number | string;
+  is_movement_task:boolean;
 }
 
 export interface ITaskType {
@@ -111,6 +112,7 @@ export interface IPigTask {
   id_stage_task_type: number;
   end_stage:boolean;
   change_to_stage: null | number | string;
+  is_movement_task:boolean;
 }
 
 

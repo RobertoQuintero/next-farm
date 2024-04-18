@@ -13,11 +13,12 @@ interface Props{
 
 export const PigletsCard = ({piglet,print}:Props) => {
   const {toggleModal}= useUi()
-  const {setFarmAction,setPiglet} = useContext(FarmsContext)
+  const {setFarmAction,setPiglet,setPig} = useContext(FarmsContext)
   const router= useRouter()
 
   const onClick = (action:string) =>{
     setPiglet(piglet)
+    setPig(undefined)
     if(action==='GO'){
       Cookies.set('piglet',JSON.stringify(piglet))
       router.push('/farms/custom/history_piglets')

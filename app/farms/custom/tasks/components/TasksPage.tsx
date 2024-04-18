@@ -52,6 +52,12 @@ const TasksPage = () => {
         </div>
       </div>
       <div style={{paddingBottom:'2rem'}}>
+        <div style={{display:'flex',paddingLeft:'.5rem',fontSize:'14px', fontWeight:'bold'}}>
+          <p style={{width:'250px'}}>Descripción</p>
+          <p style={{width:'130px'}}>Días</p>
+          <p style={{width:'110px'}}>Cambio etapa</p>
+          <p style={{width:'100px'}}>Movimiento</p>
+        </div>
         {
           pigTasks.filter(t=>t.status).length
             ?pigTasks.filter(t=>t.status).map(a=><TaskRow task={a} key={a.id_pig_task}/>)
