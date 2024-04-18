@@ -62,7 +62,8 @@ export const UpdateTask = () => {
           postPig(newPig),
           updateTasks(newTask),
           createTasksToDo({id_lot_piglets:0,id_user:user?.id_user!,id_pig:newPig.id_pig,id_pig_stage:newPig.id_pig_stage})
-        ]).then(res=>{
+        ]).then(async res=>{
+          await getTasks(pig?.id_pig!,'pig')
           toggleModal()
           return
         })
