@@ -31,7 +31,6 @@ export const postRequest=async(query:string)=>{
   try {
     const resp= await db.query(query)
 
-    console.log({resp})
     return Response.json({
       ok:true,
       data:resp[0]
