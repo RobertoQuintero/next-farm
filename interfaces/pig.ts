@@ -29,7 +29,9 @@ export interface IPig {
   piglets:number;
   gate_piglets:number;
   crossing_stallion:string|null;
-  crossing_date:string
+  crossing_date:string;
+  false_charge:number;
+  abortions:number;
 }
 
 export interface IStallion {
@@ -40,6 +42,10 @@ export interface IStallion {
   id_race:      number;
   created_at:   string | Date;
   id_farm:      number;
+  total_alive:number;
+  total_dead:number;
+  false_charge:number;
+  total_effective:number;
 }
 
 export interface IBirth {

@@ -1,10 +1,25 @@
 import { IStallion } from "@/interfaces";
 import {  getRequestQuery, postRequest } from "@/utils/getRequest";
+const query=`
+select 
+id_stallion,
+name,
+status,
+id_ubication,
+id_race,
+created_at,
+id_farm,
+ISNULL((select sum(alive) from MOD.Births where id_stallion=MD.id_stallion and status=1),0) total_alive,
+ISNULL((select sum(dead) from MOD.Births where id_stallion=MD.id_stallion and status=1),0) total_dead,
+ISNULL((select count(*) from MOD.Births where id_stallion=MD.id_stallion and status=1 and id_birth_type=2),0) false_charge,
+ISNULL((select count(*) from MOD.Births where id_stallion=MD.id_stallion and status=1 and id_birth_type=1 and alive>0),0) total_effective
+from MOD.Stallions MD
+`
 
 export const GET = async(req:Request) =>{
     const {searchParams}= new URL(req.url)
     const id_farm=searchParams.get('id_farm')
-  return await getRequestQuery(`SELECT * FROM MOD.Stallions WHERE id_farm=${id_farm} and status='true'`)
+  return await getRequestQuery(`${query} WHERE MD.id_farm=${id_farm} and MD.status='true'`)
 }
 
 export const POST = async(req:Request) =>{
@@ -23,7 +38,7 @@ export const POST = async(req:Request) =>{
         name='${name}',
         status='${status}'
     WHERE id_stallion=${id_stallion}
-    SELECT * FROM MOD.Stallions WHERE id_stallion=${id_stallion}
+    ${query} WHERE id_stallion=${id_stallion}
   end
   else
   begin
@@ -45,7 +60,7 @@ export const POST = async(req:Request) =>{
       '${name}',
       '${status}'
     )
-    SELECT * FROM MOD.Stallions WHERE id_stallion=@const
+    ${query} WHERE id_stallion=@const
   end
   `)
 };

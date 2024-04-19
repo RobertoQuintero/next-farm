@@ -26,9 +26,12 @@ export const InfoRow = () => {
           <p>Ubicación: <strong>{pig?.pig_ubication}</strong></p>
           <p>Padre: <strong>{pig?.stallion}</strong></p>
           <p>Peso: <strong>{pig?.pig_weight}</strong></p>
-          <p>Total lechones: <strong>{pig?.piglets}</strong></p>
-          <p>Total partos: <strong>{pig?.births}</strong></p>
-          <p>Hijos en jaula: <strong>{pig?.gate_piglets}</strong></p>
+          { pig?.piglets?<p>Total lechones: <strong>{pig?.piglets}</strong></p>:<></>}
+          { pig?.births?<p>Total partos: <strong>{pig?.births}</strong></p>:<></>}
+          { pig?.gate_piglets?<p>Hijos en jaula: <strong>{pig?.gate_piglets}</strong></p>:<></>}
+          { pig?.false_charge?<p>Cargas falsas: <strong>{pig?.false_charge}</strong></p>:<></>}
+          { pig?.abortions?<p>Abortos: <strong>{pig?.abortions}</strong></p>:<></>}
+          
           {
             !(pig?.id_pig_stage===1 || pig?.id_pig_stage===2 || pig?.id_pig_stage===6)
               ?<p>Situación: <strong >{pig?.pig_stage}</strong></p>

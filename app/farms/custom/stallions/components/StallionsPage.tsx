@@ -53,6 +53,12 @@ const StallionsPage = () => {
         </div>
       </div>
       <div>
+      <div style={{display:'flex',fontSize:'14px',padding:'0 0 1rem .5rem', fontWeight:'bold'}}>
+        <p style={{width:'100px'}}>Nombre</p>
+        <p style={{width:'100px'}}>Hijos</p>
+        <p style={{width:'100px'}}>Montas Efectivas</p>
+        <p style={{width:'100px'}}>Cargas Falsas</p>
+      </div>
         {
           stallions.filter(s=>s.status).length
             ?stallions.filter(s=>s.status).map(a=><StallionRow stallion={a} key={a.id_stallion}/>)

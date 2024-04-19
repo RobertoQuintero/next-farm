@@ -35,7 +35,7 @@ export const BirthsRow = () => {
         <>
           {
             births.filter(b=>b.status).length
-              ?births.filter(b=>b.status).map(a=><BirthElementRow birth={a} key={a.id_birth}/>)
+              ?births.filter(b=>b.status).map((a,i)=><BirthElementRow i={i+1} birth={a}  key={a.id_birth}/>)
               :<></>
           }
         </>

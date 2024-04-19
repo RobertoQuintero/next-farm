@@ -19,8 +19,11 @@ export const StallionRow = ({stallion}:Props) => {
   
   return (
     <div className='rowCard'>
-      <div style={{display:'flex',gap:'.5rem'}}>
-        <p>{stallion.name}</p>
+      <div style={{display:'flex',fontSize:'14px'}}>
+        <p style={{width:'100px'}}>{stallion.name}</p>
+        <p style={{width:'100px'}}>{stallion.total_alive}</p>
+        <p style={{width:'100px'}}>{stallion.total_effective}</p>
+        <p style={{width:'100px'}}>{stallion.false_charge}</p>
       </div>
       <div>
       <div style={{display:'flex', gap:'.2rem',paddingRight:'.5rem'}}>

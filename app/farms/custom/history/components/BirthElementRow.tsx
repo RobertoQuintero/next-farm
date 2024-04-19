@@ -6,10 +6,11 @@ import { useUi } from '@/app/context/ui/useUi'
 
 
 interface Props{
-  birth:IBirth
+  birth:IBirth;
+  i:number;
 }
-export const BirthElementRow = ({birth}:Props) => {
-  const {pig,setBirth,setFarmAction} = useContext(FarmsContext)
+export const BirthElementRow = ({birth,i}:Props) => {
+  const {pig,setBirth,setFarmAction,births} = useContext(FarmsContext)
   const {toggleModal}= useUi()
 
   const onConfirm = (action:string) =>{
@@ -24,18 +25,18 @@ export const BirthElementRow = ({birth}:Props) => {
       <p>{birth.fertilization_type}</p>
       <p>{birth.stallion}</p>
       {
-        pig?.id_pig_stage===3&& !birth.closed
+        pig?.id_pig_stage===3&& !birth.closed&&i===births.length
           ?<p onClick={()=>onConfirm('CONFIRM')} className={styles.underline}>{new Date(birth.confirm_date).toLocaleString().split(',')[0]}</p>
           :<p >{new Date(birth.confirm_date).toLocaleString().split(',')[0]}</p>
       }
       {
-        pig?.id_pig_stage===4&& !birth.closed
+        pig?.id_pig_stage===4&& !birth.closed&&i===births.length
         ?<p onClick={()=>onConfirm('PREGNED')} className={styles.underline}>{birth.is_positive?'Positivo':'Negativo'}</p>
         :<p>{birth.is_positive?'Positivo':'Negativo'}</p>
         
       }
       {
-        pig?.id_pig_stage===5&& !birth.closed
+        pig?.id_pig_stage===5&& !birth.closed&&i===births.length
         ?<p onClick={()=>onConfirm('BIRTH')} className={styles.underline}>{new Date(birth.birth_date).toLocaleString().split(',')[0]}</p>
         :<p>{new Date(birth.birth_date).toLocaleString().split(',')[0]}</p>
         

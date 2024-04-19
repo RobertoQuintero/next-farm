@@ -36,7 +36,7 @@ export const Navbar = () => {
       <AppBar sx={{zIndex:1000}} >
         <Toolbar sx={{ maxWidth:'1200px', width:'100%',margin:'0 auto'}} >
             <Link href='/' className="flexCenter" >
-              <h3>Granjas</h3>
+              <h3>Granjas 🐷</h3>
             </Link>
           <Box flex={1}/>
           <Box sx={{display:{xs:'none',sm:'block'}}}

@@ -62,7 +62,9 @@ MOD.getGatePiglets(MP.id_pig,MP.id_pig_stage) gate_piglets,
 datediff(day,getdate(),convert(datetime,MOD.getBirthDay(MP.id_pig,MP.id_pig_stage))) counting_days,
 MOD.setMonthName(DATEPART(MONTH,(select top 1 birth_date from MOD.Births MB where is_positive='true' and MB.id_pig=MP.id_pig order by birth_date desc)),MP.id_pig_stage) month_name,
 (select top 1 crossing_date from MOD.Births MB where is_positive='true' and MB.id_pig=MP.id_pig order by birth_date desc) crossing_date,
-(select top 1 ms.name from MOD.Births MB left join MOD.Stallions MS on MS.id_stallion=MB.id_stallion where is_positive='true' and MB.id_pig=MP.id_pig order by birth_date desc) crossing_stallion
+(select top 1 ms.name from MOD.Births MB left join MOD.Stallions MS on MS.id_stallion=MB.id_stallion where is_positive='true' and MB.id_pig=MP.id_pig order by birth_date desc) crossing_stallion,
+(select count(*) from MOD.Births where id_birth_type=2 and id_pig=MP.id_pig and status='true') false_charge,
+(select count(*) from MOD.Births where id_birth_type=3 and id_pig=MP.id_pig and status='true') abortions
 FROM MOD.Pigs MP
 inner join CAT.Pig_types PT
 on PT.id_pig_type=MP.id_pig_type
