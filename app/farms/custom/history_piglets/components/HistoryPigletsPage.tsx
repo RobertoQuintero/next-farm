@@ -4,7 +4,7 @@ import React, { useContext, useEffect } from 'react'
 import { InfoRowPiglets, LossRowPiglets, MovePiglets, TasksRowPiglets, UpdatePiglets } from '.'
 import AppModal from '@/app/components/AppModal'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
-import { LossForm, UpdateComment, UpdateTask } from '../../components'
+import { LossForm, PostNewTask, UpdateComment, UpdateTask } from '../../components'
 import Cookies from 'js-cookie'
 
 const HistoryPigletsPage = () => {
@@ -38,6 +38,9 @@ const HistoryPigletsPage = () => {
       }
       {
         farmAction==='LOSS'?<LossForm/>:<></>
+      }
+      {
+        farmAction==='ADD-TASK'?<PostNewTask/>:<></>
       }
       </AppModal>
     </>

@@ -171,6 +171,7 @@ const FarmPage = () => {
         <p>Próximos partos</p>
         {
           getChargePigs()
+            .filter((p,i)=>i<3)
             .map(c=>
               <span 
                 onClick={()=>{
@@ -178,7 +179,7 @@ const FarmPage = () => {
                   router.push('/farms/custom/next_births')
                 }}
                 key={c.month} 
-                style={{backgroundColor:'#0061f2',color:'#fff',padding:'.2rem .5rem',borderRadius:'5px',cursor:'pointer'}}>
+                style={{backgroundColor:'#0061f2',color:'#fff',padding:'.2rem .5rem',borderRadius:'5px',cursor:'pointer',fontSize:'13px'}}>
                   {c.month} ({c.quantity})
               </span>)
         }

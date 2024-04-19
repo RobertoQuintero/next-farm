@@ -4,7 +4,7 @@ import { BackButton, DeleteComponent } from '@/app/components';
 import { BirthsRow, CommentsRow, InfoRow, TasksRow,UpdateBirthForm,UpdateConfirmForm,UpdateCrossingForm, UpdateLactation } from '.';
 import AppModal from '@/app/components/AppModal';
 import { FarmsContext } from '@/app/context/farms/FarmsContext';
-import { LossForm, PostUpdatePig, UpdateComment, UpdateTask } from '../../components';
+import { LossForm, PostNewTask, PostUpdatePig, UpdateComment, UpdateTask } from '../../components';
 import Cookies from 'js-cookie'
 import { IComment, ITask } from '@/interfaces';
 import { useUi } from '@/app/context/ui/useUi';
@@ -89,6 +89,9 @@ const HistoryPage = () => {
           }
           {
             farmAction==='LOSS'?<LossForm/>:<></>
+          }
+          {
+            farmAction==='ADD-TASK'?<PostNewTask/>:<></>
           }
         </AppModal>
       </div>

@@ -43,14 +43,14 @@ export const POST = async(req:Request) =>{
   if ${id_task} > 0
   begin
     UPDATE MOD.Tasks
-    SET id_pig=${id_pig===null?'NULL':id_pig},
+    SET ${id_pig===null?'id_pig=NULL':`id_pig=${id_pig}`},
         id_pig_task='${id_pig_task}',
         comment='${comment}',
         done='${done}',
         end_date='${end_date}',
         id_user='${id_user}',
         start_date='${start_date}',
-        id_lot_piglets=${id_lot_piglets===null?'NULL':id_lot_piglets},
+        ${id_lot_piglets===null?'id_lot_piglets=NULL':`id_lot_piglets=${id_lot_piglets}`},
         status='${status}'
     WHERE id_task=${id_task}
     ${query} WHERE id_task=${id_task}
@@ -72,7 +72,7 @@ export const POST = async(req:Request) =>{
     )
     VALUES(
       @const,
-      '${id_pig}',
+      ${id_pig||'NULL' },
       '${id_pig_task}',
       '${comment}',
       '${created_at}',
@@ -80,7 +80,7 @@ export const POST = async(req:Request) =>{
       '${end_date}',
       '${id_user}',
       '${start_date}',
-      '${id_lot_piglets}',
+      ${id_lot_piglets || 'NULL'},
       '${status}' 
     )
     ${query} WHERE id_task=@const

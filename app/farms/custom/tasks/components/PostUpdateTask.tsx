@@ -27,13 +27,13 @@ export const PostUpdateTask = () => {
     while_days:pigTask?pigTask.while_days:0,
     id_farm:pigTask?pigTask.id_farm:idFarm ,
     id_stage_task_type:pigTask?pigTask.id_stage_task_type:3,
-    change_to_stage:pigTask?pigTask.change_to_stage:null,
+    change_to_stage:pigTask?pigTask.change_to_stage:0,
     end_stage:pigTask?pigTask.end_stage:false,
     is_movement_task:pigTask?pigTask.is_movement_task:false,
   } as IPigTask
 
   const [pigType, setPigType] = useState(pigStages.find( p=>p.id_pig_stage===values.id_pig_stage)?.id_pig_type)
-  const [newStages, setNewStages] = useState(pigStages.filter(p=>p.id_pig_type===pigType))
+  const [newStages, setNewStages] = useState(pigStages.filter(p=>p.id_pig_type===pigType||p.id_pig_type===4))
   const [pigStage, setpigStage] = useState(values.id_pig_stage)
   const [checked, setChecked] = React.useState(values.end_stage);
   const [isMovement, setIsMovement] = useState(values.is_movement_task)
@@ -42,14 +42,15 @@ export const PostUpdateTask = () => {
     const date= new Date()
     data.created_at=date
     data.id_pig_stage=pigStage
+    data.while_days=values.while_days
     const newTask={
       ...values,
       ...data,
       end_stage:checked,
       is_movement_task:isMovement
     } as IPigTask
-    // console.log(newTask)
-    // return
+    console.log(newTask)
+    return
     const ok=await postTask(newTask)
     if(ok){
       toggleModal()
@@ -72,7 +73,7 @@ export const PostUpdateTask = () => {
         value={pigType}
         onChange={(e: React.ChangeEvent<HTMLInputElement>)=>{
           setPigType(+e.target.value)
-          setNewStages(pigStages.filter(p=>p.id_pig_type===Number(e.target.value)))
+          setNewStages(pigStages.filter(p=>p.id_pig_type===Number(e.target.value)||p.id_pig_type===4))
           setpigStage(pigStages.filter(p=>p.id_pig_type===Number(e.target.value))[0].id_pig_stage)
         }}
         select >
@@ -152,7 +153,7 @@ export const PostUpdateTask = () => {
         error={!!errors.days}
         helperText={errors.days?.message}
         />
-      <TextField 
+      {/* <TextField 
         size="small"
         fullWidth
         label='Número de días en que se aplica'
@@ -163,7 +164,7 @@ export const PostUpdateTask = () => {
         })}
         error={!!errors.while_days}
         helperText={errors.while_days?.message}
-        />
+        /> */}
         <div style={{display:'flex', alignItems:'center',width:'100%',justifyContent:'flex-end'}}>
         <p>{checked?'Es fin de etapa':'No es fin de etapa'}</p>
         <Switch

@@ -48,8 +48,13 @@ export const PigCard = ({pig,print,report=false}:Props) => {
         <p>{pig.pig_stage}</p>
         {report
           ?<>
-            <p>{addZero(new Date(buildDateReverse(pig.next_birth as string)))}</p>
-            <p>{pig.counting_days}</p>
+            <p>{
+                pig.id_pig_stage===5?addZero(new Date(buildDateReverse(pig.next_birth as string))):''
+              }</p>
+            <p>{
+            pig.id_pig_stage===5?pig.counting_days:''
+            }</p>
+            <p>{pig.piglets}</p>
           </>
           :<></>}
       </div>

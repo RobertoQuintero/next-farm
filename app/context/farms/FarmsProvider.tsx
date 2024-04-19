@@ -409,6 +409,7 @@ export const FarmsProvider = ({children}:Props) => {
          setIsLoading(false)
          return ok
   };
+
   const postPiglets = async(payload:IPiglets):Promise<boolean> =>{
    if(!userAccess.find(u=>u.id_access===18)&& user?.id_role!==1){
       setAccessError('Credenciales inválidas')
@@ -466,8 +467,17 @@ export const FarmsProvider = ({children}:Props) => {
       setAccessError('Credenciales inválidas')
       return true
     }
-
-   return await getPostLoadingOrError(`/farms/growing_pigs?id_farm=${payload.id_farm}`,setGrowingPigs,payload,state.growing_pigs,'id_growing_lot',true)
+   setIsLoading(true)
+         const {ok,data}=await postFarmsRequest('/farms/growing_pigs',payload)
+         if(ok){
+            setGrowingPigs(returnArray(payload,data as IGrowingPigs,state.growing_pigs,'id_growing_lot'))
+            setGrowingPig(data as IGrowingPigs)
+         }
+         else{
+          setError(data as string)
+         }
+         setIsLoading(false)
+         return ok
   };
 
   const postRoleAccess = async(payload:IRoleAccess):Promise<boolean> =>{
@@ -511,6 +521,13 @@ export const FarmsProvider = ({children}:Props) => {
       return true 
     }
     return await getPostLoadingOrError('/farms/catalog/pig_tasks',setPigTasks,payload,state.pigTasks,'id_pig_task',true)
+  };
+  const postNewTask = async(payload:ITask):Promise<boolean> =>{
+   // if(!userAccess.find(u=>u.id_access===12)&& user?.id_role!==1){
+   //    setAccessError('Credenciales inválidas')
+   //    return true 
+   //  }
+    return await getPostLoadingOrError('/farms/tasks',setTasks,payload,state.tasks,'id_task',true)
   };
 
   const postLossReason = async(payload:ILossReason):Promise<boolean> =>{
@@ -1012,7 +1029,8 @@ export const FarmsProvider = ({children}:Props) => {
      getLosses,
      postLosses,
      postUbicationForm,
-     setMonthBirth
+     setMonthBirth,
+     postNewTask
     }}>
       {children}
     </FarmsContext.Provider>

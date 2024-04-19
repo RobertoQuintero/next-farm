@@ -1,3 +1,5 @@
+export * from "./PostNewTask";
+
 export * from "./LossForm";
 
 export * from "./UpdateTask";
@@ -13,4 +15,5 @@ export * from "./RowButton";
 export * from "./PigCard";
 
 export * from "./PostUpdatePig";
+
 

@@ -3,6 +3,7 @@ import React, { useContext } from 'react'
 import { RowButton } from '../../components'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
+import { useRouter } from 'next/navigation'
 
 interface Props{
   growingPig:IGrowingPigs;
@@ -12,10 +13,15 @@ interface Props{
 export const GrowingPigCard = ({growingPig,print}:Props) => {
   const {setFarmAction,setGrowingPig,growing_pigs} = useContext(FarmsContext)
   const {toggleModal} = useContext(UiContext)
+  const router=useRouter()
 
   const onClick =(action:string) =>{
      setFarmAction(action)
      setGrowingPig(growingPig)
+     if(action==='GO'){
+      router.push('/farms/custom/history_growing_pigs')
+      return
+     }
      toggleModal()
   };
 
@@ -30,6 +36,7 @@ export const GrowingPigCard = ({growingPig,print}:Props) => {
         <p className='underlined' onClick={()=>onClick('STAGE')}>{growingPig.pig_stage}</p>
       </div>
       <div style={{display:print?'none':'flex', gap:'.2rem',paddingRight:'.5rem'}}>
+        <RowButton onClick={()=>onClick('GO')} label="ver"/>
         <RowButton onClick={()=>onClick('CLOSE')} label="cerrar"/>
         <RowButton onClick={()=>onClick('DELETE')} label="borrar" color='red'/>
       </div>

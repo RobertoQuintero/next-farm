@@ -113,6 +113,7 @@ export interface IPigTask {
   end_stage:boolean;
   change_to_stage: null | number | string;
   is_movement_task:boolean;
+  id_pig_type:number | null;
 }
 
 

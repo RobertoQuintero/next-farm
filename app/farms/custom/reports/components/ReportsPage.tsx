@@ -36,22 +36,32 @@ const ReportsPage = () => {
       <RowButton label='Pdf' onClick={handlePrint}/>
       <div style={{display:'flex', flexDirection:'column',gap:'.5rem',padding:'1rem .5rem 0'}} ref={componentRef}>
         <p style={{textAlign:'center',fontWeight:'bold'}}>Reporte Cerdas Gestantes</p>
+      <div style={{display:'flex', fontSize:'13px',fontWeight:'bold',padding:'0 0 0 1rem'}}>
+        <p style={{width:'100px'}}>Ingreso</p>
+        <p style={{width:'100px'}}>Código</p>
+        <p style={{width:'110px'}}>Ubicación</p>
+        <p style={{width:'120px'}}>Raza</p>
+        <p style={{width:'100px'}}>Estatus</p>
+        <p style={{width:'90px'}}>Parto</p>
+        <p style={{width:'110px'}}>Días al parto</p>
+        <p style={{width:'100px'}}>Hijos</p>
+      </div>
       <div style={styles}>
         <h4>Vacías {empty}</h4>
         {
-          pigs.filter(p=>p.status&&p.id_pig_stage===2).map(p=><PigCard pig={p} print key={p.id_pig}/>)
+          pigs.filter(p=>p.status&&p.id_pig_stage===2).map(p=><PigCard pig={p} report print key={p.id_pig}/>)
         }
       </div>
       <div style={styles}>
         <h4>Montadas {mounted}</h4>
         {
-          pigs.filter(p=>p.status&&p.id_pig_stage===3).map(p=><PigCard pig={p} print key={p.id_pig}/>)
+          pigs.filter(p=>p.status&&p.id_pig_stage===3).map(p=><PigCard pig={p} report print key={p.id_pig}/>)
         }
       </div>
       <div style={styles}>
         <h4>Sin confirmar {un_confirm}</h4>
         {
-          pigs.filter(p=>p.status&&p.id_pig_stage===4).map(p=><PigCard pig={p} print key={p.id_pig}/>)
+          pigs.filter(p=>p.status&&p.id_pig_stage===4).map(p=><PigCard pig={p} report print key={p.id_pig}/>)
         }
       </div>
       <div style={styles}>
@@ -63,7 +73,7 @@ const ReportsPage = () => {
       <div style={styles}>
         <h4>Destetando {lactation}</h4>
         {
-          pigs.filter(p=>p.status&&p.id_pig_stage===6).map(p=><PigCard pig={p} print key={p.id_pig}/>)
+          pigs.filter(p=>p.status&&p.id_pig_stage===6).map(p=><PigCard pig={p} print report key={p.id_pig}/>)
         }
       </div>
       <div style={styles}>
