@@ -18,9 +18,9 @@ GP.start_date,
 PS.description pig_stage,
 CU.description ubication
 FROM MOD.Growing_pigs GP
-inner join CAT.Pig_stages PS
+left join CAT.Pig_stages PS
 on PS.id_pig_stage=GP.id_pig_stage
-inner join CAT.Ubications CU
+left join CAT.Ubications CU
 on CU.id_ubication=GP.id_ubication
 `
 

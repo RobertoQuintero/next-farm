@@ -10,6 +10,7 @@ import { AuthContext } from '../auth/AuthContext'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
 import { IGrowingPigs } from '@/interfaces/growing_pigs'
+import { IStallionMonths } from '@/interfaces/stallions'
 
 interface Props{
   children:JSX.Element|JSX.Element[]
@@ -68,6 +69,7 @@ export interface UsersState{
   losses:ILoss[]
   loss:ILoss | undefined;
   monthBirth:IMonthBirth | undefined;
+  stallion_months:IStallionMonths | undefined;
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -122,7 +124,8 @@ const UI_INITIAL_STATE:UsersState={
   comment:undefined,
   losses:[],
   loss:undefined,
-  monthBirth:undefined
+  monthBirth:undefined,
+  stallion_months:undefined
 }
 
 export const FarmsProvider = ({children}:Props) => {
@@ -281,8 +284,6 @@ export const FarmsProvider = ({children}:Props) => {
          return await getPostLoadingOrError(`/farms/losses`,setLosses,payload,state.losses,'id_loss',true)
           };
 
-
-
     
     const getAllTasks = async({startDate,endDate}:{startDate:string;endDate:string}) =>{
         setIsLoading(true)
@@ -296,9 +297,19 @@ export const FarmsProvider = ({children}:Props) => {
          setIsLoading(false)
       };
 
+   
+   const getStallionMonths = async(payload:number) =>{
+       setIsLoading(true)
+        const {ok,data}=await postFarmsRequest(`/farms/stallions_report?id_farm=${payload}`,{})
+        if(ok){
+         setStallionMonths(data as IStallionMonths)
+        }
+        else{
+         setError(data as string)
+        }
+        setIsLoading(false)
+     };
 
-   
-   
    const getQuantities = async(payload:number) =>{
        setIsLoading(true)
         const {ok,data}=await postFarmsRequest(`/farms/statics?id_farm=${payload}`,{})
@@ -515,6 +526,8 @@ export const FarmsProvider = ({children}:Props) => {
 
 
 
+
+
   const postTask = async(payload:IPigTask):Promise<boolean> =>{
    if(!userAccess.find(u=>u.id_access===12)&& user?.id_role!==1){
       setAccessError('Credenciales inválidas')
@@ -566,7 +579,7 @@ export const FarmsProvider = ({children}:Props) => {
       setIsLoading(true)
        const {ok,data}=await postFarmsRequest(`/farms/births/1`,payload)
        if(ok){
-  
+         
        }
        else{
         setError(data as string)
@@ -947,6 +960,12 @@ export const FarmsProvider = ({children}:Props) => {
      })
   };
 
+  const setStallionMonths = (payload: IStallionMonths | undefined ) =>{
+     dispatch({
+      type:'[Farms] - setStallionMonths',
+      payload
+     })
+  };
 
   const getPostLoadingOrError = async<T,K extends keyof T>(
       endpoint:string,setState:(payload: T[]) => void,payload?:T,state?:T[],id?:K,wich?:boolean
@@ -1030,7 +1049,8 @@ export const FarmsProvider = ({children}:Props) => {
      postLosses,
      postUbicationForm,
      setMonthBirth,
-     postNewTask
+     postNewTask,
+     getStallionMonths
     }}>
       {children}
     </FarmsContext.Provider>

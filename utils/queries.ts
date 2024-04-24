@@ -23,11 +23,11 @@ export const queryBirth=`
         closed,
         FT.description fertilization_type
         from MOD.Births MB
-        inner join MOD.Stallions MS
+        left join MOD.Stallions MS
         on MS.id_stallion=MB.id_stallion
-        inner join Cat.Fertilization_types FT
+        left join Cat.Fertilization_types FT
         on FT.id_fertilization_type=MB.id_fertilization_type
-        inner join CAT.Birth_types BT
+        left join CAT.Birth_types BT
         on BT.id_birth_type=MB.id_birth_type
 ` as string
 
@@ -66,16 +66,16 @@ MOD.setMonthName(DATEPART(MONTH,(select top 1 birth_date from MOD.Births MB wher
 (select count(*) from MOD.Births where id_birth_type=2 and id_pig=MP.id_pig and status='true') false_charge,
 (select count(*) from MOD.Births where id_birth_type=3 and id_pig=MP.id_pig and status='true') abortions
 FROM MOD.Pigs MP
-inner join CAT.Pig_types PT
+left join CAT.Pig_types PT
 on PT.id_pig_type=MP.id_pig_type
-inner join CAT.Ubications CU
+left join CAT.Ubications CU
 on CU.id_ubication=MP.id_ubication
-inner join CAT.Races CR
+left join CAT.Races CR
 on CR.id_race=MP.id_race
-inner join CAT.Pig_stages CS
+left join CAT.Pig_stages CS
 on CS.id_pig_stage=MP.id_pig_stage
-inner join MOD.Stallions MS
+left join MOD.Stallions MS
 on MS.id_stallion=MP.id_stallion
-inner join CAT.Weight_types WS
+left join CAT.Weight_types WS
 on WS.id_weight_type=MP.id_weight_type
 ` as string

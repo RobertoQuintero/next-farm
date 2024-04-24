@@ -71,6 +71,9 @@ export interface IBirth {
   stallion?:string;
   comment:string;
   closed:boolean;
+  crossing_month?:string;
+  birth_month?:string;
+  id_farm?:number;
 }
 
 export interface ICrossing{

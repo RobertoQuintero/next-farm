@@ -3,6 +3,7 @@ import { IAccess, IBirth, IBirthType, IComment, ILoss, ILossReason, IPig, IPigSt
 import { UsersState } from './FarmsProvider'
 import { IFarm, IMonthBirth } from '@/interfaces/farm';
 import { IGrowingPigs } from '@/interfaces/growing_pigs';
+import { IStallionMonths } from '@/interfaces/stallions';
 
  type UsersActionType=
           {type:'[Farms] - setFarms';payload:IFarm[]}
@@ -58,6 +59,7 @@ import { IGrowingPigs } from '@/interfaces/growing_pigs';
         | {type:'[Farms] - setLosses'; payload:ILoss[] }
         | {type:'[Farms] - setLoss'; payload:ILoss | undefined }
         | {type:'[Farms] - setMonthBirth'; payload:IMonthBirth | undefined }
+        | {type:'[Farms] - setStallionMonths'; payload:IStallionMonths | undefined }
         
         
 export const usersReducer = (state:UsersState,action:UsersActionType):UsersState => {
@@ -350,6 +352,12 @@ export const usersReducer = (state:UsersState,action:UsersActionType):UsersState
       return {
         ...state,
         monthBirth:action.payload
+      }
+
+    case '[Farms] - setStallionMonths':
+      return {
+        ...state,
+        stallion_months:action.payload
       }
   
     default:

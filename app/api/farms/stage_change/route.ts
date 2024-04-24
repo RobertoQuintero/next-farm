@@ -66,9 +66,9 @@ export const POST = async(req:Request) =>{
         PT.is_movement_task,
         RU.name 
       FROM MOD.Tasks MT
-      inner join CAT.Pig_tasks PT
+      left join CAT.Pig_tasks PT
       on PT.id_pig_task=MT.id_pig_task
-      inner join RH.Users RU
+      left join RH.Users RU
       on RU.id_user=MT.id_user
       order by id_task desc
     `) as unknown as []

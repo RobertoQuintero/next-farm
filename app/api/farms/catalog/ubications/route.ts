@@ -13,7 +13,7 @@ const query=`
     CU.updated_at,
     PT.description pig_type
   FROM CAT.Ubications CU
-  inner join CAT.pig_types PT
+  left join CAT.pig_types PT
   on PT.id_pig_type=CU.id_pig_type
 `
 

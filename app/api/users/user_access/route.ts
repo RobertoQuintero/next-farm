@@ -12,7 +12,7 @@ export const GET = async(req:Request) =>{
       --RR.status,
       AR.description
     from MOD.Role_access_routes RR
-    inner join CAT.Access_routes AR
+    left join CAT.Access_routes AR
     on AR.id_access=RR.id_access
     where id_role=${id_role} and id_farm=${id_farm} and RR.status='true'
   `)

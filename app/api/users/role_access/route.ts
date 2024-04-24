@@ -10,7 +10,7 @@ const query=`
         id_farm,
         RR.description name
         FROM MOD.Role_access_routes AR
-        inner join CAT.Access_routes RR
+        left join CAT.Access_routes RR
         on RR.id_access=AR.id_access
 `
 

@@ -2,6 +2,7 @@
 import { IBirth, IBirthType, IComment, ILoss, ILossReason, IPig, IPigStage, IPigTask, IPigType, IPigWeight, IPiglets, IProduct, IQuantity, IRace, IStageTaskType, IStallion, IStaticPig, ITask, ITaskType, IUbication, IfertilizationType } from '@/interfaces'
 import { IFarm, IMonthBirth } from '@/interfaces/farm'
 import { IGrowingPigs } from '@/interfaces/growing_pigs'
+import { IStallionMonths } from '@/interfaces/stallions'
 import { IAccess,  IRole, IRoleAccess } from '@/interfaces/user'
 import { createContext } from 'react'
 
@@ -59,6 +60,7 @@ interface ContextProps{
   losses:ILoss[]
   loss:ILoss | undefined;
   monthBirth:IMonthBirth | undefined;
+  stallion_months:IStallionMonths | undefined;
 
   //methods
   setFarm: (payload: IFarm | undefined) => void;
@@ -122,6 +124,7 @@ interface ContextProps{
   postUbicationForm: (payload: IUbication) => Promise<{ok: boolean;data: IUbication | string;}>
   setMonthBirth: (payload: IMonthBirth | undefined) => void;
   postNewTask: (payload: ITask) => Promise<boolean>;
+  getStallionMonths: (payload: number) => Promise<void>;
 }
 
 export const FarmsContext = createContext({} as ContextProps)

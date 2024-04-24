@@ -20,9 +20,9 @@ id_task,
   PT.is_movement_task,
   PT.end_stage 
 FROM MOD.Tasks MT
-inner join CAT.Pig_tasks PT
+left join CAT.Pig_tasks PT
 on PT.id_pig_task=MT.id_pig_task
-inner join RH.Users RU
+left join RH.Users RU
 on RU.id_user=MT.id_user
 `
 
