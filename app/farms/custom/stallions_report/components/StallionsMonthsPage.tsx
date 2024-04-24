@@ -37,7 +37,7 @@ const StallionsMonthsPage = () => {
         <h3 style={{textAlign:'center'}}>Cruzas efectivas</h3>
         {
           stallion_months
-            ? stallion_months.report_births.map(s=><StallionReportBox stallions={s} type='Cruzas efectivas' color='#EB2130'/>)
+            ? stallion_months.report_births.map(s=><StallionReportBox stallions={s} type='Cruzas efectivas' color='#EB2130' key={s.stallion}/>)
             :<EmptyPage/>
         }
       </div>
