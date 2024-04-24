@@ -12,24 +12,29 @@ export const StallionReportBox = ({stallions,type,color}:Props) => {
     <div style={{border:'1px solid #ccc',borderRadius:'5px',padding:'1rem',marginBottom:'1rem'}}>
       <div>
         <p>{stallions.stallion} {type}</p>
-        <BarChart
-          xAxis={[
-            {
-              id: 'barCategories',
-              data: stallions.months.map(s=>s.month.split('-')[1]),
-              scaleType: 'band',
-            },
-          ]}
-          series={[
-            {
-              data: stallions.months.map(s=>s.quantity),
-              color:color
-            },
-          ]}
-          width={600}
-          height={300}
-
-        />
+        {
+          stallions.months.length
+            ?<BarChart
+            xAxis={[
+              {
+                id: 'barCategories',
+                data: stallions.months.length?stallions.months?.map(s=>s.month?.split('-')[1]):[],
+                scaleType: 'band',
+              },
+            ]}
+            series={[
+              {
+                data:stallions.months.length? stallions.months?.map(s=>s?.quantity):[],
+                color:color
+              },
+            ]}
+            width={600}
+            height={300}
+  
+          />
+            :<></>
+        }
+        
       </div>
     </div>
   )

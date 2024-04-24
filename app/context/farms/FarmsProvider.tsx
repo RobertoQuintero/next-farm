@@ -144,6 +144,7 @@ export const FarmsProvider = ({children}:Props) => {
             getResources(idFarm!)
             setAccessError(undefined)
             getUbications()
+            // getStallionMonths(idFarm!)
          }
       }
    }
