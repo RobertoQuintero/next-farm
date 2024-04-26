@@ -10,7 +10,7 @@ import { AuthContext } from '@/app/context/auth/AuthContext'
 
 export const PostUpdateComment = () => {
   const {toggleModal} = useContext(UiContext)
-  const {comment,farmsLoading,postComments,pig} = useContext(FarmsContext)
+  const {comment,farmsLoading,postComments,pig,piglet} = useContext(FarmsContext)
   const {user} = useContext(AuthContext)
   const {
     register,
@@ -21,7 +21,8 @@ export const PostUpdateComment = () => {
   const values={
     // ...comment,
     id_comment:comment?comment.id_comment:0,
-    id_pig:pig?.id_pig,
+    id_pig:pig?pig?.id_pig:0,
+    id_lot_piglets:piglet?piglet?.id_lot_piglets:0,
     description:comment?comment.description:'',
     status:true,
     id_user:comment?comment.id_user:user?.id_user,
@@ -37,6 +38,8 @@ export const PostUpdateComment = () => {
       updated_at:date,
       id_user:user?.id_user
     } as IComment
+    // console.log(newComment)
+    // return
     const ok= await postComments(newComment)
     if(ok){
       toggleModal()

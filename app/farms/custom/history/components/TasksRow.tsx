@@ -41,8 +41,8 @@ export const TasksRow = () => {
           <p>Comentario</p>
         </div>
         {
-          tasks.filter(t=>t.status&&!t.id_lot_piglets).length
-          ?tasks.filter(t=>t.status&&!t.id_lot_piglets).map(t=><TaskElementRow task={t} key={t.id_task}/>)
+          tasks.filter(t=>!t.id_lot_piglets).length
+          ?tasks.filter(t=>!t.id_lot_piglets).map(t=><TaskElementRow task={t} key={t.id_task}/>)
           :<></>
         }
       </div>

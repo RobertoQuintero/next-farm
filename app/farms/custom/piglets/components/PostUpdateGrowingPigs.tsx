@@ -50,6 +50,7 @@ export const PostUpdateGrowingPigs = () => {
 
     const newPiglet={
       ...piglet,
+      status:false,
       closed:true,
       id_user:user?.id_user!
     } as IPiglets

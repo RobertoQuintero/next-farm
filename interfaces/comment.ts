@@ -8,4 +8,5 @@ export interface IComment {
   status:      boolean;
   id_user:     number;
   name:        string;
+  id_lot_piglets: number | null;
 }

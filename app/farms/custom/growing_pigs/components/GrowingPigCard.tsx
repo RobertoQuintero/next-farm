@@ -37,7 +37,7 @@ export const GrowingPigCard = ({growingPig,print}:Props) => {
       </div>
       <div style={{display:print?'none':'flex', gap:'.2rem',paddingRight:'.5rem'}}>
         <RowButton onClick={()=>onClick('GO')} label="ver"/>
-        <RowButton onClick={()=>onClick('CLOSE')} label="cerrar"/>
+        <RowButton onClick={()=>onClick('CLOSE')} label="termina"/>
         <RowButton onClick={()=>onClick('DELETE')} label="borrar" color='red'/>
       </div>
     </div>

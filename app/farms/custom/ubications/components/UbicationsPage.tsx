@@ -8,10 +8,13 @@ import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { PostUpdateUbication, UbicationRow } from '.'
 import { IUbication } from '@/interfaces'
 
+
 const UbicationsPage = () => {
   const {toggleModal} = useContext(UiContext)
   const {ubications,setUbication,setFarmAction,farmAction,farmsLoading,farmsError,ubication,postUbication} = useContext(FarmsContext)
 
+
+  
   const onAdd = async() =>{
     setUbication(undefined)
     setFarmAction(undefined)

@@ -21,8 +21,8 @@ export const CommentElementRow = ({comment}:Props) => {
   return (
     <div style={{display:'flex',justifyContent:'space-between',fontSize:'14px'}}>
       <div style={{display:'flex'}}>
-        <p style={{width:'110px'}}>{addZero(new Date(buildDateReverse(comment.created_at)))}</p>
-        <p style={{width:'200px'}}>{comment.description}</p>
+        <p style={{width:'110px'}}>{addZero(new Date(buildDateReverse(comment.created_at))).split('-').reverse().join('-')}</p>
+        <p style={{width:'300px'}}>{comment.description}</p>
         <p style={{width:'200px'}}>{comment.name}</p>
       </div>
       <div>

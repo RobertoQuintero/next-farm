@@ -4,19 +4,20 @@ import { Button } from '@mui/material';
 import { AccordionElement } from '@/app/components';
 import { useUi } from '@/app/context/ui/useUi';
 import Cookies from 'js-cookie'
-import { IPig } from '@/interfaces';
-import { CommentElementRow } from './CommentElementRow';
+import { IPiglets } from '@/interfaces';
+import { CommentElementRow } from '../../history/components/CommentElementRow';
 
 export const CommentsRow = () => {
-  const {pig,setFarmAction,getComments,comments,setComment} = useContext(FarmsContext)
+  const {setFarmAction,getComments,comments,setComment,piglet} = useContext(FarmsContext)
   const {toggleModal} = useUi()
 
   useEffect(() => {
-    if(pig){
-      getComments(pig?.id_pig!,'pig')
+    if(piglet){
+      getComments(piglet?.id_lot_piglets!,'piglet')
     }else{
-      const newPig= JSON.parse(Cookies.get('pig')!) as IPig
-      getComments(newPig.id_pig,'pig')
+      const newPig= JSON.parse(Cookies.get('piglet')!) as IPiglets
+      console.log(newPig)
+      getComments(newPig.id_lot_piglets,'piglet')
     }
   }, [])
 

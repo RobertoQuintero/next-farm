@@ -75,14 +75,14 @@ export const GrowingPigsChangeStage = () => {
 
   return (
     <form className='Form' style={{width:'270px'}} onSubmit={handleSubmit(onSubmit)}>
-      <TextField 
+      {/* <TextField 
         size="small"
         fullWidth
         label='Cantidad'
         type="number"
         defaultValue={values.quantity}
         {...register('quantity',{min:1})}
-        />
+        /> */}
       <TextField 
         size="small"
         fullWidth
@@ -109,7 +109,7 @@ export const GrowingPigsChangeStage = () => {
             :<div></div>
           }
         </TextField>
-      <TextField
+      {/* <TextField
           size="small"
           label='Ubicación'
           defaultValue={values.id_ubication}
@@ -126,7 +126,7 @@ export const GrowingPigsChangeStage = () => {
             ))
             :<div></div>
           }
-        </TextField>
+        </TextField> */}
         <div style={{display:'flex',justifyContent:'flex-end', gap:'.5rem'}}>
           <p style={{fontSize:'14px',padding:'.5rem 0 0 0'}}>Fecha ingreso</p>
           <DatePickerElement date={date} setDate={setDate}/>

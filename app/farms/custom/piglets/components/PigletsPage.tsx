@@ -17,11 +17,18 @@ import Cookies from 'js-cookie'
 const PigletsPage = () => {
   const {toggleModal} = useContext(UiContext)
   const {idFarm} = useContext(AuthContext)
-  const {piglets,setFarmAction,farmAction,getCode,farmsLoading,farmsError,piglet,postPiglets,getPiglets,setPiglet} = useContext(FarmsContext)
+  const {piglets,setFarmAction,farmAction,getCode,farmsLoading,farmsError,piglet,postPiglets,getPiglets,setPiglet,ubications,getUbications} = useContext(FarmsContext)
   const [print, setPrint] = useState(false)
   useEffect(() => {
     getPiglets(idFarm || Number(Cookies.get('id_farm')))
   }, [])
+
+  useEffect(() => {
+    if(!ubications.length){
+      getUbications(idFarm || Number(Cookies.get('id_farm')))
+    }
+  }, [])
+  
 
   const componentRef = useRef(null);
   const handlePrint = useReactToPrint({
@@ -43,7 +50,8 @@ const PigletsPage = () => {
 
     const newPiglet ={
       ...piglet,
-      status:false
+      status:false,
+      closed:true
     } as IPiglets
      
     const ok=await postPiglets(newPiglet)

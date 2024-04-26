@@ -76,7 +76,7 @@ interface ContextProps{
   setRoleAccess: (payload: IRoleAccess | undefined) => void;
   getFarms: (payload: number) => Promise<boolean>;
   getFarm: (payload: number) => Promise<void>;
-  getUbications: () => Promise<void>;
+  getUbications: (payload: number) => Promise<void>
   setUbication: (payload: IUbication | undefined) => void;
   postUbication: (payload: IUbication) => Promise<boolean>;
   setTask: (payload: ITask | undefined) => void;
@@ -115,7 +115,7 @@ interface ContextProps{
   setProduct: (payload: IProduct | undefined) => void;
   getProducts: (payload: number) => Promise<void>;
   postProduct: (payload: IProduct) => Promise<boolean>;
-  getComments: (payload: number) => Promise<boolean>;
+  getComments: (payload: number, type: 'piglet' | 'pig') => Promise<boolean>
   setComment: (payload: IComment | undefined) => void;
   postComments: (payload: IComment) => Promise<boolean>;
   setLoss: (payload: ILoss | undefined) => void;

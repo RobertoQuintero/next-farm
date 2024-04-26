@@ -10,9 +10,9 @@ export const POST = async(req:Request) =>{
     const data= await db.query(`
     create table #pigs(calostro int,etapa_2 int,etapa_3 int)
     insert into #pigs(calostro,etapa_2,etapa_3) values(
-    ISNULL((select SUM(quantity) from MOD.Lot_Piglets where id_pig_stage=7  and status='true' and id_farm=${id_farm}),0),
-    ISNULL((select SUM(quantity) from MOD.Lot_Piglets where id_pig_stage=8  and status='true' and id_farm=${id_farm}),0),
-    ISNULL((select SUM(quantity) from MOD.Lot_Piglets where id_pig_stage=9  and status='true' and id_farm=${id_farm}),0)
+    ISNULL((select SUM(quantity) from MOD.Lot_Piglets where id_pig_stage=7 and closed='false' and status='true' and id_farm=${id_farm}),0),
+    ISNULL((select SUM(quantity) from MOD.Lot_Piglets where id_pig_stage=8 and closed='false' and status='true' and id_farm=${id_farm}),0),
+    ISNULL((select SUM(quantity) from MOD.Lot_Piglets where id_pig_stage=9 and closed='false' and status='true' and id_farm=${id_farm}),0)
 	)
     select * from #pigs
     drop table #pigs
