@@ -20,7 +20,7 @@ export const StallionRow = ({stallion}:Props) => {
   return (
     <div className='rowCard'>
       <div style={{display:'flex',fontSize:'14px'}}>
-        <p style={{width:'100px'}}>{stallion.name}</p>
+        <p style={{width:'100px',wordWrap:'break-word'}}>{stallion.name.replaceAll('/',' / ')}</p>
         <p style={{width:'100px'}}>{stallion.total_alive}</p>
         <p style={{width:'100px'}}>{stallion.total_effective}</p>
         <p style={{width:'100px'}}>{stallion.false_charge}</p>

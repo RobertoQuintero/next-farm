@@ -1,10 +1,10 @@
 import db from "@/database/connection";
 import { IPigTask } from "@/interfaces";
-import { addZero } from "@/utils";
+import { addZero, buildDate } from "@/utils";
 
 export const POST = async(req:Request) =>{
   const body = await req.json();
-  const {id_pig,id_pig_stage,id_user,id_lot_piglets }= body as {id_pig:number,id_pig_stage:number,id_user:number,id_lot_piglets:number};
+  const {id_pig,id_pig_stage,id_user,id_lot_piglets,id_farm ,added_date}= body as {id_pig:number,id_pig_stage:number,id_user:number,id_lot_piglets:number;id_farm:number;added_date:string};
 
   try {
 
@@ -12,7 +12,7 @@ export const POST = async(req:Request) =>{
     date.setHours(date.getHours()+6)
 
     const tasks= await db.query(`
-      SELECT * FROM CAT.Pig_tasks WHERE id_pig_stage=${id_pig_stage}
+      SELECT * FROM CAT.Pig_tasks WHERE id_pig_stage=${id_pig_stage} and id_farm=${id_farm}
     `) as unknown as IPigTask[]
 
 
@@ -39,11 +39,11 @@ export const POST = async(req:Request) =>{
         ${id_lot_piglets || 'NULL'},
         '${task.id_pig_task}',
         '',
-        '${date.toISOString()}',
+        '${buildDate(new Date())}',
         'false',
-        dateadd(hour,24*${task.days+task.while_days}+6,'${addZero(new Date())}'),
+        dateadd(hour,24*${task.days+task.while_days}+6,'${added_date}'),
         '${id_user}',
-        dateadd(hour,24*${task.days}+6,'${addZero(new Date())}'),
+        dateadd(hour,24*${task.days}+6,'${added_date}'),
         'true' 
       )
       `)

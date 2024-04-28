@@ -6,11 +6,12 @@ import { DatePickerElement, SaveButton } from '@/app/components'
 import { IPig, IPiglets, ITask, IUbication } from '@/interfaces'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { AuthContext } from '@/app/context/auth/AuthContext'
+import { addZero } from '@/utils'
 
 export const UpdateTask = () => {
   const {toggleModal} = useContext(UiContext)
   const {farmsLoading,task,updateTasks,pig,postPig,piglet,postPiglets,createTasksToDo,ubications,pigs,getTasks} = useContext(FarmsContext)
-  const {user} = useContext(AuthContext)
+  const {user,idFarm} = useContext(AuthContext)
 
   const newUbications = () =>{
     const array=[] as IUbication[]
@@ -61,7 +62,7 @@ export const UpdateTask = () => {
         Promise.all([
           postPig(newPig),
           updateTasks(newTask),
-          createTasksToDo({id_lot_piglets:0,id_user:user?.id_user!,id_pig:newPig.id_pig,id_pig_stage:newPig.id_pig_stage})
+          createTasksToDo({id_lot_piglets:0,id_user:user?.id_user!,id_pig:newPig.id_pig,id_pig_stage:newPig.id_pig_stage,id_farm:pig?.id_farm!,added_date:addZero(new Date(newPig.added_date))})
         ]).then(async res=>{
           await getTasks(pig?.id_pig!,'pig')
           toggleModal()
@@ -80,7 +81,7 @@ export const UpdateTask = () => {
         Promise.all([
           postPiglets(newLot),
           updateTasks(newTask),
-          createTasksToDo({id_lot_piglets:newLot.id_lot_piglets,id_user:user?.id_user!,id_pig:0,id_pig_stage:newLot.id_pig_stage})
+          createTasksToDo({id_lot_piglets:newLot.id_lot_piglets,id_user:user?.id_user!,id_pig:0,id_pig_stage:newLot.id_pig_stage,id_farm:newLot.id_farm,added_date:addZero(new Date(newLot.created_at))})
         ]).then(async res=>{
           await getTasks(piglet?.id_lot_piglets!,'lot')
           toggleModal()

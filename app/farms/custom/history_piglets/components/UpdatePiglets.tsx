@@ -6,10 +6,11 @@ import { SaveButton } from '@/app/components'
 import { IPiglets } from '@/interfaces'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { AuthContext } from '@/app/context/auth/AuthContext'
+import { addZero } from '@/utils'
 
 export const UpdatePiglets = () => {
   const {toggleModal} = useContext(UiContext)
-  const {piglet,farmsLoading,ubications,postPiglets,updateBirth,pigStages,createTasksToDo} = useContext(FarmsContext)
+  const {piglet,farmsLoading,postPiglets,pigStages,createTasksToDo} = useContext(FarmsContext)
   const {user} = useContext(AuthContext)
   const {
     register,
@@ -21,25 +22,20 @@ export const UpdatePiglets = () => {
     ...piglet
   } as IPiglets
 
+  
 
   const onSubmit=async(data:IPiglets)=>{
     const newPiglet={...piglet,...data} as IPiglets
-
-  //   if(piglet?.quantity===Number(newPiglet.quantity)){
-  //     const ok= await postPiglets(newPiglet)
-  //   if(ok){
-  //     toggleModal()
-  //   }
-  // }else{
+    console.log(addZero(new Date(piglet?.created_at!)))
+    // console.log(newPiglet)
+    // return
     Promise.all([
       postPiglets(newPiglet),
-      // updateBirth(newPiglet)
-      createTasksToDo({id_pig:0,id_pig_stage:newPiglet.id_pig_stage,id_user:user?.id_user!,id_lot_piglets:newPiglet.id_lot_piglets})
+      createTasksToDo({id_pig:0,id_pig_stage:newPiglet.id_pig_stage,id_user:user?.id_user!,id_lot_piglets:newPiglet.id_lot_piglets,id_farm:newPiglet.id_farm,added_date:addZero(new Date(piglet?.created_at!))})
     ]).then(res=>{
       toggleModal()
       })
 
-    // }
   }
 
   return (

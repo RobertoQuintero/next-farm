@@ -8,10 +8,11 @@ import { useContext, useState } from 'react'
 import { PostUpdateTask, TaskRow } from '.'
 import { IPigTask } from '@/interfaces'
 import Link from 'next/link'
+import OnRefreshButton from '../../components/OnRefreshButton'
 
 const TasksPage = () => {
   const {toggleModal} = useContext(UiContext)
-  const {tasks,setTask,setFarmAction,farmAction,farmsLoading,farmsError,task,postTask,pigTask,pigTasks,setPigTask,pigStages} = useContext(FarmsContext)
+  const {tasks,setTask,setFarmAction,farmAction,farmsLoading,farmsError,task,postTask,pigTask,pigTasks,setPigTask,pigStages,getTasks} = useContext(FarmsContext)
   const [error, setError] = useState(false)
 
   const onAdd = () =>{
@@ -35,11 +36,19 @@ const TasksPage = () => {
     }
   };
 
+  const onRefresh = async() =>{
+    // await getTasks(idFarm!||+Cookies.get('id_farm')!)
+    
+  };
+
   return (
     <>
      <div className='actionCreateContainer'>
         <AccessErrorComponent/>
-        <BackButton/>
+        <div style={{display:'flex',gap:'.5rem'}}>
+          <BackButton/>
+          <OnRefreshButton onRefresh={onRefresh}/>
+        </div>
         <div style={{display:'flex',alignItems:'center',gap:'1rem',color:'red'}}>
         {
             error?<p style={{fontSize:'14px'}}>Debe añadir etapas <Link href='/farms/custom/stages' style={{textDecoration:'underline'}}>Click!</Link></p>:<></>

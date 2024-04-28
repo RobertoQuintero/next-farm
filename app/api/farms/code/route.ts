@@ -25,13 +25,14 @@ export const GET = async(req:Request) =>{
       `) as unknown  as {code:string}[]
       const id=Number(num[0].code)
 
+      // if(id<9){
+      //   serial=`000${id + 1}`
+      // }
+      // else 
       if(id<9){
-        serial=`000${id + 1}`
-      }
-      else if(id<99){
         serial=`00${id + 1}`
       }
-      else if(id<999){
+      else if(id<99){
         serial=`0${id + 1}`
       }
       else {

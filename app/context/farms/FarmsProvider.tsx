@@ -389,7 +389,7 @@ export const FarmsProvider = ({children}:Props) => {
          setIsLoading(false)
       };
 
-    const createTasksToDo = async(payload:{id_pig:number;id_pig_stage:number;id_user:number;id_lot_piglets:number}) =>{
+    const createTasksToDo = async(payload:{id_pig:number;id_pig_stage:number;id_user:number;id_lot_piglets:number;id_farm:number;added_date:string}) =>{
         setIsLoading(true)
          const {ok,data}=await postFarmsRequest(`/farms/stage_change`,payload)
          if(ok){

@@ -5,6 +5,7 @@ import { DatePickerElement, SaveButton } from '@/app/components'
 import { IBirth, IPig } from '@/interfaces'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { AuthContext } from '@/app/context/auth/AuthContext'
+import { addZero } from '@/utils'
 
 
 export const UpdateConfirmForm = () => {
@@ -39,7 +40,7 @@ export const UpdateConfirmForm = () => {
     Promise.all([
       postPig(newPig),
       postBirth(newBirth),
-      is_normal&& createTasksToDo({id_pig:newPig.id_pig,id_pig_stage:newPig.id_pig_stage,id_user:user?.id_user!,id_lot_piglets:0})
+      is_normal&& createTasksToDo({id_pig:newPig.id_pig,id_pig_stage:newPig.id_pig_stage,id_user:user?.id_user!,id_lot_piglets:0,id_farm:newPig.id_farm,added_date:addZero(new Date(newPig.added_date))})
     ])
       .then(res=>{
         toggleModal()

@@ -49,8 +49,8 @@ export const PostUpdateTask = () => {
       end_stage:checked,
       is_movement_task:isMovement
     } as IPigTask
-    console.log(newTask)
-    return
+    // console.log(newTask)
+    // return
     const ok=await postTask(newTask)
     if(ok){
       toggleModal()

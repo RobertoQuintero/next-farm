@@ -62,7 +62,7 @@ export const PostUpdatePig = () => {
     data.id_pig=values.id_pig
     data.status=values.status
     data.id_farm=values.id_farm
-    data.added_date=values.added_date
+    data.added_date=buildDate(addedDate!)
     data.visible=values.visible
     data.id_pig_type=values.id_pig_type
     data.created_at=date

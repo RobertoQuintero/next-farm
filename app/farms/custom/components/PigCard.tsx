@@ -41,7 +41,7 @@ export const PigCard = ({pig,print,report=false}:Props) => {
   return (
     <div className={`rowCard ${print&&'odd'}`}>
       <div className="pigData">
-        <p>{addZero(new Date(pig.created_at)).split('-').reverse().join('-')}</p>
+        <p>{addZero(new Date(pig.added_date)).split('-').reverse().join('-')}</p>
         <p onClick={()=>onClick('EDIT')} className="underlined">{pig.code}</p>
         <p>{pig.pig_ubication}</p>
         <p>{pig.pig_race}</p>

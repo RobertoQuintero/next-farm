@@ -95,7 +95,7 @@ interface ContextProps{
   updateTasks: (payload: ITask) => Promise<boolean>;
   setBirth: (payload: IBirth | undefined) => void;
   postBirth: (payload: IBirth) => Promise<boolean>;
-  createTasksToDo: (payload: {id_pig: number;id_pig_stage: number;id_user: number;id_lot_piglets:number}) => Promise<void>;
+  createTasksToDo: (payload: {id_pig: number;id_pig_stage: number;id_user: number;id_lot_piglets:number;id_farm:number;added_date:string}) => Promise<void>;
   postPiglets: (payload: IPiglets) => Promise<boolean>;
   postNewPiglets: (payload: IPiglets) => Promise<boolean | number>;
   setPiglet: (payload: IPiglets | undefined) => void;

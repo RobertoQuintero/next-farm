@@ -8,7 +8,7 @@ export const GET = async(req:Request) =>{
   return await getRequestQuery(`
   SELECT 
   id_task,
-    id_pig,
+    MT.id_pig,
     MT.id_pig_task,
     MT.id_user,
     start_date,
@@ -18,13 +18,18 @@ export const GET = async(req:Request) =>{
     comment,
     MT.status,
     PT.description,
-    id_lot_piglets,
+    ML.id_lot_piglets,
     RU.name 
   FROM MOD.Tasks MT
   left join CAT.Pig_tasks PT
   on PT.id_pig_task=MT.id_pig_task
   left join RH.Users RU
   on RU.id_user=MT.id_user
-  where MT.start_date>='${startDate}' and MT.start_date<'${endDate}'
+  left join MOD.Pigs MP
+  on MP.id_pig=MT.id_pig
+  left join MOD.Lot_Piglets ML
+  on ML.id_lot_piglets=MT.id_lot_piglets
+  where MT.start_date>='${startDate}' and MT.start_date<'${endDate}' and MP.status=1 and ML.status=1 and MT.status=1
+  
   `)
 }
