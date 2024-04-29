@@ -1,3 +1,4 @@
+import db from "@/database/connection";
 import { IPiglets } from "@/interfaces";
 import {  getRequestQuery, postRequest } from "@/utils/getRequest";
 
@@ -43,6 +44,10 @@ export const POST = async(req:Request) =>{
   const body = await req.json();
   const {id_lot_piglets,closed,code,created_at,id_birth,id_farm,id_pig_stage,id_ubication,id_user,quantity,status,close_date }= body as IPiglets;
     
+  if(!status){
+    await db.query(`update MOD.Tasks set status=0 where id_lot_piglets=${id_lot_piglets}`)
+  }
+
   return await postRequest(`
   declare @const int 
   set @const=(SELECT isNull(max(id_lot_piglets),0)+1  FROM MOD.Lot_piglets)

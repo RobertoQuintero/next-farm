@@ -7,6 +7,8 @@ import { PigletsTasks, PigsTasks } from '.'
 import { DatePickerElement } from '@/app/components'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { addZero } from '@/utils'
+import { AuthContext } from '@/app/context/auth/AuthContext'
+import Cookies from 'js-cookie'
 
 const actions =[
   {
@@ -22,6 +24,7 @@ const actions =[
 const TaskLogPage = () => {
   const {toggleModal} = useContext(UiContext)
   const {getAllTasks,tasks} = useContext(FarmsContext)
+  const {idFarm} = useContext(AuthContext)
   const [startDate, setstartDate] = useState<Date | null>(new Date())
   const [endDate, setEndDate] = useState<Date | null>(new Date())
   const [changeAction, setChangeAction] = useState(1)
@@ -32,7 +35,7 @@ const TaskLogPage = () => {
       const end=new Date(endDate!)
        end.setDate(end.getDate()+1)
 
-      await getAllTasks({startDate:start,endDate:addZero(end)})
+      await getAllTasks({startDate:start,endDate:addZero(end),id_farm:idFarm! || +Cookies.get('id_farm')!})
 
   };
 

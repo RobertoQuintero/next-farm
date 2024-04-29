@@ -286,9 +286,9 @@ export const FarmsProvider = ({children}:Props) => {
           };
 
     
-    const getAllTasks = async({startDate,endDate}:{startDate:string;endDate:string}) =>{
+    const getAllTasks = async({startDate,endDate,id_farm}:{startDate:string;endDate:string;id_farm:number}) =>{
         setIsLoading(true)
-         const {ok,data}=await getFarmsRequest(`/farms/tasks/date?startDate=${startDate}&endDate=${endDate}`)
+         const {ok,data}=await getFarmsRequest(`/farms/tasks/date?startDate=${startDate}&endDate=${endDate}&id_farm=${id_farm}`)
          if(ok){
             setTasks(data as ITask[])
          }

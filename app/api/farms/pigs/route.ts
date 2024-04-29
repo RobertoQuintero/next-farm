@@ -1,3 +1,4 @@
+import db from "@/database/connection";
 import { IPig } from "@/interfaces";
 import {  getRequestQuery, postRequest } from "@/utils/getRequest";
 import { queryPig } from "@/utils/queries";
@@ -13,6 +14,11 @@ export const GET = async(req:Request) =>{
 export const POST = async(req:Request) =>{
   const body = await req.json();
   const {id_pig,code,id_farm,id_pig_type,id_race,id_pig_stage,id_ubication,added_date,status,visible,created_at,id_stallion,id_weight_type,bar_code }= body as IPig;
+
+  if(!status){
+    await db.query(`update MOD.Tasks set status=0 where id_pig=${id_pig}`)
+    await db.query(`update MOD.Births set status=0 where id_pig=${id_pig}`)
+  }
 
   return await postRequest(`
     declare @const int 

@@ -4,7 +4,8 @@ export const GET = async(req:Request) =>{
   const {searchParams}= new URL(req.url)
   const startDate=searchParams.get('startDate')
   const endDate=searchParams.get('endDate')
-
+  const id_farm=searchParams.get('id_farm')
+  console.log('first')
   return await getRequestQuery(`
   SELECT 
   id_task,
@@ -19,7 +20,9 @@ export const GET = async(req:Request) =>{
     MT.status,
     PT.description,
     ML.id_lot_piglets,
-    RU.name 
+    RU.name,
+	MOD.getIdFarm(ISNULL(MP.id_farm,0),ISNULL(ML.id_farm,0)) id_farm
+INTO #TablaTemporal3
   FROM MOD.Tasks MT
   left join CAT.Pig_tasks PT
   on PT.id_pig_task=MT.id_pig_task
@@ -29,7 +32,9 @@ export const GET = async(req:Request) =>{
   on MP.id_pig=MT.id_pig
   left join MOD.Lot_Piglets ML
   on ML.id_lot_piglets=MT.id_lot_piglets
-  where MT.start_date>='${startDate}' and MT.start_date<'${endDate}' and MP.status=1 and ML.status=1 and MT.status=1
-  
+  where MT.start_date>='${startDate}' and MT.start_date<'${endDate}' and MT.status=1
+
+  select * from #TablaTemporal3 where id_farm=${id_farm} order by description
+  drop table #TablaTemporal3
   `)
 }

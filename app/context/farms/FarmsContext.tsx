@@ -107,7 +107,7 @@ interface ContextProps{
   getGrowingPigs: (payload: number) => Promise<void>;
   getPiglets: (payload: number) => Promise<boolean>;
   setPiglets: (payload: IPiglets[]) => void;
-  getAllTasks: ({ startDate, endDate }: {startDate: string;endDate: string}) => Promise<void>
+  getAllTasks: ({ startDate, endDate,id_farm }: {startDate: string;endDate: string;id_farm:number}) => Promise<void>
   getQuantities: (payload: number) => Promise<void>;
   getStaticPigs: (payload: number) => Promise<void>;
   getStaticPiglets: (payload: number) => Promise<void>;
