@@ -27,7 +27,8 @@ export const UpdateCrossingForm = () => {
  
     Promise.all([
       postCrossingDate(data),
-      createTasksToDo({id_pig:pig?.id_pig!,id_pig_stage:3,id_user:user?.id_user!,id_lot_piglets:0,id_farm:pig?.id_farm!,added_date:addZero(new Date(pig?.added_date!))})
+      createTasksToDo({id_pig:pig?.id_pig!,id_pig_stage:3,id_user:user?.id_user!,id_lot_piglets:0,id_farm:pig?.id_farm!,
+        added_date:data.crossing_date})
     ]).then(resp=>{
       toggleModal()
     })
