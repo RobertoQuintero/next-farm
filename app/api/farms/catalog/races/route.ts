@@ -1,3 +1,4 @@
+import db from "@/database/connection";
 import { IRace } from "@/interfaces";
 import {  getRequestQuery, postRequest } from "@/utils/getRequest";
 
@@ -11,6 +12,18 @@ export const GET = async(req:Request) =>{
 export const POST = async(req:Request) =>{
   const body = await req.json();
   const { id_race,description,id_farm,status,created_at,updated_at}= body as IRace;
+
+  if(!id_race){
+    try {
+      const resp= await db.query(`select * from CAT.Races where status='true' and description='${description}'`)
+      if(resp.length){
+        return Response.json({ok:false,data:'Ya existe esa raza'},{status:401})
+      }
+    } catch (error) {
+      console.log(error)
+      return Response.json({ok:false,data:'Error el agregar registro'},{status:500})
+    }  
+  }
     
   return await postRequest(`
   declare @const int 

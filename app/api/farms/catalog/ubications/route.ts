@@ -45,7 +45,7 @@ export const POST = async(req:Request) =>{
     if ${id_ubication} > 0
     begin
       UPDATE CAT.Ubications
-      SET description='${description.toUpperCase()}',
+      SET description='${description}',
           id_farm='${id_farm}',
           id_pig_type='${id_pig_type}',
           status='${status}',

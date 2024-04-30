@@ -563,6 +563,23 @@ export const FarmsProvider = ({children}:Props) => {
     }
     return await getPostLoadingOrError('/farms/catalog/races',setRaces,payload,state.races,'id_race',true)
   };
+  const postRaceForm = async(payload:IRace):Promise<{ok:boolean;data:IRace | string}> =>{
+   if(!userAccess.find(u=>u.id_access===16)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return {ok:true,data: {} as IRace }
+    }
+    const {ok,data}=await postFarmsRequest('/farms/catalog/races',payload)
+    if(ok){
+       
+    }
+    else{
+     setError(data as string)
+    }
+    setIsLoading(false)
+    return {ok,data:data as IRace | string}
+
+   
+  };
 
   const postBirth = async(payload:IBirth):Promise<boolean> =>{
    if(!userAccess.find(u=>u.id_access===23)&& user?.id_role!==1){
@@ -1047,7 +1064,8 @@ export const FarmsProvider = ({children}:Props) => {
      postUbicationForm,
      setMonthBirth,
      postNewTask,
-     getStallionMonths
+     getStallionMonths,
+     postRaceForm
     }}>
       {children}
     </FarmsContext.Provider>

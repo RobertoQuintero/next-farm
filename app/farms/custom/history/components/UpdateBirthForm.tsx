@@ -28,6 +28,8 @@ export const UpdateBirthForm = () => {
 
 
   const onSubmit=async(data:IBirth)=>{
+    if(!data.alive) return
+    
     if(farmAction==='COMMENT'){
       const comment={...birth,comment:data.comment} as IBirth
     const ok= await postBirth(comment)
@@ -56,7 +58,7 @@ export const UpdateBirthForm = () => {
       ...birth,
       dead:Number(data.dead),
       alive:Number(data.alive),
-      birth_date:date,
+      birth_date:addZero(date!),
       comment:data.comment.trim(),
       id_user_birth:user?.id_user,
       id_birth_type:data.id_birth_type
@@ -87,10 +89,10 @@ export const UpdateBirthForm = () => {
           Promise.all([
             postPig(newPig),
             postBirth(newBirth),
-            is_normal&& createTasksToDo({id_pig:newPig.id_pig,id_pig_stage:newPig.id_pig_stage,id_user:user?.id_user!,id_lot_piglets:0,id_farm:newPig.id_farm,added_date:addZero(new Date(newPig.added_date))}),
+            is_normal&& createTasksToDo({id_pig:newPig.id_pig,id_pig_stage:newPig.id_pig_stage,id_user:user?.id_user!,id_lot_piglets:0,id_farm:newPig.id_farm,added_date:newBirth.birth_date as string}),
             pig?.id_pig_stage===5&&postNewPiglets(piglets).then(async(resp)=>{
               if(resp){
-                await createTasksToDo({id_pig:0,id_pig_stage:7,id_user:user?.id_user!,id_lot_piglets:resp as number,id_farm:newPig.id_farm,added_date:addZero(date!)})
+                await createTasksToDo({id_pig:0,id_pig_stage:7,id_user:user?.id_user!,id_lot_piglets:resp as number,id_farm:newPig.id_farm,added_date:newBirth.birth_date as string})
               }
             })
           ])

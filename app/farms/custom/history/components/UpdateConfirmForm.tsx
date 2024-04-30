@@ -23,9 +23,12 @@ export const UpdateConfirmForm = () => {
       ...birth,
       id_birth_type:birthType,
       comment,
-      confirm_date:date!,
+      confirm_date:addZero(date!),
       id_user_confirm:user?.id_user!,
     } as IBirth
+
+    // console.log(newBirth)
+    // return
     
     const is_normal=Number(newBirth.id_birth_type)===1
     
@@ -40,7 +43,7 @@ export const UpdateConfirmForm = () => {
     Promise.all([
       postPig(newPig),
       postBirth(newBirth),
-      is_normal&& createTasksToDo({id_pig:newPig.id_pig,id_pig_stage:newPig.id_pig_stage,id_user:user?.id_user!,id_lot_piglets:0,id_farm:newPig.id_farm,added_date:addZero(new Date(newPig.added_date))})
+      is_normal&& createTasksToDo({id_pig:newPig.id_pig,id_pig_stage:newPig.id_pig_stage,id_user:user?.id_user!,id_lot_piglets:0,id_farm:newPig.id_farm,added_date:newBirth.confirm_date as string})
     ])
       .then(res=>{
         toggleModal()

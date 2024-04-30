@@ -1,6 +1,6 @@
 import db from "@/database/connection";
 import { IBirth, IPigTask } from "@/interfaces";
-import { addZero, buildDate } from "@/utils";
+import { addZero, buildDate, buildDateReverse } from "@/utils";
 
 export const POST = async(req:Request) =>{
   const body = await req.json();
@@ -8,8 +8,8 @@ export const POST = async(req:Request) =>{
 
   try {
 
-    const birth=await db.query(`select top 1 crossing_date from MOD.Births where id_pig=${id_pig} and closed=0 order by crossing_date desc`)as unknown as IBirth[]
-    const crossing=birth.length?(birth[0]?.crossing_date as string)?.split('T')[0]:added_date.split('T')[0]
+    // const birth=await db.query(`select top 1 crossing_date from MOD.Births where id_pig=${id_pig} and closed=0 order by crossing_date desc`)as unknown as IBirth[]
+    // const crossing=birth.length?addZero(new Date(birth[0].crossing_date )):added_date.split('T')[0]
 
     const date = new Date(addZero(new Date()))
     date.setHours(date.getHours()+6)
@@ -44,9 +44,9 @@ export const POST = async(req:Request) =>{
         '',
         '${buildDate(new Date())}',
         'false',
-        dateadd(hour,24*${task.days+task.while_days}+6,'${crossing}'),
+        dateadd(hour,24*${task.days+task.while_days}+6,'${added_date}'),
         '${id_user}',
-        dateadd(hour,24*${task.days}+6,'${crossing}'),
+        dateadd(hour,24*${task.days}+6,'${added_date}'),
         'true' 
       )
       `)
@@ -79,7 +79,7 @@ export const POST = async(req:Request) =>{
     return Response.json({
       ok:true,
       // data:crossing,
-      // // data:birth
+      // data:addZero(new Date(birth[0].crossing_date ))
       data:newTasks.reverse()
     })
   } catch (error) {

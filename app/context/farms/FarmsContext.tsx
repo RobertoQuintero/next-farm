@@ -125,6 +125,7 @@ interface ContextProps{
   setMonthBirth: (payload: IMonthBirth | undefined) => void;
   postNewTask: (payload: ITask) => Promise<boolean>;
   getStallionMonths: (payload: number) => Promise<void>;
+  postRaceForm: (payload: IRace) => Promise<{ ok: boolean; data: IRace | string;}>
 }
 
 export const FarmsContext = createContext({} as ContextProps)

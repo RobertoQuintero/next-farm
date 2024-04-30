@@ -2,7 +2,7 @@ import { DatePickerElement, SaveButton } from '@/app/components'
 import { AuthContext } from '@/app/context/auth/AuthContext'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
-import { IPig, IUbication } from '@/interfaces'
+import { IPig, IRace, IUbication } from '@/interfaces'
 import { buildDate } from '@/utils'
 import {  MenuItem, TextField } from '@mui/material'
 import React, { useContext, useEffect, useState} from 'react'
@@ -11,9 +11,11 @@ import { useForm } from "react-hook-form"
 export const PostUpdatePig = () => {
   const {idFarm} = useContext(AuthContext)
   const {toggleModal} = useContext(UiContext)
-  const {farmsLoading,ubications,races,pig,postPig,stallions,getCode,code,weightTypes,pigs,postUbicationForm} = useContext(FarmsContext)
+  const {farmsLoading,ubications,races,pig,postPig,stallions,getCode,code,weightTypes,pigs,postUbicationForm,postRace,postRaceForm} = useContext(FarmsContext)
   const [addUbication, setAddUbication] = useState(false)
   const [newUbication, setNewUbication] = useState('')
+  const [addRace, setAddRace] = useState(false)
+  const [newRace, setNewRace] = useState('')
   const [error, setError] = useState<string | undefined>(undefined)
 
   const {
@@ -76,7 +78,7 @@ export const PostUpdatePig = () => {
       const ubication={
         id_ubication:0,
         created_at:date,
-        description:newUbication,
+        description:newUbication.toUpperCase(),
         id_farm:idFarm,
         id_pig_type:3,
         status:true,
@@ -91,6 +93,26 @@ export const PostUpdatePig = () => {
         return
       }
     }
+
+    if(addRace){
+      const ubication={
+        id_race:0,
+        created_at:date,
+        description:newRace.toUpperCase(),
+        id_farm:idFarm,
+        status:true,
+        updated_at:date
+      } as IRace
+
+      const {ok,data:d} = await postRaceForm(ubication)
+      if(ok){
+        data.id_race=(d as IRace).id_race 
+      }else{
+        setError(d as string)
+        return
+      }
+    }
+
 
     const ok=await postPig(data)
     if(ok){
@@ -203,25 +225,42 @@ export const PostUpdatePig = () => {
             }
           </TextField>
         }
-        <TextField
-          size="small"
-          label='Raza'
-          fullWidth
-          defaultValue={values.id_race}
-          {...register('id_race')} 
-          select >
-          {
-            races.length
-            ?races.map(item=>(
-              <MenuItem 
-                key={item.id_race} 
-                value={item.id_race}>
-                {item.description}
-              </MenuItem>
-            ))
-            :<div></div>
-          }
-        </TextField>
+        {addRace?<></>:<p onClick={()=>setAddRace(true)} style={{textAlign:'right', fontSize:'14px', textDecoration:'underline',cursor:'pointer'}}>Agregar</p>}
+        {
+          addRace
+            ?<>
+            <TextField 
+                size="small"
+                fullWidth
+                label='Raza'
+                type="text"
+                value={newRace}
+                onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{
+                  setNewRace(e.target.value)
+                }}
+              />
+              {error?<p style={{fontSize:'13px', color:'red', textAlign:'center'}}>{error}</p>:<></>}
+            </>
+            :<TextField
+            size="small"
+            label='Raza'
+            fullWidth
+            defaultValue={values.id_race}
+            {...register('id_race')} 
+            select >
+            {
+              races.length
+              ?races.map(item=>(
+                <MenuItem 
+                  key={item.id_race} 
+                  value={item.id_race}>
+                  {item.description}
+                </MenuItem>
+              ))
+              :<div></div>
+            }
+          </TextField>
+        }
         <TextField
           size="small"
           label='Peso'

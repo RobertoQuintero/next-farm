@@ -26,7 +26,7 @@ export const UpdatePiglets = () => {
 
   const onSubmit=async(data:IPiglets)=>{
     const newPiglet={...piglet,...data} as IPiglets
-    console.log(addZero(new Date(piglet?.created_at!)))
+    // console.log(addZero(new Date(piglet?.created_at!)))
     // console.log(newPiglet)
     // return
     Promise.all([
