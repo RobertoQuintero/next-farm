@@ -17,8 +17,9 @@
   border-bottom: 1px solid #ccc;
 }
 .birthRow:nth-child(1),.taskRow:nth-child(1){
-  border: none;
-  padding-bottom:.6rem;
+  box-sizing: border-box;
+  /* border: none; */
+  /* padding-bottom:.6rem; */
 }
 .birthRow >p,.taskRow >p{
   flex-basis: 10%;

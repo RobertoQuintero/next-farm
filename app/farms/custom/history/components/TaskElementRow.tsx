@@ -20,7 +20,7 @@ export const TaskElementRow = ({task}:Props) => {
   };
 
   return (
-    <div className={styles.taskRow}>
+    <div className={styles.taskRow} style={{order:task.done ||!task.status?50:1}}>
       <p>{new Date(task.start_date).toLocaleString().split(',')[0]}</p>
       <p style={{textTransform:'capitalize'}}>{task.name?.split(' ')[0]}</p>
       <p >{task.description}</p>
