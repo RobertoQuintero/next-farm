@@ -7,7 +7,7 @@ import Cookies from 'js-cookie'
 import { LoadingComponent } from '@/app/components'
 
 const StaticsPage = () => {
-  const {statics_quantities,getQuantities,staticPigs,getStaticPigs,getStaticPiglets,staticPiglets,getStaticGrowingPigs,staticGrowingPigs} = useContext(FarmsContext)
+  const {statics_quantities,getQuantities,staticPigs,getStaticPigs,getStaticPiglets,staticPiglets,getStaticGrowingPigs,staticGrowingPigs,weightTypes,pigs} = useContext(FarmsContext)
   const {idFarm} = useContext(AuthContext)
   useEffect(() => {
     getQuantities(idFarm|| +Cookies.get('id_farm')!)
@@ -104,6 +104,26 @@ const StaticsPage = () => {
       },
     ]}
     width={500}
+    height={300}
+  />
+  </div>
+  <div>
+    <h4 style={{textAlign:'center'}}>Peso Gestantes</h4>
+      <BarChart
+    xAxis={[
+      {
+        id: 'barCategories',
+        data: weightTypes.map(s=>s.description),
+        scaleType: 'band',
+      },
+    ]}
+    series={[
+      {
+        data: weightTypes.map(s=>pigs.filter(p=>p.id_weight_type===s.id_weight_type).length),
+        color:'#ee5397'
+      },
+    ]}
+    width={350}
     height={300}
   />
   </div>

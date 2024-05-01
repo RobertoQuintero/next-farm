@@ -1065,7 +1065,8 @@ export const FarmsProvider = ({children}:Props) => {
      setMonthBirth,
      postNewTask,
      getStallionMonths,
-     postRaceForm
+     postRaceForm,
+     setPigs
     }}>
       {children}
     </FarmsContext.Provider>

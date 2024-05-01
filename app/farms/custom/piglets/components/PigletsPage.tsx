@@ -17,7 +17,7 @@ import Cookies from 'js-cookie'
 const PigletsPage = () => {
   const {toggleModal} = useContext(UiContext)
   const {idFarm} = useContext(AuthContext)
-  const {piglets,setFarmAction,farmAction,getCode,farmsLoading,farmsError,piglet,postPiglets,getPiglets,setPiglet,ubications,getUbications} = useContext(FarmsContext)
+  const {piglets,setFarmAction,farmAction,getCode,farmsLoading,farmsError,piglet,postPiglets,getPiglets,setPiglet,ubications,getUbications,setPiglets} = useContext(FarmsContext)
   const [print, setPrint] = useState(false)
   useEffect(() => {
     getPiglets(idFarm || Number(Cookies.get('id_farm')))
@@ -78,6 +78,45 @@ const PigletsPage = () => {
     XLSX.writeFile(wb,'Lechones.xlsx')
   };
 
+
+  const compareUbications=(a:IPiglets, b:IPiglets)=> {
+    if (a.ubication! < b.ubication!) {
+      return -1;
+    }
+    if (a.ubication! > b.ubication!) {
+      return 1;
+    }
+    return 0;
+  }
+  const compareStages=(a:IPiglets, b:IPiglets)=> {
+    if (a.stage! < b.stage!) {
+      return -1;
+    }
+    if (a.stage! > b.stage!) {
+      return 1;
+    }
+    return 0;
+  }
+  const compareDates=(a:IPiglets, b:IPiglets)=> {
+    if (new Date(a.created_at) < new Date(b.created_at)) {
+      return -1;
+    }
+    if (new Date(a.created_at) > new Date(b.created_at)) {
+      return 1;
+    }
+    return 0;
+  }
+
+  const  compareQuantities=(a:IPiglets, b:IPiglets)=> {
+    if (a.quantity < b.quantity) {
+      return -1;
+    }
+    if (a.quantity > b.quantity) {
+      return 1;
+    }
+    return 0;
+  }
+
   return (
     <>
      <div className='actionCreateContainer' >
@@ -103,11 +142,11 @@ const PigletsPage = () => {
         </div>
       <div>
       <div style={{display:'flex',fontWeight:'bold',fontSize:'14px',paddingLeft:'.5rem'}}>
-        <p style={{width:'100px'}}>Ingresado</p>
+        <p style={{width:'100px',cursor:'pointer'}} onClick={()=>setPiglets(piglets.sort(compareDates))}>Ingresado</p>
         <p style={{width:'50px'}}>Días</p>
-        <p style={{width:'100px'}}>Ubicación</p>
-        <p style={{width:'70px'}}>Cantidad</p>
-        <p style={{width:'70px'}}>Etapa</p>
+        <p style={{width:'100px',cursor:'pointer'}} onClick={()=>setPiglets(piglets.sort(compareUbications))}>Ubicación</p>
+        <p style={{width:'70px',cursor:'pointer'}} onClick={()=>setPiglets(piglets.sort(compareQuantities))}>Cantidad</p>
+        <p style={{width:'70px',cursor:'pointer'}} onClick={()=>setPiglets(piglets.sort(compareStages))}>Etapa</p>
       </div>
         {
           piglets.filter(p=>!p.closed&&p.status).length

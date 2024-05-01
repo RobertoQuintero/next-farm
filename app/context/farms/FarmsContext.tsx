@@ -126,6 +126,7 @@ interface ContextProps{
   postNewTask: (payload: ITask) => Promise<boolean>;
   getStallionMonths: (payload: number) => Promise<void>;
   postRaceForm: (payload: IRace) => Promise<{ ok: boolean; data: IRace | string;}>
+  setPigs: (payload: IPig[]) => void;
 }
 
 export const FarmsContext = createContext({} as ContextProps)

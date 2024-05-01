@@ -26,7 +26,7 @@ const style={
 const FarmPage = () => {
   const {toggleModal,isModalOpen} = useUi()
   const {idFarm,user} = useContext(AuthContext)
-  const {farmsLoading,pigs,getPigs,setPig,setFarmAction,farmAction,farmsError,pig,postPig,getFarm,farm,getCode,stallions,ubications,setMonthBirth} = useContext(FarmsContext)
+  const {farmsLoading,pigs,getPigs,setPig,setFarmAction,farmAction,farmsError,pig,postPig,getFarm,farm,getCode,stallions,ubications,setMonthBirth,setPigs} = useContext(FarmsContext)
   const [error, setError] = useState(false)
   const [error2, setError2] = useState(false)
   const [print, setPrint] = useState(false)
@@ -54,6 +54,10 @@ const FarmPage = () => {
       getCode('pig')
     }    
   }, [idFarm])
+  // useEffect(() => {
+    
+  // }, [pigs])
+  
 
   const getChargePigs=()=>{
     const newArr= pigs.filter(p=>p.id_pig_stage===5||p.id_pig_stage===6).map(p=>p.month_name) as string[]
@@ -98,6 +102,44 @@ const FarmPage = () => {
     getPigs(idFarm!)
     getCode('pig')
   };
+
+  const compareUbications=(a:IPig, b:IPig)=> {
+    if (a.pig_ubication < b.pig_ubication) {
+      return -1;
+    }
+    if (a.pig_ubication > b.pig_ubication) {
+      return 1;
+    }
+    return 0;
+  }
+  const compareStages=(a:IPig, b:IPig)=> {
+    if (a.pig_stage < b.pig_stage) {
+      return -1;
+    }
+    if (a.pig_stage > b.pig_stage) {
+      return 1;
+    }
+    return 0;
+  }
+  const compareDates=(a:IPig, b:IPig)=> {
+    if (new Date(a.added_date) < new Date(b.added_date)) {
+      return -1;
+    }
+    if (new Date(a.added_date) > new Date(b.added_date)) {
+      return 1;
+    }
+    return 0;
+  }
+
+  const  compareCodes=(a:IPig, b:IPig)=> {
+    if (Number(a.code.replaceAll('0','')) < Number(b.code.replaceAll('0',''))) {
+      return -1;
+    }
+    if (Number(a.code.replaceAll('0','')) > Number(b.code.replaceAll('0',''))) {
+      return 1;
+    }
+    return 0;
+  }
 
   const getExcel = () =>{
 
@@ -205,11 +247,11 @@ const FarmPage = () => {
         <p>{farm?.name}</p></div>
       <div>
         <div className="pigData pigDataHeader">
-          <p>Ingreso</p>
-          <p>Número</p>
-          <p>Ubicación</p>
+          <p onClick={()=>setPigs(pigs.sort(compareDates))} style={{cursor:'pointer'}}>Ingreso</p>
+          <p onClick={()=>setPigs(pigs.sort(compareCodes))} style={{cursor:'pointer'}}>Número</p>
+          <p onClick={()=>setPigs(pigs.sort(compareUbications))} style={{cursor:'pointer'}}>Ubicación</p>
           <p>Raza</p>
-          <p>Situación</p>
+          <p onClick={()=>setPigs(pigs.sort(compareStages))} style={{cursor:'pointer'}}>Situación</p>
         </div>
         {
           pigs.filter(p=>p.status).length
