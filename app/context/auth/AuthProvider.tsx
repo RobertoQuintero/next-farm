@@ -62,6 +62,9 @@ export const AuthProvider = ({children}:Props) => {
         payload:data as IUser
       })
       await getUserAccess(data as IUser)
+      if((data as IUser).id_farm){
+        Cookies.set('id_farm',(data as IUser).id_farm.toString())
+      }
     }else{
       logout()
       router.replace('/')

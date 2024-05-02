@@ -1,5 +1,5 @@
 'use client'
-import { IAccess, IBirth, IBirthType, IComment, ILoss, ILossReason, IPig, IPigStage, IPigTask, IPigType, IPigWeight, IPiglets, IProduct, IQuantity, IRace, IRole, IRoleAccess, IStage,  IStageTaskType,  IStallion,  IStaticPig,  ITask,  ITaskType,  IUbication, IfertilizationType } from '@/interfaces';
+import { IAccess, IAnswer, IBirth, IBirthType, IComment, ILoss, ILossReason, IPig, IPigStage, IPigTask, IPigType, IPigWeight, IPiglets, IProduct, IQuantity, IQuestion, IRace, IRole, IRoleAccess, IStage,  IStageTaskType,  IStallion,  IStaticPig,  ITask,  ITaskType,  IUbication, IfertilizationType } from '@/interfaces';
 import { UsersState } from './FarmsProvider'
 import { IFarm, IMonthBirth } from '@/interfaces/farm';
 import { IGrowingPigs } from '@/interfaces/growing_pigs';
@@ -60,6 +60,10 @@ import { IStallionMonths } from '@/interfaces/stallions';
         | {type:'[Farms] - setLoss'; payload:ILoss | undefined }
         | {type:'[Farms] - setMonthBirth'; payload:IMonthBirth | undefined }
         | {type:'[Farms] - setStallionMonths'; payload:IStallionMonths | undefined }
+        | {type:'[Farms] - setQuestions'; payload:IQuestion[] }
+        | {type:'[Farms] - setQuestion'; payload:IQuestion | undefined }
+        | {type:'[Farms] - setAnswers'; payload:IAnswer[] }
+        | {type:'[Farms] - setAnswer'; payload:IAnswer | undefined }
         
         
 export const usersReducer = (state:UsersState,action:UsersActionType):UsersState => {
@@ -359,6 +363,31 @@ export const usersReducer = (state:UsersState,action:UsersActionType):UsersState
         ...state,
         stallion_months:action.payload
       }
+
+    case '[Farms] - setAnswers':
+      return {
+        ...state,
+        answers:action.payload
+      }
+
+    case '[Farms] - setAnswer':
+      return {
+        ...state,
+        answer:action.payload
+      }
+      
+    case '[Farms] - setQuestions':
+      return {
+        ...state,
+        questions:action.payload
+      }
+
+    case '[Farms] - setQuestion':
+      return {
+        ...state,
+        question:action.payload
+      }
+
   
     default:
       return state

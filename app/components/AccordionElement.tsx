@@ -4,7 +4,7 @@ import React from 'react'
 
 interface Props{
   children:React.ReactNode;
-  title:string;
+  title:string | React.ReactNode;
   open?:boolean
 }
 

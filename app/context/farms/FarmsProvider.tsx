@@ -5,7 +5,7 @@ import {  usersReducer } from './farmsReducer'
 import { IFarm, IMonthBirth } from '@/interfaces/farm'
 import { getFarmsRequest, postFarmsRequest } from './farmsRequest'
 import { returnArray } from '../auth/authRequest'
-import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing, IPigWeight, IPigStage, IPigTask, IStageTaskType, IBirthType, IPiglets, IQuantity, IStaticPig, IProduct, IComment, ILoss } from '@/interfaces'
+import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing, IPigWeight, IPigStage, IPigTask, IStageTaskType, IBirthType, IPiglets, IQuantity, IStaticPig, IProduct, IComment, ILoss, IQuestion, IAnswer } from '@/interfaces'
 import { AuthContext } from '../auth/AuthContext'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
@@ -70,6 +70,10 @@ export interface UsersState{
   loss:ILoss | undefined;
   monthBirth:IMonthBirth | undefined;
   stallion_months:IStallionMonths | undefined;
+  questions:IQuestion[];
+  question:IQuestion | undefined;
+  answers:IAnswer[];
+  answer:IAnswer | undefined;
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -125,7 +129,11 @@ const UI_INITIAL_STATE:UsersState={
   losses:[],
   loss:undefined,
   monthBirth:undefined,
-  stallion_months:undefined
+  stallion_months:undefined,
+  questions:[],
+  question: undefined,
+  answers:[],
+  answer: undefined,
 }
 
 export const FarmsProvider = ({children}:Props) => {
@@ -539,6 +547,38 @@ export const FarmsProvider = ({children}:Props) => {
     }
     return await getPostLoadingOrError('/farms/tasks',setTasks,payload,state.tasks,'id_task',true)
   };
+
+  const getQuestions = async(payload:number):Promise<boolean> =>{
+   if(!userAccess.find(u=>u.id_access===27)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return true 
+    }
+    return await getPostLoadingOrError(`/farms/questions?id_farm=${payload}`,setQuestions)
+  };
+
+  const postQuestion = async(payload:IQuestion):Promise<boolean> =>{
+   if(!userAccess.find(u=>u.id_access===28)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return true 
+    }
+    return await getPostLoadingOrError(`/farms/questions`,setQuestions,payload,state.questions,'id_question',true)
+  };
+  const getAnswers = async(payload:number):Promise<boolean> =>{
+   if(!userAccess.find(u=>u.id_access===27)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return true 
+    }
+    return await getPostLoadingOrError(`/farms/answers?id_farm=${payload}`,setAnswers)
+  };
+
+  const postAnswer = async(payload:IAnswer):Promise<boolean> =>{
+   if(!userAccess.find(u=>u.id_access===28)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return true 
+    }
+    return await getPostLoadingOrError(`/farms/answers`,setAnswers,payload,state.answers,'id_answer',true)
+  };
+
 
   const postLossReason = async(payload:ILossReason):Promise<boolean> =>{
    if(!userAccess.find(u=>u.id_access===14)&& user?.id_role!==1){
@@ -981,6 +1021,31 @@ export const FarmsProvider = ({children}:Props) => {
      })
   };
 
+  const setQuestion = (payload: IQuestion | undefined ) =>{
+     dispatch({
+      type:'[Farms] - setQuestion',
+      payload
+     })
+  };
+  const setQuestions = (payload: IQuestion[] ) =>{
+     dispatch({
+      type:'[Farms] - setQuestions',
+      payload
+     })
+  };
+  const setAnswer = (payload: IAnswer | undefined ) =>{
+     dispatch({
+      type:'[Farms] - setAnswer',
+      payload
+     })
+  };
+  const setAnswers = (payload: IAnswer[] ) =>{
+     dispatch({
+      type:'[Farms] - setAnswers',
+      payload
+     })
+  };
+
   const getPostLoadingOrError = async<T,K extends keyof T>(
       endpoint:string,setState:(payload: T[]) => void,payload?:T,state?:T[],id?:K,wich?:boolean
    ) =>{
@@ -1066,7 +1131,13 @@ export const FarmsProvider = ({children}:Props) => {
      postNewTask,
      getStallionMonths,
      postRaceForm,
-     setPigs
+     setPigs,
+     setQuestion,
+     setAnswer,
+     getAnswers,
+     getQuestions,
+     postAnswer,
+     postQuestion
     }}>
       {children}
     </FarmsContext.Provider>

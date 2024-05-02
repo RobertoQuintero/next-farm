@@ -1,5 +1,5 @@
 'use client'
-import { IBirth, IBirthType, IComment, ILoss, ILossReason, IPig, IPigStage, IPigTask, IPigType, IPigWeight, IPiglets, IProduct, IQuantity, IRace, IStageTaskType, IStallion, IStaticPig, ITask, ITaskType, IUbication, IfertilizationType } from '@/interfaces'
+import { IAnswer, IBirth, IBirthType, IComment, ILoss, ILossReason, IPig, IPigStage, IPigTask, IPigType, IPigWeight, IPiglets, IProduct, IQuantity, IQuestion, IRace, IStageTaskType, IStallion, IStaticPig, ITask, ITaskType, IUbication, IfertilizationType } from '@/interfaces'
 import { IFarm, IMonthBirth } from '@/interfaces/farm'
 import { IGrowingPigs } from '@/interfaces/growing_pigs'
 import { IStallionMonths } from '@/interfaces/stallions'
@@ -61,6 +61,11 @@ interface ContextProps{
   loss:ILoss | undefined;
   monthBirth:IMonthBirth | undefined;
   stallion_months:IStallionMonths | undefined;
+  questions:IQuestion[];
+  question:IQuestion | undefined;
+  answers:IAnswer[];
+  answer:IAnswer | undefined;
+  
 
   //methods
   setFarm: (payload: IFarm | undefined) => void;
@@ -127,6 +132,12 @@ interface ContextProps{
   getStallionMonths: (payload: number) => Promise<void>;
   postRaceForm: (payload: IRace) => Promise<{ ok: boolean; data: IRace | string;}>
   setPigs: (payload: IPig[]) => void;
+  setQuestion: (payload: IQuestion | undefined) => void;
+  setAnswer: (payload: IAnswer | undefined) => void;
+  getQuestions: (payload: number) => Promise<boolean>
+  postQuestion: (payload: IQuestion) => Promise<boolean>
+  getAnswers: (payload: number) => Promise<boolean>
+  postAnswer: (payload: IAnswer) => Promise<boolean>
 }
 
 export const FarmsContext = createContext({} as ContextProps)

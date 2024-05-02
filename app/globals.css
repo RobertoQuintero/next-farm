@@ -377,3 +377,7 @@ background: #d4d4d4;
 .odd:nth-child(odd){
   background-color: #eee;
 }
+
+.hover:hover{
+  background-color: #ccc;
+}

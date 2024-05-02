@@ -6,6 +6,7 @@ const links=[
   {href:'/farms/custom/piglets',title:'Bitácora lechones'},
   {href:'/farms/custom/growing_pigs',title:'Bitácora Crecimiento'},
   {href:'/farms/custom/task_log',title:'Bitácora Actividades'},
+  {href:'/farms/custom/support',title:'Soporte Médico'},
   {href:'/farms/custom/statics',title:'Estadísticas'},
   {href:'/farms/custom/reports',title:'Reportes'},
   {href:'/farms/custom/stallions_report',title:'Reporte Sementales'},
