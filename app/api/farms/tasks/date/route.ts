@@ -34,7 +34,7 @@ INTO #TablaTemporal3
   on ML.id_lot_piglets=MT.id_lot_piglets
   where MT.start_date>='${startDate}' and MT.start_date<'${endDate}' and MT.status=1
 
-  select * from #TablaTemporal3 where id_farm=${id_farm} order by description
+  select * from #TablaTemporal3 where id_farm=${id_farm} order by start_date
   drop table #TablaTemporal3
   `)
 }

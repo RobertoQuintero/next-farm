@@ -137,7 +137,8 @@ interface ContextProps{
   getQuestions: (payload: number) => Promise<boolean>
   postQuestion: (payload: IQuestion) => Promise<boolean>
   getAnswers: (payload: number) => Promise<boolean>
-  postAnswer: (payload: IAnswer) => Promise<boolean>
+  postAnswer: (payload: IAnswer) => Promise<boolean>;
+  setTasks: (payload: ITask[]) => void
 }
 
 export const FarmsContext = createContext({} as ContextProps)

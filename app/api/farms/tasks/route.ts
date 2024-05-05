@@ -30,7 +30,7 @@ export const GET = async(req:Request) =>{
   const {searchParams}= new URL(req.url)
   const id=searchParams.get('id')
   const pig=searchParams.get('pig')
-  return await getRequestQuery(`${query} WHERE  ${pig==='pig'?`id_pig=${id}`:`id_lot_piglets=${id}`} order by id_task asc`)
+  return await getRequestQuery(`${query} WHERE  ${pig==='pig'?`id_pig=${id}`:`id_lot_piglets=${id}`} order by start_date asc`)
 }
 
 export const POST = async(req:Request) =>{

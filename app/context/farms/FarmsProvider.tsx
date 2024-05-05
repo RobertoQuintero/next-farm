@@ -1137,7 +1137,8 @@ export const FarmsProvider = ({children}:Props) => {
      getAnswers,
      getQuestions,
      postAnswer,
-     postQuestion
+     postQuestion,
+     setTasks
     }}>
       {children}
     </FarmsContext.Provider>

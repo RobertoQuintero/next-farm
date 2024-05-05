@@ -1,8 +1,6 @@
 'use client'
-import AppModal from '@/app/components/AppModal'
-import { UiContext } from '@/app/context/ui/UiContext'
 import { Button, MenuItem, TextField } from '@mui/material'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { PigletsTasks, PigsTasks } from '.'
 import { DatePickerElement } from '@/app/components'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
@@ -22,8 +20,7 @@ const actions =[
 ] as {id_action:number,action:string}[]
 
 const TaskLogPage = () => {
-  const {toggleModal} = useContext(UiContext)
-  const {getAllTasks,tasks} = useContext(FarmsContext)
+  const {getAllTasks,setTasks} = useContext(FarmsContext)
   const {idFarm} = useContext(AuthContext)
   const [startDate, setstartDate] = useState<Date | null>(new Date())
   const [endDate, setEndDate] = useState<Date | null>(new Date())
@@ -38,6 +35,10 @@ const TaskLogPage = () => {
       await getAllTasks({startDate:start,endDate:addZero(end),id_farm:idFarm! || +Cookies.get('id_farm')!})
 
   };
+  useEffect(() => {
+    setTasks([])
+  }, [])
+  
 
   return (
     <>
@@ -76,14 +77,7 @@ const TaskLogPage = () => {
         <PigsTasks changeAction={changeAction}/>
         <PigletsTasks changeAction={changeAction}/>
       </div>
-      <AppModal>
-        <></>
-        {
-          // action==='EDIT' || action===undefined
-              // ?<PostUpdate/>
-              // :<DeleteComponent onDelete={onDelete} loading={} error={}/>
-        }
-      </AppModal>
+  
     </>
   )
 }
