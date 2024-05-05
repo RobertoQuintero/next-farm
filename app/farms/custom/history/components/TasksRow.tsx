@@ -23,7 +23,6 @@ export const TasksRow = () => {
   const onClick =() =>{
     setFarmAction('ADD-TASK')
     setPiglet(undefined)
-    // setComment(undefined)
     toggleModal()
  };
   
@@ -34,11 +33,11 @@ export const TasksRow = () => {
         <Button size='small'  onClick={onClick} >Agregar</Button>
       </div>
       <div className={styles.birthContainer}>
-      <div className={styles.taskRow} style={{fontWeight:'bold'}}>
-          <p >Fecha</p>
-          <p>Aplicó</p>
-          <p>Descripción</p>
-          <p>Comentario</p>
+      <div  style={{fontWeight:'bold',display:'flex',fontSize:'14px'}}>
+          <p style={{width:'90px'}}>Fecha</p>
+          <p style={{width:'90px'}}>Aplicó</p>
+          <p style={{width:'210px'}}>Descripción</p>
+          <p style={{width:'90px'}}>Comentario</p>
         </div>
         
           {

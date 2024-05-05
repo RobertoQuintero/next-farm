@@ -5,13 +5,16 @@ import { useContext } from 'react'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { CheckCircleOutline, HighlightOffOutlined } from '@mui/icons-material'
+import { useRouter } from 'next/navigation'
 
 interface Props{
-  task:ITask
+  task:ITask;
+  report?:boolean;
 }
-export const TaskElementRow = ({task}:Props) => {
+export const TaskElementRow = ({task,report}:Props) => {
   const {toggleModal} = useContext(UiContext)
-  const {setFarmAction,setTask} = useContext(FarmsContext)
+  const {setFarmAction,setTask,pigs,piglets,setPig,setPiglet} = useContext(FarmsContext)
+  const router=useRouter()
 
   const onClick =(action:string) =>{
     setTask(task)
@@ -19,12 +22,25 @@ export const TaskElementRow = ({task}:Props) => {
     toggleModal()
   };
 
+  const goPage = async(id_pig:number|null,id_lot_piglets:number|null) =>{
+    if(id_pig){
+      const newPig= pigs.find(p=>p.id_pig===id_pig)
+      setPig(newPig)
+      router.push('/farms/custom/history')
+    }else{
+      const newPiglet= piglets.find(p=>p.id_lot_piglets===id_lot_piglets)
+      setPiglet(newPiglet)
+      router.push('/farms/custom/history_piglets')
+    }
+ };
+
   return (
-    <div className={styles.taskRow} style={{order:task.done ||!task.status?50:1}}>
-      <p>{new Date(task.start_date).toLocaleString().split(',')[0]}</p>
-      <p style={{textTransform:'capitalize'}}>{task.name?.split(' ')[0]}</p>
-      <p >{task.description}</p>
-      <p onClick={()=>onClick('COMMENT-TASK')} className={styles.comment}>... {task.comment?.length?<span>{task.comment}</span>:''}</p>
+    <div  style={{order:task.done ||!task.status?50:1,display:'flex',fontSize:'14px'}}>
+      <p style={{width:'90px'}}>{new Date(task.start_date).toLocaleString().split(',')[0]}</p>
+      {report?<p style={{width:'90px'}} className='underlined' onClick={()=>goPage(task.id_pig,task.id_lot_piglets)}>{task?.pig_ubication?task.pig_ubication:task.piglets_ubication}</p>:<></>}
+      <p style={{textTransform:'capitalize',width:'90px'}}>{task.name?.split(' ')[0]}</p>
+      <p style={{width:'200px'}}>{task.description}</p>
+      {report?<></>:<p onClick={()=>onClick('COMMENT-TASK')} className={styles.comment} style={{width:'100px'}}>... {task.comment?.length?<span>{task.comment}</span>:''}</p>}
       {
         !task.done
           ?task.status

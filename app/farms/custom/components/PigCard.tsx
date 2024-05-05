@@ -23,11 +23,9 @@ export const PigCard = ({pig,print,report=false}:Props) => {
     setPiglet(undefined)
     if(action==='DELETE' || action==='EDIT'){
       if(print){
-        // setFarmAction(undefined)
       Cookies.set('pig',JSON.stringify(pig))
       router.push('/farms/custom/history')
       }else{
-
         setFarmAction(action)
         toggleModal()
       }

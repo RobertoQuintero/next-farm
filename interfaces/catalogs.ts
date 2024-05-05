@@ -65,6 +65,8 @@ export interface ITask {
   end_stage:boolean;
   change_to_stage: null | number | string;
   is_movement_task:boolean;
+  pig_ubication?:string;
+  piglets_ubication?:string;
 }
 
 export interface ITaskType {

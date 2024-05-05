@@ -6,12 +6,15 @@ import { DatePickerElement, SaveButton } from '@/app/components'
 import { IPig, IPiglets, ITask, IUbication } from '@/interfaces'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { AuthContext } from '@/app/context/auth/AuthContext'
-import { addZero } from '@/utils'
+import { addZero, buildDate } from '@/utils'
 
 export const UpdateTask = () => {
   const {toggleModal} = useContext(UiContext)
-  const {farmsLoading,task,updateTasks,pig,postPig,piglet,postPiglets,createTasksToDo,ubications,pigs,getTasks} = useContext(FarmsContext)
+  const {farmsLoading,task,updateTasks,pig,postPig,piglet,postPiglets,createTasksToDo,ubications,pigs,getTasks,postUbicationForm} = useContext(FarmsContext)
   const {user,idFarm} = useContext(AuthContext)
+  const [addUbication, setAddUbication] = useState(false)
+  const [newUbication, setNewUbication] = useState('')
+  const [error, setError] = useState<string | undefined>(undefined)
 
   const newUbications = () =>{
     const array=[] as IUbication[]
@@ -37,17 +40,15 @@ export const UpdateTask = () => {
   const [idUbication, setIdUbication] = useState(newUbications()[0].id_ubication)
 
   const onSubmit=async(data:ITask)=>{
+    const date=buildDate(new Date())
     const newTask={
       ...task,
-      start_date:addedDate!,
+      start_date:buildDate(addedDate!),
       comment:data.comment,
       done:true,
       id_user:user?.id_user
     } as ITask
 
-
-    // console.log(newTask)
-    // return
 
     if(newTask.end_stage){
       if(newTask.id_pig){
@@ -58,7 +59,27 @@ export const UpdateTask = () => {
         if(task?.is_movement_task){
          newPig.id_ubication=idUbication 
         }
-        
+
+        if(addUbication){
+          const ubication={
+            id_ubication:0,
+            created_at:date,
+            description:newUbication.toUpperCase(),
+            id_farm:idFarm,
+            id_pig_type:pig?3:1,
+            status:true,
+            updated_at:date
+          } as IUbication
+    
+          const {ok,data:d} = await postUbicationForm(ubication)
+          if(ok){
+            newPig.id_ubication=(d as IUbication).id_ubication 
+          }else{
+            setError(d as string)
+            return
+          }
+        }
+
         Promise.all([
           postPig(newPig),
           updateTasks(newTask),
@@ -78,10 +99,29 @@ export const UpdateTask = () => {
           newLot.id_ubication=idUbication 
          }
 
+         if(addUbication){
+          const ubication={
+            id_ubication:0,
+            created_at:date,
+            description:newUbication.toUpperCase(),
+            id_farm:idFarm,
+            id_pig_type:pig?3:1,
+            status:true,
+            updated_at:date
+          } as IUbication
+    
+          const {ok,data:d} = await postUbicationForm(ubication)
+          if(ok){
+            newLot.id_ubication=(d as IUbication).id_ubication 
+          }else{
+            setError(d as string)
+            return
+          }
+        }
         Promise.all([
           postPiglets(newLot),
           updateTasks(newTask),
-          createTasksToDo({id_lot_piglets:newLot.id_lot_piglets,id_user:user?.id_user!,id_pig:0,id_pig_stage:newLot.id_pig_stage,id_farm:newLot.id_farm,added_date:addZero(new Date(newLot.created_at))})
+          createTasksToDo({id_lot_piglets:newLot.id_lot_piglets,id_user:user?.id_user!,id_pig:0,id_pig_stage:newLot.id_pig_stage,id_farm:newLot.id_farm,added_date:addZero(addedDate!)})
         ]).then(async res=>{
           await getTasks(piglet?.id_lot_piglets!,'lot')
           toggleModal()
@@ -93,6 +133,32 @@ export const UpdateTask = () => {
       const taskPig={...pig,id_ubication:idUbication} as IPig
       const taskPiglet={...piglet,id_ubication:idUbication} as IPiglets
 
+      if(addUbication){
+        const ubication={
+          id_ubication:0,
+          created_at:date,
+          description:newUbication.toUpperCase(),
+          id_farm:idFarm,
+          id_pig_type:pig?3:1,
+          status:true,
+          updated_at:date
+        } as IUbication
+  
+        const {ok,data:d} = await postUbicationForm(ubication)
+        if(ok){
+          if(pig){
+
+            taskPig.id_ubication=(d as IUbication).id_ubication 
+          }else{
+            taskPiglet.id_ubication=(d as IUbication).id_ubication 
+          }
+        }else{
+          setError(d as string)
+          return
+        }
+      }
+
+
       Promise.all([
         updateTasks(newTask),
         pig&&newTask.is_movement_task&&postPig(taskPig),
@@ -101,13 +167,9 @@ export const UpdateTask = () => {
         if(piglet){
          await getTasks(piglet?.id_lot_piglets!,'lot')
         }
-
         toggleModal()
       })
-
-      
     }
-
   }
 
   return (
@@ -122,7 +184,24 @@ export const UpdateTask = () => {
         />
         {
           task?.is_movement_task
-            ?<TextField
+            ?<>
+              {addUbication?<></>:<p onClick={()=>setAddUbication(true)} style={{textAlign:'right', fontSize:'14px', textDecoration:'underline',cursor:'pointer'}}>Agregar</p>}
+              {
+          addUbication
+            ?<>
+              <TextField 
+                size="small"
+                fullWidth
+                label='Ubicación'
+                type="text"
+                value={newUbication}
+                onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{
+                  setNewUbication(e.target.value)
+                }}
+              />
+              {error?<p style={{fontSize:'13px', color:'red', textAlign:'center'}}>{error}</p>:<></>}
+            </>
+            :<TextField
             size="small"
             label='Ubicación'
             fullWidth
@@ -143,6 +222,8 @@ export const UpdateTask = () => {
               :<div></div>
             }
           </TextField>
+        }
+            </>
             :<></>
         }
         <div style={{display:'flex',justifyContent:'flex-end', gap:'.5rem'}}>

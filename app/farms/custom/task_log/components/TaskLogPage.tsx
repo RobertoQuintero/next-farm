@@ -20,8 +20,8 @@ const actions =[
 ] as {id_action:number,action:string}[]
 
 const TaskLogPage = () => {
-  const {getAllTasks,setTasks} = useContext(FarmsContext)
-  const {idFarm} = useContext(AuthContext)
+  const {getAllTasks,setTasks,getPigs,pigs,piglets,getPiglets} = useContext(FarmsContext)
+  const {idFarm,logged} = useContext(AuthContext)
   const [startDate, setstartDate] = useState<Date | null>(new Date())
   const [endDate, setEndDate] = useState<Date | null>(new Date())
   const [changeAction, setChangeAction] = useState(1)
@@ -38,6 +38,18 @@ const TaskLogPage = () => {
   useEffect(() => {
     setTasks([])
   }, [])
+
+  useEffect(() => {
+    if(!pigs.length&&idFarm){
+      getPigs(idFarm!)
+    }
+  }, [logged])
+  useEffect(() => {
+    if(!piglets.length&&idFarm){
+      getPiglets(idFarm!)
+    }
+  }, [logged])
+  
   
 
   return (

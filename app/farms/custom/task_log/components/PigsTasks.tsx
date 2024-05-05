@@ -13,6 +13,7 @@ export const PigsTasks = ({changeAction}:Props) => {
   const {tasks} = useContext(FarmsContext)
   const [desc, setDesc] = useState<boolean | undefined>(true)
   const [description, setDescription] = useState<boolean | undefined>(true)
+  const [ubication, setUbication] = useState<boolean | undefined>(true)
 
   const compareDates=(a:ITask, b:ITask)=> {
     const token= desc?1:-1
@@ -36,31 +37,58 @@ export const PigsTasks = ({changeAction}:Props) => {
     return 0;
   }
 
+  const compareUbication=(a:ITask, b:ITask)=> {
+    const token= ubication?1:-1
+    if (a?.pig_ubication! < b?.pig_ubication!) {
+      return -1*token;
+    }
+    if (a?.pig_ubication! > b?.pig_ubication!) {
+      return 1*token;
+    }
+    return 0;
+  }
+
+
   return (
     <AccordionElement title='Gestantes'>
       <div className={styles.birthContainer} style={{width:'100%'}}>
-      <div className={styles.birthRow} style={{fontWeight:'bold'}}>
+      <div  style={{fontWeight:'bold',display:'flex',fontSize:'14px'}}>
           <p onClick={()=>{
             setDescription(undefined)
+            setUbication(undefined)
             setDesc(prev=>!prev)
-            }} style={{cursor:'pointer'}}>Fecha</p>
-          <p>Aplicó</p>
+            }} style={{cursor:'pointer',width:'90px'}}>Fecha</p>
+          <p style={{cursor:'pointer',width:'90px'}}
+              
+              onClick={()=>{
+                setDesc(undefined)
+                setDescription(undefined)
+                setUbication(prev=>!prev)
+                }}
+          >Ubicación</p>
+          <p style={{width:'90px'}}>Aplicó</p>
           <p onClick={()=>{
             setDesc(undefined)
+            setUbication(undefined)
             setDescription(prev=>!prev)
-            }} style={{cursor:'pointer'}}>Descripción</p>
+            }} style={{cursor:'pointer',width:'200px'}}>Descripción</p>
         </div>
         {
           tasks.filter(f=>f.id_pig).length
-          ?description===undefined 
+          ?desc!==undefined 
             ?tasks
             .filter(f=>changeAction===1?f.id_pig:f.id_pig&&!f.done)
             .sort(compareDates)
-            .map(t=><TaskElementRow task={t} key={t.id_task}/>)
-            :tasks
-            .filter(f=>changeAction===1?f.id_pig:f.id_pig&&!f.done)
-            .sort(compareDescription)
-            .map(t=><TaskElementRow task={t} key={t.id_task}/>)
+            .map(t=><TaskElementRow task={t} key={t.id_task} report />)
+            :ubication!==undefined
+              ?tasks
+              .filter(f=>changeAction===1?f.id_pig:f.id_pig&&!f.done)
+              .sort(compareUbication)
+              .map(t=><TaskElementRow task={t} key={t.id_task} report/>)
+              :tasks
+              .filter(f=>changeAction===1?f.id_pig:f.id_pig&&!f.done)
+              .sort(compareDescription)
+              .map(t=><TaskElementRow task={t} key={t.id_task} report/>)
           :<></>
         }
       </div>
