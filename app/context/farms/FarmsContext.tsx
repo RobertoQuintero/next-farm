@@ -65,6 +65,9 @@ interface ContextProps{
   question:IQuestion | undefined;
   answers:IAnswer[];
   answer:IAnswer | undefined;
+  taskStartDate:Date | null;
+  taskEndDate:Date | null;
+  searchedTasks:ITask[]
   
 
   //methods
@@ -138,7 +141,9 @@ interface ContextProps{
   postQuestion: (payload: IQuestion) => Promise<boolean>
   getAnswers: (payload: number) => Promise<boolean>
   postAnswer: (payload: IAnswer) => Promise<boolean>;
-  setTasks: (payload: ITask[]) => void
+  setTasks: (payload: ITask[]) => void;
+  setTaskStartDate: (payload: Date | null) => void;
+  setTaskEndDate: (payload: Date | null) => void
 }
 
 export const FarmsContext = createContext({} as ContextProps)

@@ -4,7 +4,7 @@ import { getRequestQuery, postRequest } from "@/utils/getRequest";
 const query=`
 SELECT 
 id_task,
-  id_pig,
+  MT.id_pig,
   MT.id_pig_task,
   MT.id_user,
   start_date,
@@ -14,29 +14,39 @@ id_task,
   comment,
   MT.status,
   PT.description,
-  id_lot_piglets,
+  ML.id_lot_piglets,
   RU.name,
   PT.change_to_stage,
   PT.is_movement_task,
-  PT.end_stage 
+  PT.end_stage,
+  CU.description pig_ubication,
+	CP.description piglets_ubication
 FROM MOD.Tasks MT
 left join CAT.Pig_tasks PT
 on PT.id_pig_task=MT.id_pig_task
 left join RH.Users RU
 on RU.id_user=MT.id_user
+left join MOD.Pigs MP
+on MP.id_pig=MT.id_pig
+left join MOD.Lot_Piglets ML
+on ML.id_lot_piglets=MT.id_lot_piglets
+left join CAT.Ubications CU
+on CU.id_ubication=MP.id_ubication
+left join CAT.Ubications CP
+on CP.id_ubication=ML.id_ubication
 `
 
 export const GET = async(req:Request) =>{
   const {searchParams}= new URL(req.url)
   const id=searchParams.get('id')
   const pig=searchParams.get('pig')
-  return await getRequestQuery(`${query} WHERE  ${pig==='pig'?`id_pig=${id}`:`id_lot_piglets=${id}`} order by start_date asc`)
+  return await getRequestQuery(`${query} WHERE  ${pig==='pig'?`MP.id_pig=${id}`:`ML.id_lot_piglets=${id}`} order by start_date asc`)
 }
 
 export const POST = async(req:Request) =>{
   const body = await req.json();
   const {id_task,id_pig,id_pig_task,comment,created_at,done,end_date,id_user,start_date,status,id_lot_piglets }= body as ITask;
-    
+  
   return await postRequest(`
   declare @const int 
   set @const=(SELECT isNull(max(id_task),0)+1  FROM MOD.Tasks)

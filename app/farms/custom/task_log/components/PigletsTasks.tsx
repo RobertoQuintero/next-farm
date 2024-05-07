@@ -10,7 +10,7 @@ interface Props{
 }
 
 export const PigletsTasks = ({changeAction}:Props) => {
-  const {tasks} = useContext(FarmsContext)
+  const {searchedTasks} = useContext(FarmsContext)
   const [desc, setDesc] = useState<boolean | undefined>(true)
   const [description, setDescription] = useState<boolean | undefined>(true)
   const [ubication, setUbication] = useState<boolean | undefined>(true)
@@ -72,18 +72,18 @@ export const PigletsTasks = ({changeAction}:Props) => {
             }} style={{cursor:'pointer',width:'210px'}}>Descripción</p>
         </div>
         {
-          tasks.filter(f=>f.id_lot_piglets).length
+          searchedTasks.filter(f=>f.id_lot_piglets).length
           ? desc!==undefined 
-            ?tasks
+            ?searchedTasks
             .filter(f=>changeAction===1?f.id_lot_piglets:f.id_lot_piglets&&!f.done)
             .sort(compareDates)
             .map(t=><TaskElementRow task={t} key={t.id_task} report/>)
             :ubication!==undefined
-              ? tasks
+              ? searchedTasks
             .filter(f=>changeAction===1?f.id_lot_piglets:f.id_lot_piglets&&!f.done)
             .sort(compareUbication)
             .map(t=><TaskElementRow task={t} key={t.id_task} report/>)
-            :tasks
+            :searchedTasks
             .filter(f=>changeAction===1?f.id_lot_piglets:f.id_lot_piglets&&!f.done)
             .sort(compareDescription)
             .map(t=><TaskElementRow task={t} key={t.id_task} report/>)

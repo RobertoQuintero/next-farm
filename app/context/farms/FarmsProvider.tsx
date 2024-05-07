@@ -74,6 +74,9 @@ export interface UsersState{
   question:IQuestion | undefined;
   answers:IAnswer[];
   answer:IAnswer | undefined;
+  taskStartDate:Date | null;
+  taskEndDate:Date | null;
+  searchedTasks:ITask[]
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -134,6 +137,9 @@ const UI_INITIAL_STATE:UsersState={
   question: undefined,
   answers:[],
   answer: undefined,
+  taskStartDate:new Date(),
+  taskEndDate:new Date(),
+  searchedTasks:[]
 }
 
 export const FarmsProvider = ({children}:Props) => {
@@ -298,13 +304,14 @@ export const FarmsProvider = ({children}:Props) => {
         setIsLoading(true)
          const {ok,data}=await getFarmsRequest(`/farms/tasks/date?startDate=${startDate}&endDate=${endDate}&id_farm=${id_farm}`)
          if(ok){
-            setTasks(data as ITask[])
+            setSearchedTasks(data as ITask[])
          }
          else{
           setError(data as string)
          }
          setIsLoading(false)
       };
+
 
    
    const getStallionMonths = async(payload:number) =>{
@@ -1045,6 +1052,26 @@ export const FarmsProvider = ({children}:Props) => {
       payload
      })
   };
+  
+  const setTaskStartDate = (payload: Date | null ) =>{
+     dispatch({
+      type:'[Farms] - setTaskStartDate',
+      payload
+     })
+  };
+
+  const setTaskEndDate = (payload: Date | null ) =>{
+     dispatch({
+      type:'[Farms] - setTaskEndDate',
+      payload
+     })
+  };
+  const setSearchedTasks = (payload: ITask[] ) =>{
+     dispatch({
+      type:'[Farms] - setSearchedTasks',
+      payload
+     })
+  };
 
   const getPostLoadingOrError = async<T,K extends keyof T>(
       endpoint:string,setState:(payload: T[]) => void,payload?:T,state?:T[],id?:K,wich?:boolean
@@ -1138,7 +1165,9 @@ export const FarmsProvider = ({children}:Props) => {
      getQuestions,
      postAnswer,
      postQuestion,
-     setTasks
+     setTasks,
+     setTaskStartDate,
+     setTaskEndDate
     }}>
       {children}
     </FarmsContext.Provider>

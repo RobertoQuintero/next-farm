@@ -7,15 +7,20 @@ import { IPig, IPiglets, ITask, IUbication } from '@/interfaces'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { AuthContext } from '@/app/context/auth/AuthContext'
 import { addZero, buildDate } from '@/utils'
+import Cookies from 'js-cookie'
 
-export const UpdateTask = () => {
+interface Props{
+  fromTask?:boolean;
+}
+
+export const UpdateTask = ({fromTask=false}:Props) => {
   const {toggleModal} = useContext(UiContext)
-  const {farmsLoading,task,updateTasks,pig,postPig,piglet,postPiglets,createTasksToDo,ubications,pigs,getTasks,postUbicationForm} = useContext(FarmsContext)
+  const {farmsLoading,task,updateTasks,postPig,postPiglets,createTasksToDo,ubications,pigs,getTasks,postUbicationForm,piglets,taskStartDate,taskEndDate,getAllTasks} = useContext(FarmsContext)
   const {user,idFarm} = useContext(AuthContext)
   const [addUbication, setAddUbication] = useState(false)
   const [newUbication, setNewUbication] = useState('')
   const [error, setError] = useState<string | undefined>(undefined)
-
+console.log(fromTask)
   const newUbications = () =>{
     const array=[] as IUbication[]
     for (const p of ubications.filter(f=>f.id_pig_type===3)) {
@@ -52,8 +57,9 @@ export const UpdateTask = () => {
 
     if(newTask.end_stage){
       if(newTask.id_pig){
+        const searchedPig= pigs.find(p=>p.id_pig===newTask.id_pig)
         const newPig={
-          ...pig,
+          ...searchedPig,
           id_pig_stage:newTask.change_to_stage
         } as IPig
         if(task?.is_movement_task){
@@ -66,7 +72,7 @@ export const UpdateTask = () => {
             created_at:date,
             description:newUbication.toUpperCase(),
             id_farm:idFarm,
-            id_pig_type:pig?3:1,
+            id_pig_type:3,
             status:true,
             updated_at:date
           } as IUbication
@@ -83,16 +89,25 @@ export const UpdateTask = () => {
         Promise.all([
           postPig(newPig),
           updateTasks(newTask),
-          createTasksToDo({id_lot_piglets:0,id_user:user?.id_user!,id_pig:newPig.id_pig,id_pig_stage:newPig.id_pig_stage,id_farm:pig?.id_farm!,added_date:addZero(new Date(newPig.added_date))})
+          createTasksToDo({id_lot_piglets:0,id_user:user?.id_user!,id_pig:newPig.id_pig,id_pig_stage:newPig.id_pig_stage,id_farm:searchedPig?.id_farm!,added_date:addZero(new Date(newPig.added_date))})
         ]).then(async res=>{
-          await getTasks(pig?.id_pig!,'pig')
+          if(fromTask){
+            const start=addZero(taskStartDate!) 
+            const end=new Date(taskEndDate!)
+            end.setDate(end.getDate()+1)
+            await getAllTasks({startDate:start,endDate:addZero(end),id_farm:idFarm! || +Cookies.get('id_farm')!})
+          }else{
+            
+            await getTasks(searchedPig?.id_pig!,'pig')
+           }
           toggleModal()
           return
         })
 
       }else if(newTask.id_lot_piglets){
+        const searchedPiglet= piglets.find(p=>p.id_lot_piglets===newTask.id_lot_piglets)
         const newLot={
-          ...piglet,
+          ...searchedPiglet,
           id_pig_stage:newTask.change_to_stage
         } as IPiglets
         if(task?.is_movement_task){
@@ -105,7 +120,7 @@ export const UpdateTask = () => {
             created_at:date,
             description:newUbication.toUpperCase(),
             id_farm:idFarm,
-            id_pig_type:pig?3:1,
+            id_pig_type:1,
             status:true,
             updated_at:date
           } as IUbication
@@ -123,15 +138,25 @@ export const UpdateTask = () => {
           updateTasks(newTask),
           createTasksToDo({id_lot_piglets:newLot.id_lot_piglets,id_user:user?.id_user!,id_pig:0,id_pig_stage:newLot.id_pig_stage,id_farm:newLot.id_farm,added_date:addZero(addedDate!)})
         ]).then(async res=>{
-          await getTasks(piglet?.id_lot_piglets!,'lot')
+          if(searchedPiglet&&!fromTask){
+            await getTasks(searchedPiglet?.id_lot_piglets!,'lot')
+           }
+           if(fromTask){
+            const start=addZero(taskStartDate!) 
+            const end=new Date(taskEndDate!)
+             end.setDate(end.getDate()+1)
+            await getAllTasks({startDate:start,endDate:addZero(end),id_farm:idFarm! || +Cookies.get('id_farm')!})
+           }
           toggleModal()
           return
         })
       }
 
     }else{
-      const taskPig={...pig,id_ubication:idUbication} as IPig
-      const taskPiglet={...piglet,id_ubication:idUbication} as IPiglets
+      const searchedPig= pigs.find(p=>p.id_pig===newTask.id_pig)
+      const searchedPiglet= piglets.find(p=>p.id_lot_piglets===newTask.id_lot_piglets)
+      const taskPig={...searchedPig,id_ubication:idUbication} as IPig
+      const taskPiglet={...searchedPiglet,id_ubication:idUbication} as IPiglets
 
       if(addUbication){
         const ubication={
@@ -139,14 +164,14 @@ export const UpdateTask = () => {
           created_at:date,
           description:newUbication.toUpperCase(),
           id_farm:idFarm,
-          id_pig_type:pig?3:1,
+          id_pig_type:searchedPig?3:1,
           status:true,
           updated_at:date
         } as IUbication
   
         const {ok,data:d} = await postUbicationForm(ubication)
         if(ok){
-          if(pig){
+          if(searchedPig){
 
             taskPig.id_ubication=(d as IUbication).id_ubication 
           }else{
@@ -161,12 +186,18 @@ export const UpdateTask = () => {
 
       Promise.all([
         updateTasks(newTask),
-        pig&&newTask.is_movement_task&&postPig(taskPig),
-        piglet&&newTask.is_movement_task&&postPiglets(taskPiglet),
+        searchedPig&&newTask.is_movement_task&&postPig(taskPig),
+        searchedPiglet&&newTask.is_movement_task&&postPiglets(taskPiglet),
       ]).then(async res=>{
-        if(piglet){
-         await getTasks(piglet?.id_lot_piglets!,'lot')
+        if(searchedPiglet&&!fromTask){
+         await getTasks(searchedPiglet?.id_lot_piglets!,'lot')
         }
+        if(fromTask){
+          const start=addZero(taskStartDate!) 
+          const end=new Date(taskEndDate!)
+           end.setDate(end.getDate()+1)
+          await getAllTasks({startDate:start,endDate:addZero(end),id_farm:idFarm! || +Cookies.get('id_farm')!})
+         }
         toggleModal()
       })
     }

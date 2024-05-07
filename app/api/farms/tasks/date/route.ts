@@ -21,6 +21,9 @@ export const GET = async(req:Request) =>{
     PT.description,
     ML.id_lot_piglets,
     RU.name,
+    PT.change_to_stage,
+    PT.is_movement_task,
+    PT.end_stage,
 	MOD.getIdFarm(ISNULL(MP.id_farm,0),ISNULL(ML.id_farm,0)) id_farm,
   CU.description pig_ubication,
 	CP.description piglets_ubication

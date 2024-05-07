@@ -9,7 +9,7 @@ registerLocale('es',es)
 
 interface Props{
   date: Date | null;
-  setDate:React.Dispatch<React.SetStateAction<Date | null>>;
+  setDate:React.Dispatch<React.SetStateAction<Date | null>> | ((payload: Date | null) => void);
   disabled?:boolean
 }
 

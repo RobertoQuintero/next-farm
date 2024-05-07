@@ -2,11 +2,15 @@
 import { Button, MenuItem, TextField } from '@mui/material'
 import { useContext, useEffect, useState } from 'react'
 import { PigletsTasks, PigsTasks } from '.'
-import { DatePickerElement } from '@/app/components'
+import { DatePickerElement, DeleteComponent } from '@/app/components'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { addZero } from '@/utils'
 import { AuthContext } from '@/app/context/auth/AuthContext'
 import Cookies from 'js-cookie'
+import AppModal from '@/app/components/AppModal'
+import { UpdateTask } from '../../components'
+import { UiContext } from '@/app/context/ui/UiContext'
+import { ITask } from '@/interfaces'
 
 const actions =[
   {
@@ -20,16 +24,17 @@ const actions =[
 ] as {id_action:number,action:string}[]
 
 const TaskLogPage = () => {
-  const {getAllTasks,setTasks,getPigs,pigs,piglets,getPiglets} = useContext(FarmsContext)
+  const {getAllTasks,setTasks,getPigs,pigs,piglets,getPiglets,farmAction,farmsLoading,farmsError,task,updateTasks,setTaskStartDate,setTaskEndDate,taskStartDate,taskEndDate} = useContext(FarmsContext)
   const {idFarm,logged} = useContext(AuthContext)
-  const [startDate, setstartDate] = useState<Date | null>(new Date())
-  const [endDate, setEndDate] = useState<Date | null>(new Date())
+  const {toggleModal} = useContext(UiContext)
+  // const [startDate, setstartDate] = useState<Date | null>(new Date())
+  // const [endDate, setEndDate] = useState<Date | null>(new Date())
   const [changeAction, setChangeAction] = useState(1)
 
   const onAdd = async() =>{
-      const start=addZero(startDate!) 
+      const start=addZero(taskStartDate!) 
 
-      const end=new Date(endDate!)
+      const end=new Date(taskEndDate!)
        end.setDate(end.getDate()+1)
 
       await getAllTasks({startDate:start,endDate:addZero(end),id_farm:idFarm! || +Cookies.get('id_farm')!})
@@ -49,6 +54,20 @@ const TaskLogPage = () => {
       getPiglets(idFarm!)
     }
   }, [logged])
+
+  const onDelete = async() =>{
+    const newTask={...task, status:false} as ITask
+
+    const ok= await updateTasks(newTask)
+    if(ok){
+      const start=addZero(taskStartDate!) 
+
+      const end=new Date(taskEndDate!)
+       end.setDate(end.getDate()+1)
+      await getAllTasks({startDate:start,endDate:addZero(end),id_farm:idFarm! || +Cookies.get('id_farm')!})
+     toggleModal()
+    }
+ };
   
   
 
@@ -57,8 +76,8 @@ const TaskLogPage = () => {
      <div className='actionCreateContainer'>
 
         <div style={{display:'flex', gap:'.5rem'}}>
-          <DatePickerElement date={startDate} setDate={setstartDate}/>
-          <DatePickerElement date={endDate} setDate={setEndDate}/>
+          <DatePickerElement date={taskStartDate} setDate={setTaskStartDate}/>
+          <DatePickerElement date={taskEndDate} setDate={setTaskEndDate}/>
           <TextField
           sx={{width:'150px'}}
           size="small"
@@ -89,6 +108,14 @@ const TaskLogPage = () => {
         <PigsTasks changeAction={changeAction}/>
         <PigletsTasks changeAction={changeAction}/>
       </div>
+      <AppModal>
+        {
+            farmAction==='UPDATE-TASK'?<UpdateTask fromTask/>:<></>
+          }
+          {
+            farmAction==='DELETE-TASK'?<DeleteComponent onDelete={onDelete} loading={farmsLoading} error={farmsError}/>:<></>
+          }
+      </AppModal>
   
     </>
   )

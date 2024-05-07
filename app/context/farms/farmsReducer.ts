@@ -64,6 +64,9 @@ import { IStallionMonths } from '@/interfaces/stallions';
         | {type:'[Farms] - setQuestion'; payload:IQuestion | undefined }
         | {type:'[Farms] - setAnswers'; payload:IAnswer[] }
         | {type:'[Farms] - setAnswer'; payload:IAnswer | undefined }
+        | {type:'[Farms] - setTaskStartDate'; payload:Date | null }
+        | {type:'[Farms] - setTaskEndDate'; payload:Date | null }
+        | {type:'[Farms] - setSearchedTasks'; payload:ITask[] }
         
         
 export const usersReducer = (state:UsersState,action:UsersActionType):UsersState => {
@@ -386,6 +389,24 @@ export const usersReducer = (state:UsersState,action:UsersActionType):UsersState
       return {
         ...state,
         question:action.payload
+      }
+
+    case '[Farms] - setTaskStartDate':
+      return {
+        ...state,
+        taskStartDate:action.payload
+      }
+
+    case '[Farms] - setTaskEndDate':
+      return {
+        ...state,
+        taskEndDate:action.payload
+      }
+
+    case '[Farms] - setSearchedTasks':
+      return {
+        ...state,
+        searchedTasks:action.payload
       }
 
   
