@@ -28,7 +28,8 @@ export const UpdateBirthForm = () => {
 
 
   const onSubmit=async(data:IBirth)=>{
-    if(!data.alive) return
+    console.log(data)
+    if(!data.alive &&data.id_birth_type!==2) return
     
     if(farmAction==='COMMENT'){
       const comment={...birth,comment:data.comment} as IBirth
@@ -46,6 +47,9 @@ export const UpdateBirthForm = () => {
       alive:Number(data.alive),
       comment:data.comment.trim(),
       } as IBirth
+      if(data.id_birth_type===2){
+        newBirth.is_positive=false
+      }
 
       const ok= await postBirth(newBirth)
       if(ok){
@@ -63,6 +67,10 @@ export const UpdateBirthForm = () => {
       id_user_birth:user?.id_user,
       id_birth_type:data.id_birth_type
     } as IBirth
+
+    if(data.id_birth_type===2){
+      newBirth.is_positive=false
+    }
 
     const is_normal=Number(newBirth.id_birth_type)===1
 
