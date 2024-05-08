@@ -16,6 +16,35 @@ import { addZero } from '@/utils'
 import { useReactToPrint } from 'react-to-print'
 import { useRouter } from 'next/navigation'
 
+const months=(month:string)=>{
+  switch (month) {
+    case 'ENE':
+      return 1
+    case 'FEB':
+      return 2
+    case 'MAR':
+      return 3
+    case 'ABR':
+      return 4
+    case 'MAY':
+      return 5
+    case 'JUN':
+      return 6
+    case 'JUL':
+      return 7
+    case 'AGO':
+      return 8
+    case 'SEP':
+      return 9
+    case 'OCT':
+      return 10
+    case 'NOV':
+      return 11
+    case 'DIC':
+      return 12
+  }
+}
+
 const style={
   backgroundColor:'#fff',
   padding:'0 .5rem',
@@ -63,13 +92,14 @@ const FarmPage = () => {
     const newArr= pigs.filter(p=>p.id_pig_stage===5||p.id_pig_stage===6).map(p=>p.month_name) as string[]
     const arr= [...new Set(newArr)].map(n=>{
       return {
+        id:months(n),
         month:n,
         quantity:pigs.filter(p=>(p.id_pig_stage===5||p.id_pig_stage===6)&&p.month_name===n).length,
       }
     })
     return arr
   }
-
+  console.log(getChargePigs())
   
   if(farmsLoading && !isModalOpen){
     return <LoadingComponent/>
@@ -136,6 +166,24 @@ const FarmPage = () => {
       return -1;
     }
     if (Number(a.code.replaceAll('0','')) > Number(b.code.replaceAll('0',''))) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  const  compareMonths=(a:{
+    id: number | undefined;
+    month: string;
+    quantity: number;
+}, b:{
+  id: number | undefined;
+  month: string;
+  quantity: number;
+})=> {
+    if (a?.id! < b?.id! ){
+      return -1;
+    }
+    if (a?.id! > b?.id!) {
       return 1;
     }
     return 0;
@@ -213,6 +261,7 @@ const FarmPage = () => {
         <p>Próximos partos</p>
         {
           getChargePigs()
+          .sort(compareMonths)
             .filter((p,i)=>i<3)
             .map(c=>
               <span 
@@ -227,7 +276,8 @@ const FarmPage = () => {
         }
       </div>
       <div style={{display:'flex',gap:'.5rem', fontSize:'14px'}} >
-        <p onClick={()=>setStage(2)} className='underlined'>Vacía <strong>{pigs.filter(p=>p.status&&p.id_pig_stage===2).length}</strong></p>
+        <p onClick={()=>setStage(1)} className='underlined'>Inactiva <strong>{pigs.filter(p=>p.status&&(p.id_pig_stage===1||!p.is_active)).length}</strong></p>
+        <p onClick={()=>setStage(2)} className='underlined'>Vacía <strong>{pigs.filter(p=>p.status&&p.id_pig_stage===2&&p.is_active).length}</strong></p>
         <p onClick={()=>setStage(3)} className='underlined'>Montada <strong>{pigs.filter(p=>p.status&&p.id_pig_stage===3).length}</strong></p>
         <p onClick={()=>setStage(4)} className='underlined'>Sin confirmar <strong>{pigs.filter(p=>p.status&&p.id_pig_stage===4).length}</strong></p>
         <p onClick={()=>setStage(5)} className='underlined'>Cargada <strong>{pigs.filter(p=>p.status&&p.id_pig_stage===5).length}</strong></p>
@@ -257,7 +307,7 @@ const FarmPage = () => {
           pigs.filter(p=>p.status).length
             ?pigs
               .filter(p=>p.status)
-              .filter(f=>stage===0?f:f.id_pig_stage===stage)
+              .filter(f=>stage===0?f:stage===1?f.id_pig_stage===stage||!f.is_active:stage===2?f.id_pig_stage===stage&&f.is_active:f.id_pig_stage===stage)
               .filter(f=>text.length?f.pig_ubication===text ||f.pig_ubication.toLowerCase()===text.toLocaleLowerCase():f)
               .map(a=><PigCard pig={a} key={a.id_pig} print={print}/>)
             :<EmptyPage/>

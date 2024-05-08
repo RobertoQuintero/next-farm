@@ -35,7 +35,7 @@ export const InfoRow = () => {
           {
             !(pig?.id_pig_stage===1 || pig?.id_pig_stage===2 || pig?.id_pig_stage===6)
               ?<p>Situación: <strong >{pig?.pig_stage}</strong></p>
-              :<p>Situación: <strong className={styles.stage} onClick={()=>onClick(pig?.id_pig_stage===6?'LACTATION':'CROSSING')}>{pig?.pig_stage}</strong></p>
+              :<p>Situación: <strong className={styles.stage} onClick={()=>onClick(pig?.id_pig_stage===6?'LACTATION':'CROSSING')}>{pig.is_active?pig?.pig_stage:'Inactiva'}</strong></p>
           }
           <p>ID: <strong>{pig?.bar_code}</strong></p>
         </div>

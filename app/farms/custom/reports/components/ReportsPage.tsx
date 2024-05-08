@@ -25,12 +25,12 @@ const ReportsPage = () => {
     content: () => componentRef.current,
   });
 
-  const empty=pigs.filter(p=>p.status&&p.id_pig_stage===2).length
+  const empty=pigs.filter(p=>p.status&&p.id_pig_stage===2&&p.is_active).length
   const mounted=pigs.filter(p=>p.status&&p.id_pig_stage===3).length
   const un_confirm=pigs.filter(p=>p.status&&p.id_pig_stage===4).length
   const charged=pigs.filter(p=>p.status&&p.id_pig_stage===5).length
   const lactation=pigs.filter(p=>p.status&&p.id_pig_stage===6).length
-  const inactive=pigs.filter(p=>p.status&&!p.is_active).length
+  const inactive=pigs.filter(p=>p.status&&(!p.is_active|| p.id_pig_stage===1)).length
   return (
     <>
       <RowButton label='Pdf' onClick={handlePrint}/>
@@ -79,7 +79,7 @@ const ReportsPage = () => {
       <div style={styles}>
         <h4>Inactivas {inactive}</h4>
         {
-          pigs.filter(p=>p.status&&!p.is_active).map(p=><PigCard pig={p} print key={p.id_pig}/>)
+          pigs.filter(p=>p.status&&(!p.is_active || p.id_pig_stage===1)).map(p=><PigCard pig={p} print key={p.id_pig}/>)
         }
       </div>
       <BarChart

@@ -10,8 +10,8 @@ export const POST = async(req:Request) =>{
     const data= await db.query(`
     create table #pigs(inactivas int,vacias int,montadas int, sin_confirmar int, cargadas int, destetando int)
     insert into #pigs(inactivas,vacias,montadas,sin_confirmar,cargadas,destetando) values(
-    ISNULL((select Count(*) from MOD.Pigs where id_pig_stage=1  and status='true' and id_farm=${id_farm}),0),
-    ISNULL((select Count(*) from MOD.Pigs where id_pig_stage=2  and status='true' and id_farm=${id_farm}),0),
+    ISNULL((select Count(*) from MOD.Pigs where id_pig_stage=1  and status='true' and id_farm=${id_farm} or MOD.getIsActive(id_pig,id_pig_stage)=0),0),
+    ISNULL((select Count(*) from MOD.Pigs where id_pig_stage=2  and status='true' and id_farm=${id_farm} and MOD.getIsActive(id_pig,id_pig_stage)=1),0),
     ISNULL((select Count(*) from MOD.Pigs where id_pig_stage=3  and status='true' and id_farm=${id_farm}),0),
     ISNULL((select Count(*) from MOD.Pigs where id_pig_stage=4  and status='true' and id_farm=${id_farm}),0),
     ISNULL((select Count(*) from MOD.Pigs where id_pig_stage=5  and status='true' and id_farm=${id_farm}),0),

@@ -7,6 +7,7 @@ import { RowButton } from '../../components'
 import { addZero, buildDateReverse } from '@/utils'
 import * as XLSX from 'xlsx'
 import { useReactToPrint } from 'react-to-print'
+import { IPig } from '@/interfaces'
 
 const months=(month:string)=>{
   switch (month) {
@@ -68,6 +69,16 @@ const NextBirthsPage = () => {
     XLSX.writeFile(wb,`Partos${months(monthBirth?.month!)}.xlsx`)
   };
 
+  const compareDates=(a:IPig, b:IPig)=> {
+    if (new Date(a.crossing_date) < new Date(b.crossing_date)) {
+      return -1;
+    }
+    if (new Date(a.crossing_date) > new Date(b.crossing_date)) {
+      return 1;
+    }
+    return 0;
+  }
+
   return (
     <div>
       <div style={{display:'flex',gap:'3rem'}}>
@@ -103,6 +114,7 @@ const NextBirthsPage = () => {
         </div>
           {
             pigs.filter(p=>p.month_name===monthBirth?.month)
+            .sort(compareDates)
               .map(p=><NextBirthRow pig={p} key={p.id_pig}/>)
           }
       </div>

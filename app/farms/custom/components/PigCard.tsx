@@ -43,7 +43,7 @@ export const PigCard = ({pig,print,report=false}:Props) => {
         <p onClick={()=>onClick('EDIT')} className="underlined">{pig.code}</p>
         <p>{pig.pig_ubication}</p>
         <p>{pig.pig_race}</p>
-        <p>{pig.pig_stage}</p>
+        <p>{pig.is_active?pig.pig_stage:'Inactiva'}</p>
         {report
           ?<>
             <p>{

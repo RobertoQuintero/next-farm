@@ -24,8 +24,8 @@ const NextBirthRow = ({pig}:Props) => {
       <p style={{width:'80px'}} >{pig.pig_ubication}</p>
       <p style={{width:'150px'}}>{pig.pig_race}</p>
       <p style={{width:'100px',wordWrap:'break-word'}}>{pig.crossing_stallion?.replaceAll('/',' / ')}</p>
-      <p style={{width:'100px'}}>{addZero(new Date(buildDateReverse(pig.crossing_date)))}</p>
-      <p style={{width:'100px'}}>{pig.next_birth?addZero(new Date(buildDateReverse(pig.next_birth as string))):''}</p>
+      <p style={{width:'100px'}}>{addZero(new Date(buildDateReverse(pig.crossing_date))).split('-').reverse().join('-')}</p>
+      <p style={{width:'100px'}}>{pig.next_birth?addZero(new Date(buildDateReverse(pig.next_birth as string))).split('-').reverse().join('-'):''}</p>
       <p style={{width:'100px',textAlign:'center',color:'green'}}>
         {pig.id_pig_stage===6?<CheckCircleOutlineOutlined fontSize='small'/>:<CheckCircleOutlineOutlined fontSize='small' sx={{color:'transparent'}}/>}
       </p>
