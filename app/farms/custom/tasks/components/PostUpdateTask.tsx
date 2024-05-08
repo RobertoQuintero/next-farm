@@ -47,9 +47,13 @@ export const PostUpdateTask = () => {
       ...values,
       ...data,
       end_stage:checked,
-      is_movement_task:isMovement
+      is_movement_task:isMovement,
+      days_diff:0
     } as IPigTask
-    // console.log(newTask)
+
+    if(newTask.id_pig_task){
+      newTask.days_diff= Number(data.days)-Number(values.days)
+    }
     // return
     const ok=await postTask(newTask)
     if(ok){

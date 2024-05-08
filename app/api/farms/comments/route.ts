@@ -21,7 +21,6 @@ export const GET = async(req:Request) =>{
   const {searchParams}= new URL(req.url)
   const id_pig=searchParams.get('id_pig')
   const id_lot_piglets=searchParams.get('id_lot_piglets')
-  console.log({id_lot_piglets})
 
   return await getRequestQuery(`${queryComment} where MC.status='true' and ${Number(id_pig)?`MC.id_pig=${id_pig}`:`MC.id_lot_piglets=${id_lot_piglets}`}`)
 }

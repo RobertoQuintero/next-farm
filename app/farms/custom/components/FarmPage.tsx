@@ -83,10 +83,6 @@ const FarmPage = () => {
       getCode('pig')
     }    
   }, [idFarm])
-  // useEffect(() => {
-    
-  // }, [pigs])
-  
 
   const getChargePigs=()=>{
     const newArr= pigs.filter(p=>p.id_pig_stage===5||p.id_pig_stage===6).map(p=>p.month_name) as string[]
@@ -99,7 +95,6 @@ const FarmPage = () => {
     })
     return arr
   }
-  console.log(getChargePigs())
   
   if(farmsLoading && !isModalOpen){
     return <LoadingComponent/>
