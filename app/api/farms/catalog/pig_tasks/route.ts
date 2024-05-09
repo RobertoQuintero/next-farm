@@ -40,8 +40,7 @@ export const POST = async(req:Request) =>{
   const body = await req.json();
   const {id_pig_task, created_at,days,description,id_farm,status,id_pig_stage,while_days,id_stage_task_type,change_to_stage,end_stage,is_movement_task,days_diff}= body as IPigTask;
 
-  if(days_diff!==0){
-    console.log('first')
+  if(days_diff!==0 && id_pig_task!==0){
     await db.query(`update MOD.Tasks set start_date=DATEADD(DAY,${days_diff},start_date) where status=1 and done=0 and id_pig_task=${id_pig_task}`)
   }
 

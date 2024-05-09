@@ -60,7 +60,7 @@ export const GET = async (req: Request) => {
       {
         headers: {
           "content-type": "application/json; charset=utf-8",
-          "Set-Cookie": `jwt=${token}; Max-Age=8640; Path=/`,
+          "Set-Cookie": `jwt=${token}; Max-Age=86400; Path=/`,
         },
       }
     );
