@@ -8,9 +8,6 @@ export const POST = async(req:Request) =>{
 
   try {
 
-    // const birth=await db.query(`select top 1 crossing_date from MOD.Births where id_pig=${id_pig} and closed=0 order by crossing_date desc`)as unknown as IBirth[]
-    // const crossing=birth.length?addZero(new Date(birth[0].crossing_date )):added_date.split('T')[0]
-
     const date = new Date(addZero(new Date()))
     date.setHours(date.getHours()+6)
 

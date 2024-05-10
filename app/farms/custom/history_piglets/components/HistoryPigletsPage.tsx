@@ -4,7 +4,7 @@ import React, { useContext, useEffect } from 'react'
 import { InfoRowPiglets, LossRowPiglets, MovePiglets, TasksRowPiglets, UpdatePiglets } from '.'
 import AppModal from '@/app/components/AppModal'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
-import { LossForm, PostNewTask, UpdateComment, UpdateTask } from '../../components'
+import { LossForm, PostNewTask, UpdateComment, UpdateDate, UpdateTask } from '../../components'
 import Cookies from 'js-cookie'
 import { PostUpdateComment } from '../../history/components/PostUpdateComment'
 import { buildDate } from '@/utils'
@@ -67,6 +67,9 @@ const HistoryPigletsPage = () => {
       {
         farmAction==='DELETE-COMMENT'?<DeleteComponent onDelete={onDeleteComment} loading={farmsLoading} error={farmsError}/>:<></>
       }
+       {
+          farmAction==='UPDATE-DATE'?<UpdateDate/>:<></>
+        }
       </AppModal>
     </>
   )

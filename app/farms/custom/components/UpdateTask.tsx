@@ -6,7 +6,7 @@ import { DatePickerElement, SaveButton } from '@/app/components'
 import { IPig, IPiglets, ITask, IUbication } from '@/interfaces'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { AuthContext } from '@/app/context/auth/AuthContext'
-import { addZero, buildDate } from '@/utils'
+import { addZero, buildDate, buildDateReverse } from '@/utils'
 import Cookies from 'js-cookie'
 
 interface Props{
@@ -37,7 +37,7 @@ console.log(fromTask)
   } = useForm<ITask>()
 
   const values={
-    start_date:task?task.start_date:new Date(),
+    start_date:task?buildDateReverse(task.start_date as string):buildDate(new Date()),
     comment:task?task.comment:''
   } as ITask
 
