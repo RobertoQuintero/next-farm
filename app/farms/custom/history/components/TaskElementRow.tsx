@@ -40,10 +40,8 @@ export const TaskElementRow = ({task,report}:Props) => {
     setFarmAction('UPDATE-DATE')
     setTask(task)
     toggleModal()
-
   }
  };
-
 
   return (
     <div  style={{order:task.done ||!task.status?50:1,display:'flex',fontSize:'14px'}}>
