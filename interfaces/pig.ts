@@ -30,6 +30,8 @@ export interface IPig {
   gate_piglets:number;
   crossing_stallion:string|null;
   crossing_date:string;
+  confirm_date:string;
+  birth_date:string;
   false_charge:number;
   abortions:number;
 }

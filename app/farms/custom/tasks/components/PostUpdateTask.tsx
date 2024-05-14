@@ -4,6 +4,7 @@ import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { IPigTask} from '@/interfaces'
 import { compareObjects } from '@/interfaces/compareObjects'
+import { buildDate } from '@/utils'
 import {  MenuItem, Switch, TextField } from '@mui/material'
 import React, { useContext, useState } from 'react'
 import { useForm } from "react-hook-form"
@@ -12,6 +13,7 @@ export const PostUpdateTask = () => {
   const {toggleModal} = useContext(UiContext)
   const {idFarm} = useContext(AuthContext)
   const {pigTypes,farmsLoading,postTask,pigTask,pigStages,stageTaskTypes} = useContext(FarmsContext)
+  const {user} = useContext(AuthContext)
 
   const {
     register,
@@ -31,6 +33,8 @@ export const PostUpdateTask = () => {
     change_to_stage:pigTask?pigTask.change_to_stage:0,
     end_stage:pigTask?pigTask.end_stage:false,
     is_movement_task:pigTask?pigTask.is_movement_task:false,
+    days_diff:0,
+
   } as IPigTask
 
   const [pigType, setPigType] = useState(pigStages.find( p=>p.id_pig_stage===values.id_pig_stage)?.id_pig_type)
@@ -40,12 +44,14 @@ export const PostUpdateTask = () => {
   const [isMovement, setIsMovement] = useState(values.is_movement_task)
 
   const onSubmit=async(data:IPigTask)=>{
-
+      console.log('first')
     
-    const date= new Date()
+    const date= buildDate(new Date())
     data.created_at=date
     data.id_pig_stage=pigStage
     data.while_days=values.while_days
+    data.id_pig_type=pigType!
+    data.id_user=user?.id_user
     const newTask={
       ...values,
       ...data,
@@ -58,11 +64,12 @@ export const PostUpdateTask = () => {
     if(newTask.id_pig_task){
       newTask.days_diff= Number(data.days)-Number(values.days)
     }
-    
-    if(compareObjects({...values,...data,days_diff:0},newTask)){
-      toggleModal()
-      return
-    }
+    // console.log({...values,...data,days_diff:0},newTask)
+    // if(compareObjects({...values,...data,days_diff:0},newTask)){
+    //   toggleModal()
+    //   return
+    // }
+    // console.log(newTask)
     // return
     const ok=await postTask(newTask)
     if(ok){

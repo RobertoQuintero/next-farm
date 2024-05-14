@@ -117,6 +117,7 @@ export interface IPigTask {
   is_movement_task:boolean;
   id_pig_type:number | null;
   days_diff?:number;
+  id_user?:number;
 }
 
 

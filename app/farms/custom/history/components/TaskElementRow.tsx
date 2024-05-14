@@ -36,16 +36,19 @@ export const TaskElementRow = ({task,report}:Props) => {
  };
 
  const updateDate = () =>{
+  if(!task.done&&task.status){
     setFarmAction('UPDATE-DATE')
     setTask(task)
     toggleModal()
+
+  }
  };
 
 
   return (
     <div  style={{order:task.done ||!task.status?50:1,display:'flex',fontSize:'14px'}}>
       {/* <p style={{width:'90px'}} className='underlined' onClick={updateDate}>{new Date(task.start_date).toLocaleString().split(',')[0]}</p> */}
-      <p style={{width:'90px'}} className='underlined' onClick={updateDate}>{addZero(new Date(task.start_date)).split('-').reverse().join('-')}</p>
+      <p style={{width:'90px'}} className={task.done||!task.status?'':'underlined'} onClick={updateDate}>{addZero(new Date(task.start_date)).split('-').reverse().join('-')}</p>
       {report?<p style={{width:'90px'}} className='underlined' onClick={()=>goPage(task.id_pig,task.id_lot_piglets)}>{task?.pig_ubication?task.pig_ubication:task.piglets_ubication}</p>:<></>}
       <p style={{textTransform:'capitalize',width:'90px'}}>{task.name?.split(' ')[0]}</p>
       <p style={{width:'200px'}}>{task.description}</p>
