@@ -57,7 +57,8 @@ const TaskLogPage = () => {
 
   const onDelete = async() =>{
     const newTask={...task, status:false} as ITask
-
+    // console.log(newTask)
+    // return
     const ok= await updateTasks(newTask)
     if(ok){
       const start=addZero(taskStartDate!) 

@@ -20,6 +20,7 @@ id_task,
   PT.change_to_stage,
   PT.is_movement_task,
   PT.end_stage,
+  PT.see_state,
   CU.description pig_ubication,
 	CP.description piglets_ubication
 FROM MOD.Tasks MT
@@ -46,9 +47,9 @@ export const GET = async(req:Request) =>{
 
 export const POST = async(req:Request) =>{
   const body = await req.json();
-  const {id_task,id_pig,id_pig_task,comment,created_at,done,end_date,id_user,start_date,status,id_lot_piglets,id_birth }= body as ITask;
+  const {id_task,id_pig,id_pig_task,comment,created_at,done,end_date,id_user,start_date,status,id_lot_piglets,id_birth,see_state }= body as ITask;
 
-  if(id_pig_task===3&&!status){
+  if(see_state&&!status){
    await db.query(`
    declare @birth int=(select top 1 id_birth from MOD.Births where id_pig=${id_pig} order by crossing_date desc)
    update MOD.Births set id_birth_type=2 where id_birth=@birth

@@ -18,6 +18,7 @@ CP.description pig_type,
 PS.description stage,
 change_to_stage,
 is_movement_task,
+see_state,
 end_stage,
 CP.id_pig_type,
 ST.description task_type
@@ -39,10 +40,10 @@ export const GET = async(req:Request) =>{
 
 export const POST = async(req:Request) =>{
   const body = await req.json();
-  const {id_pig_task, created_at,days,description,id_farm,status,id_pig_stage,while_days,id_stage_task_type,change_to_stage,end_stage,is_movement_task,days_diff,id_pig_type,id_user}= body as IPigTask;
+  const {id_pig_task, created_at,days,description,id_farm,status,id_pig_stage,while_days,id_stage_task_type,change_to_stage,end_stage,is_movement_task,days_diff,id_pig_type,id_user,see_state}= body as IPigTask;
   let pigs=[] as IPig[]
   let piglets=[] as IPiglets[]
-  console.log(body)
+  console.log({body})
   try {
 
     if(days_diff!==0 && id_pig_task!==0){
@@ -81,6 +82,7 @@ export const POST = async(req:Request) =>{
           while_days='${while_days}',
           is_movement_task='${is_movement_task}',
           change_to_stage=${change_to_stage},
+          see_state='${see_state}',
           end_stage='${end_stage}'
       WHERE id_pig_task=${id_pig_task}
       ${query} WHERE id_pig_task=${id_pig_task}
@@ -99,6 +101,7 @@ export const POST = async(req:Request) =>{
         while_days,
         change_to_stage,
         is_movement_task,
+        see_state,
         end_stage
       )
       VALUES(
@@ -113,6 +116,7 @@ export const POST = async(req:Request) =>{
         '${while_days}',
         '${change_to_stage}',
         '${is_movement_task}',
+        '${see_state}',
         '${end_stage}'
       )
       ${query} WHERE id_pig_task=@const

@@ -68,6 +68,7 @@ export interface ITask {
   pig_ubication?:string;
   piglets_ubication?:string;
   id_birth?: number;
+  see_state:boolean
 }
 
 export interface ITaskType {
@@ -119,6 +120,7 @@ export interface IPigTask {
   id_pig_type:number | null;
   days_diff?:number;
   id_user?:number;
+  see_state:boolean;
 }
 
 

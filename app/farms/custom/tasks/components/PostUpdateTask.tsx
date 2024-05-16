@@ -45,13 +45,14 @@ export const PostUpdateTask = () => {
 
   const onSubmit=async(data:IPigTask)=>{
       console.log('first')
-    
+    return
     const date= buildDate(new Date())
     data.created_at=date
     data.id_pig_stage=pigStage
     data.while_days=values.while_days
     data.id_pig_type=pigType!
     data.id_user=user?.id_user
+    data.see_state=data.description.toLowerCase().trim()==='visualizar estado'
     const newTask={
       ...values,
       ...data,
