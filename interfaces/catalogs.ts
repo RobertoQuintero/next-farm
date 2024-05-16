@@ -67,6 +67,7 @@ export interface ITask {
   is_movement_task:boolean;
   pig_ubication?:string;
   piglets_ubication?:string;
+  id_birth?: number;
 }
 
 export interface ITaskType {

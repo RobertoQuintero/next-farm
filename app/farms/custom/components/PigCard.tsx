@@ -20,6 +20,9 @@ export const PigCard = ({pig,print,report=false}:Props) => {
 
   const onClick = async(action:string) =>{
     setPig(pig)
+    Cookies.set('pig',JSON.stringify(pig))
+    // console.log(pig)
+    // return
     setPiglet(undefined)
     if(action==='DELETE' || action==='EDIT'){
       if(print){

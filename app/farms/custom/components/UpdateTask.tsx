@@ -15,7 +15,7 @@ interface Props{
 
 export const UpdateTask = ({fromTask=false}:Props) => {
   const {toggleModal} = useContext(UiContext)
-  const {farmsLoading,task,updateTasks,postPig,postPiglets,createTasksToDo,ubications,pigs,getTasks,postUbicationForm,piglets,taskStartDate,taskEndDate,getAllTasks} = useContext(FarmsContext)
+  const {farmsLoading,task,updateTasks,postPig,postPiglets,createTasksToDo,ubications,pigs,getTasks,postUbicationForm,piglets,taskStartDate,taskEndDate,getAllTasks,births,pig} = useContext(FarmsContext)
   const {user,idFarm} = useContext(AuthContext)
   const [addUbication, setAddUbication] = useState(false)
   const [newUbication, setNewUbication] = useState('')
@@ -51,9 +51,12 @@ console.log(fromTask)
       start_date:buildDate(addedDate!),
       comment:data.comment,
       done:true,
-      id_user:user?.id_user
+      id_user:user?.id_user,
+      id_birth:pig?births[births.length-1].id_birth:0
     } as ITask
 
+    console.log(newTask)
+    return
 
     if(newTask.end_stage){
       if(newTask.id_pig){

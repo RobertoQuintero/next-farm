@@ -1,7 +1,7 @@
 import db from "@/database/connection";
 import { IPig, IPigTask, IPiglets } from "@/interfaces";
-import { buildDate, buildDateReverse, serverError } from "@/utils";
-import { getRequestQuery, postRequest } from "@/utils/getRequest";
+import { buildDate,  serverError } from "@/utils";
+import { getRequestQuery } from "@/utils/getRequest";
 
 const query =`
 SELECT 
@@ -122,7 +122,7 @@ export const POST = async(req:Request) =>{
     if(pigs.length){
       for (const pig of pigs) {
         let start_date=''
-        if(id_pig_stage===3){
+        if(id_pig_stage===3||id_pig_stage===2||id_pig_stage===1){
           start_date=buildDate(new Date(pig.crossing_date))
         }
         if(id_pig_stage===4 || id_pig_stage===5){

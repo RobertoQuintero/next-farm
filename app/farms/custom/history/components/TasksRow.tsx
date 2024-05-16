@@ -18,7 +18,7 @@ export const TasksRow = () => {
       const newPig= JSON.parse(Cookies.get('pig')!) as IPig
       getTasks(newPig.id_pig,'pig')
     }
-  }, [])
+  }, [pig])
 
   const onClick =() =>{
     setFarmAction('ADD-TASK')

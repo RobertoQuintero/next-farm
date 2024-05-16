@@ -12,9 +12,8 @@ import { PostUpdateComment } from './PostUpdateComment';
 import { buildDate } from '@/utils';
 
 const HistoryPage = () => {
-  const {farmAction,pig,setPig,farmsError,farmsLoading,task,updateTasks,getCode,comment,postComments} = useContext(FarmsContext)
+  const {farmAction,pig,setPig,farmsError,farmsLoading,task,updateTasks,getCode,comment,postComments,births} = useContext(FarmsContext)
   const {toggleModal} = useUi()
-  
   useEffect(() => {
     if(!pig){
       setPig(JSON.parse(Cookies.get('pig')!))
@@ -23,7 +22,10 @@ const HistoryPage = () => {
   }, [pig])
 
   const onDelete = async() =>{
-     const newTask={...task, status:false} as ITask
+     const newTask={...task,
+       status:false,
+       id_birth:pig?births[births.length-1].id_birth:0
+      } as ITask
 
      const ok= await updateTasks(newTask)
      if(ok){
