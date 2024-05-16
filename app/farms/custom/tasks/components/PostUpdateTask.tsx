@@ -44,8 +44,8 @@ export const PostUpdateTask = () => {
   const [isMovement, setIsMovement] = useState(values.is_movement_task)
 
   const onSubmit=async(data:IPigTask)=>{
-      console.log('first')
-    return
+    //   console.log('first')
+    // return
     const date= buildDate(new Date())
     data.created_at=date
     data.id_pig_stage=pigStage
