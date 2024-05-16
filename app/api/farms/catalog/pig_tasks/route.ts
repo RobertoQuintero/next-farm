@@ -55,9 +55,9 @@ export const POST = async(req:Request) =>{
         pigs= await db.query(`
         select 
         id_pig,
-        (select top 1 crossing_date from MOD.Births MB where is_positive='true' and MB.id_pig=MP.id_pig order by birth_date desc) crossing_date,
-        (select top 1 confirm_date from MOD.Births MB where is_positive='true' and MB.id_pig=MP.id_pig order by birth_date desc) confirm_date,
-        (select top 1 birth_date from MOD.Births MB where is_positive='true' and MB.id_pig=MP.id_pig order by birth_date desc) birth_date
+        isnull((select top 1 crossing_date from MOD.Births MB where is_positive='true' and MB.id_pig=MP.id_pig order by birth_date desc),getdate()) crossing_date,
+        isnull((select top 1 confirm_date from MOD.Births MB where is_positive='true' and MB.id_pig=MP.id_pig order by birth_date desc),getdate() ) confirm_date,
+        isnull((select top 1 birth_date from MOD.Births MB where is_positive='true' and MB.id_pig=MP.id_pig order by birth_date desc),getdate()) birth_date
         from MOD.Pigs MP 
           where  status=1 and id_pig_stage=${id_pig_stage}
         `)
@@ -127,7 +127,7 @@ export const POST = async(req:Request) =>{
       for (const pig of pigs) {
         let start_date=''
         if(id_pig_stage===3||id_pig_stage===2||id_pig_stage===1){
-          start_date=buildDate(new Date(pig.crossing_date))
+          start_date=buildDate(new Date(pig.crossing_date||new Date()))
         }
         if(id_pig_stage===4 || id_pig_stage===5){
           start_date=buildDate(new Date(pig.confirm_date))
