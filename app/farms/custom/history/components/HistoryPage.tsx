@@ -1,5 +1,5 @@
 'use client'
-import React, { useContext, useEffect } from 'react'
+import React, { SyntheticEvent, useContext, useEffect, useState } from 'react'
 import { BackButton, DeleteComponent } from '@/app/components';
 import { BirthsRow, CommentsRow, InfoRow, TasksRow,UpdateBirthForm,UpdateConfirmForm,UpdateCrossingForm, UpdateLactation } from '.';
 import AppModal from '@/app/components/AppModal';
@@ -10,10 +10,16 @@ import { IComment, ITask } from '@/interfaces';
 import { useUi } from '@/app/context/ui/useUi';
 import { PostUpdateComment } from './PostUpdateComment';
 import { buildDate } from '@/utils';
+import { TextField } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import Cookie from 'js-cookie'
 
 const HistoryPage = () => {
-  const {farmAction,pig,setPig,farmsError,farmsLoading,task,updateTasks,getCode,comment,postComments,births} = useContext(FarmsContext)
+  const {farmAction,pig,setPig,farmsError,farmsLoading,task,updateTasks,getCode,comment,postComments,births,pigs} = useContext(FarmsContext)
   const {toggleModal} = useUi()
+  const [text, setText] = useState('')
+  const router= useRouter()
+
   useEffect(() => {
     if(!pig){
       setPig(JSON.parse(Cookies.get('pig')!))
@@ -47,7 +53,31 @@ const HistoryPage = () => {
   return (
     <>
       <div>
+        <div style={{display:'flex',gap:'.5rem'}}>
+
         <BackButton/>
+        <form onSubmit={(e:SyntheticEvent)=>{
+          e.preventDefault()
+          const thisPig= pigs.find(p=>p.pig_ubication===text.toUpperCase())
+          if(thisPig){
+            setPig(thisPig)
+            Cookie.set('pig',JSON.stringify(pig))
+            router.push('/farms/custom/history')
+          } 
+        }}>
+        <TextField 
+          sx={{width:'150px'}}
+          size="small"
+          fullWidth
+          label='Filtra jaula'          
+          type="text"
+          value={text}
+          onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{
+            setText(e.target.value)
+          }}
+        />
+        </form>
+        </div>
         <InfoRow/>
         <CommentsRow/>
         <BirthsRow/>

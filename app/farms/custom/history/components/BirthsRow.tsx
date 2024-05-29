@@ -16,7 +16,7 @@ export const BirthsRow = () => {
       const newPig= JSON.parse(Cookies.get('pig')!) as IPig
       getBirths(newPig.id_pig)
     }
-  }, [])
+  }, [pig])
   
   return (
     <AccordionElement title='Historial de Partos'>

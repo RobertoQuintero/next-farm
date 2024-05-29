@@ -49,7 +49,7 @@ export const PigletsTasks = ({changeAction}:Props) => {
   }
 
   return (
-    <AccordionElement title='Lechones'>
+    // <AccordionElement title='Lechones'>
       <div className={styles.birthContainer}>
       <div  style={{fontWeight:'bold',display:'flex',fontSize:'14px'}}>
       <p onClick={()=>{
@@ -90,6 +90,6 @@ export const PigletsTasks = ({changeAction}:Props) => {
           :<></>
         }
       </div>
-    </AccordionElement>
+    // </AccordionElement>
   )
 }

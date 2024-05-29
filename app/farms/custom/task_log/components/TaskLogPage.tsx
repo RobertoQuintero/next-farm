@@ -1,5 +1,5 @@
 'use client'
-import { Button, MenuItem, TextField } from '@mui/material'
+import { Button, MenuItem, Switch, TextField } from '@mui/material'
 import { useContext, useEffect, useState } from 'react'
 import { PigletsTasks, PigsTasks } from '.'
 import { DatePickerElement, DeleteComponent } from '@/app/components'
@@ -27,9 +27,8 @@ const TaskLogPage = () => {
   const {getAllTasks,setTasks,getPigs,pigs,piglets,getPiglets,farmAction,farmsLoading,farmsError,task,updateTasks,setTaskStartDate,setTaskEndDate,taskStartDate,taskEndDate} = useContext(FarmsContext)
   const {idFarm,logged} = useContext(AuthContext)
   const {toggleModal} = useContext(UiContext)
-  // const [startDate, setstartDate] = useState<Date | null>(new Date())
-  // const [endDate, setEndDate] = useState<Date | null>(new Date())
   const [changeAction, setChangeAction] = useState(1)
+  const [checked, setChecked] = useState(false);
 
   const onAdd = async() =>{
       const start=addZero(taskStartDate!) 
@@ -69,18 +68,20 @@ const TaskLogPage = () => {
      toggleModal()
     }
  };
-  
-  
 
+ const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  setChecked(event.target.checked);
+};
+  
   return (
     <>
      <div className='actionCreateContainer'>
 
-        <div style={{display:'flex', gap:'.5rem'}}>
+        <div style={{display:'flex', gap:'.5rem',alignItems:'center'}}>
           <DatePickerElement date={taskStartDate} setDate={setTaskStartDate}/>
           <DatePickerElement date={taskEndDate} setDate={setTaskEndDate}/>
           <TextField
-          sx={{width:'150px'}}
+          sx={{width:'140px'}}
           size="small"
           label='Filtrar'
           value={changeAction}
@@ -98,6 +99,14 @@ const TaskLogPage = () => {
               </MenuItem>))
           }
         </TextField>
+        <div style={{position:'relative'}}>
+        <p style={{position:'absolute',top:-10,fontSize:'14px'}}>{checked?'Lechones':'Gestantes'}</p>
+        <Switch
+          checked={checked}
+          onChange={handleChange}
+          inputProps={{ 'aria-label': 'controlled' }}
+        />
+        </div>
         </div>
         <Button 
           onClick={onAdd}
@@ -106,8 +115,11 @@ const TaskLogPage = () => {
           size='small'>Buscar</Button>
       </div>
       <div>
-        <PigsTasks changeAction={changeAction}/>
-        <PigletsTasks changeAction={changeAction}/>
+        {
+          !checked
+            ?<PigsTasks changeAction={changeAction}/>
+            :<PigletsTasks changeAction={changeAction}/>
+        }
       </div>
       <AppModal>
         {

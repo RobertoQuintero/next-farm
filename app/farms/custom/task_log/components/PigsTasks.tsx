@@ -50,7 +50,7 @@ export const PigsTasks = ({changeAction}:Props) => {
 
 
   return (
-    <AccordionElement title='Gestantes'>
+    // <AccordionElement title='Gestantes'>
       <div className={styles.birthContainer} style={{width:'100%'}}>
       <div  style={{fontWeight:'bold',display:'flex',fontSize:'14px'}}>
           <p onClick={()=>{
@@ -94,6 +94,6 @@ export const PigsTasks = ({changeAction}:Props) => {
       </div>
    
      
-    </AccordionElement>
+    // </AccordionElement>
   )
 }
