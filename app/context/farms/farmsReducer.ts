@@ -67,6 +67,9 @@ import { IStallionMonths } from '@/interfaces/stallions';
         | {type:'[Farms] - setTaskStartDate'; payload:Date | null }
         | {type:'[Farms] - setTaskEndDate'; payload:Date | null }
         | {type:'[Farms] - setSearchedTasks'; payload:ITask[] }
+        | {type:'[Farms] - setPigletTaskStartDate'; payload:Date | null }
+        | {type:'[Farms] - setPigletTaskEndDate'; payload:Date | null }
+        | {type:'[Farms] - setSearchedPigletTasks'; payload:ITask[] }
         
         
 export const usersReducer = (state:UsersState,action:UsersActionType):UsersState => {
@@ -408,7 +411,24 @@ export const usersReducer = (state:UsersState,action:UsersActionType):UsersState
         ...state,
         searchedTasks:action.payload
       }
+      //---------
+    case '[Farms] - setPigletTaskStartDate':
+      return {
+        ...state,
+        taskPigletStartDate:action.payload
+      }
 
+    case '[Farms] - setPigletTaskEndDate':
+      return {
+        ...state,
+        taskPigletEndDate:action.payload
+      }
+
+    case '[Farms] - setSearchedPigletTasks':
+      return {
+        ...state,
+        searchedPigletTasks:action.payload
+      }
   
     default:
       return state

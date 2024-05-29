@@ -5,6 +5,7 @@ export const GET = async(req:Request) =>{
   const startDate=searchParams.get('startDate')
   const endDate=searchParams.get('endDate')
   const id_farm=searchParams.get('id_farm')
+  const id=searchParams.get('id')
 
   return await getRequestQuery(`
   SELECT 
@@ -44,7 +45,7 @@ INTO #TablaTemporal3
   on CP.id_ubication=ML.id_ubication
   where MT.start_date>='${startDate}' and MT.start_date<'${endDate}' and MT.status=1
 
-  select * from #TablaTemporal3 where id_farm=${id_farm} order by start_date
+  select * from #TablaTemporal3 where id_farm=${id_farm} and ISNULL(${id},0)>1 order by start_date
   drop table #TablaTemporal3
   `)
 }

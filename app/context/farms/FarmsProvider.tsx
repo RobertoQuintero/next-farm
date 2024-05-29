@@ -76,7 +76,10 @@ export interface UsersState{
   answer:IAnswer | undefined;
   taskStartDate:Date | null;
   taskEndDate:Date | null;
-  searchedTasks:ITask[]
+  searchedTasks:ITask[];
+  taskPigletStartDate:Date | null;
+  taskPigletEndDate:Date | null;
+  searchedPigletTasks:ITask[]
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -139,7 +142,10 @@ const UI_INITIAL_STATE:UsersState={
   answer: undefined,
   taskStartDate:new Date(),
   taskEndDate:new Date(),
-  searchedTasks:[]
+  searchedTasks:[],
+  taskPigletStartDate:new Date(),
+  taskPigletEndDate:new Date(),
+  searchedPigletTasks:[]
 }
 
 export const FarmsProvider = ({children}:Props) => {
@@ -300,11 +306,16 @@ export const FarmsProvider = ({children}:Props) => {
           };
 
     
-    const getAllTasks = async({startDate,endDate,id_farm}:{startDate:string;endDate:string;id_farm:number}) =>{
+    const getAllTasks = async({startDate,endDate,id_farm,id}:{startDate:string;endDate:string;id_farm:number;id:string}) =>{
         setIsLoading(true)
-         const {ok,data}=await getFarmsRequest(`/farms/tasks/date?startDate=${startDate}&endDate=${endDate}&id_farm=${id_farm}`)
+         const {ok,data}=await getFarmsRequest(`/farms/tasks/date?startDate=${startDate}&endDate=${endDate}&id_farm=${id_farm}&id=${id}`)
+         console.log(data)
          if(ok){
-            setSearchedTasks(data as ITask[])
+            if(id==='id_pig'){
+               setSearchedTasks(data as ITask[])
+            }else{
+               setSearchedPigletTasks(data as ITask[])
+            }
          }
          else{
           setError(data as string)
@@ -1073,6 +1084,26 @@ export const FarmsProvider = ({children}:Props) => {
      })
   };
 
+  const setPigletTaskStartDate = (payload: Date | null ) =>{
+     dispatch({
+      type:'[Farms] - setPigletTaskStartDate',
+      payload
+     })
+  };
+
+  const setPigletTaskEndDate = (payload: Date | null ) =>{
+     dispatch({
+      type:'[Farms] - setPigletTaskEndDate',
+      payload
+     })
+  };
+  const setSearchedPigletTasks = (payload: ITask[] ) =>{
+     dispatch({
+      type:'[Farms] - setSearchedPigletTasks',
+      payload
+     })
+  };
+
   const getPostLoadingOrError = async<T,K extends keyof T>(
       endpoint:string,setState:(payload: T[]) => void,payload?:T,state?:T[],id?:K,wich?:boolean
    ) =>{
@@ -1167,7 +1198,9 @@ export const FarmsProvider = ({children}:Props) => {
      postQuestion,
      setTasks,
      setTaskStartDate,
-     setTaskEndDate
+     setTaskEndDate,
+     setPigletTaskEndDate,
+     setPigletTaskStartDate
     }}>
       {children}
     </FarmsContext.Provider>

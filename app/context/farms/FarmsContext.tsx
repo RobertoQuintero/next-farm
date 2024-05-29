@@ -68,6 +68,9 @@ interface ContextProps{
   taskStartDate:Date | null;
   taskEndDate:Date | null;
   searchedTasks:ITask[]
+  taskPigletStartDate:Date | null;
+  taskPigletEndDate:Date | null;
+  searchedPigletTasks:ITask[]
   
 
   //methods
@@ -115,7 +118,7 @@ interface ContextProps{
   getGrowingPigs: (payload: number) => Promise<void>;
   getPiglets: (payload: number) => Promise<boolean>;
   setPiglets: (payload: IPiglets[]) => void;
-  getAllTasks: ({ startDate, endDate,id_farm }: {startDate: string;endDate: string;id_farm:number}) => Promise<void>
+  getAllTasks: ({ startDate, endDate,id_farm }: {startDate: string;endDate: string;id_farm:number;id:string}) => Promise<void>
   getQuantities: (payload: number) => Promise<void>;
   getStaticPigs: (payload: number) => Promise<void>;
   getStaticPiglets: (payload: number) => Promise<void>;
@@ -143,7 +146,9 @@ interface ContextProps{
   postAnswer: (payload: IAnswer) => Promise<boolean>;
   setTasks: (payload: ITask[]) => void;
   setTaskStartDate: (payload: Date | null) => void;
-  setTaskEndDate: (payload: Date | null) => void
+  setTaskEndDate: (payload: Date | null) => void;
+  setPigletTaskStartDate: (payload: Date | null) => void;
+  setPigletTaskEndDate: (payload: Date | null) => void
 }
 
 export const FarmsContext = createContext({} as ContextProps)
