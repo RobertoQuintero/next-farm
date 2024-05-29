@@ -15,7 +15,7 @@ interface Props{
 
 export const UpdateTask = ({fromTask=false}:Props) => {
   const {toggleModal} = useContext(UiContext)
-  const {farmsLoading,task,updateTasks,postPig,postPiglets,createTasksToDo,ubications,pigs,getTasks,postUbicationForm,piglets,taskStartDate,taskEndDate,getAllTasks,births,pig} = useContext(FarmsContext)
+  const {farmsLoading,task,updateTasks,postPig,postPiglets,createTasksToDo,ubications,pigs,getTasks,postUbicationForm,piglets,taskStartDate,taskEndDate,getAllTasks,births,pig,taskPigletEndDate,taskPigletStartDate} = useContext(FarmsContext)
   const {user,idFarm} = useContext(AuthContext)
   const [addUbication, setAddUbication] = useState(false)
   const [newUbication, setNewUbication] = useState('')
@@ -98,9 +98,8 @@ console.log(fromTask)
             const start=addZero(taskStartDate!) 
             const end=new Date(taskEndDate!)
             end.setDate(end.getDate()+1)
-            await getAllTasks({startDate:start,endDate:addZero(end),id_farm:idFarm! || +Cookies.get('id_farm')!})
+            await getAllTasks({startDate:start,endDate:addZero(end),id_farm:idFarm! || +Cookies.get('id_farm')!,id:'id_pig'})
           }else{
-            
             await getTasks(searchedPig?.id_pig!,'pig')
            }
           toggleModal()
@@ -145,10 +144,10 @@ console.log(fromTask)
             await getTasks(searchedPiglet?.id_lot_piglets!,'lot')
            }
            if(fromTask){
-            const start=addZero(taskStartDate!) 
-            const end=new Date(taskEndDate!)
+            const start=addZero(taskPigletStartDate!) 
+            const end=new Date(taskPigletEndDate!)
              end.setDate(end.getDate()+1)
-            await getAllTasks({startDate:start,endDate:addZero(end),id_farm:idFarm! || +Cookies.get('id_farm')!})
+            await getAllTasks({startDate:start,endDate:addZero(end),id_farm:idFarm! || +Cookies.get('id_farm')!,id:'id_lot_piglets'})
            }
           toggleModal()
           return
@@ -186,7 +185,6 @@ console.log(fromTask)
         }
       }
 
-
       Promise.all([
         updateTasks(newTask),
         searchedPig&&newTask.is_movement_task&&postPig(taskPig),
@@ -194,12 +192,15 @@ console.log(fromTask)
       ]).then(async res=>{
         if(searchedPiglet&&!fromTask){
          await getTasks(searchedPiglet?.id_lot_piglets!,'lot')
+
         }
         if(fromTask){
-          const start=addZero(taskStartDate!) 
-          const end=new Date(taskEndDate!)
+
+          const start=addZero(searchedPig?taskStartDate!:taskPigletStartDate!) 
+          const end=new Date(searchedPig? taskEndDate!:taskPigletEndDate!)
            end.setDate(end.getDate()+1)
-          await getAllTasks({startDate:start,endDate:addZero(end),id_farm:idFarm! || +Cookies.get('id_farm')!})
+          await getAllTasks({startDate:start,endDate:addZero(end),id_farm:idFarm! || +Cookies.get('id_farm')!,id:searchedPiglet?'id_lot_piglets':'id_pig'})
+    
          }
         toggleModal()
       })

@@ -13,7 +13,7 @@ import { UiContext } from '@/app/context/ui/UiContext'
 import { ITask } from '@/interfaces'
 
 const TaskLogPage = () => {
-  const {getAllTasks,setTasks,getPigs,pigs,piglets,getPiglets,farmAction,farmsLoading,farmsError,task,updateTasks,taskStartDate,taskEndDate} = useContext(FarmsContext)
+  const {getAllTasks,setTasks,getPigs,pigs,piglets,getPiglets,farmAction,farmsLoading,farmsError,task,updateTasks,taskStartDate,taskEndDate,taskPigletStartDate,taskPigletEndDate} = useContext(FarmsContext)
   const {idFarm,logged} = useContext(AuthContext)
   const {toggleModal} = useContext(UiContext)
   const [changeAction, setChangeAction] = useState(1)
@@ -40,9 +40,9 @@ const TaskLogPage = () => {
     // return
     const ok= await updateTasks(newTask)
     if(ok){
-      const start=addZero(taskStartDate!) 
+      const start=addZero(newTask.id_pig? taskStartDate!:taskPigletStartDate!) 
 
-      const end=new Date(taskEndDate!)
+      const end=new Date(newTask.id_pig?taskEndDate!:taskPigletEndDate!)
        end.setDate(end.getDate()+1)
        let id=''
        if(checked){
