@@ -39,8 +39,23 @@ export const PigCard = ({pig,print,report=false}:Props) => {
     }
   };
 
+  const getColors = () =>{
+     switch (Number(pig.flag)) {
+      case 0:
+          return '#FFE0E9'
+      case 1:    
+          return '#93E1D8'
+      case 2:    
+          return '#FCBF46'
+      case 3:    
+          return '#F77F00'     
+      default:
+        return '#D62828'
+     }
+  };
+
   return (
-    <div className={`rowCard ${print&&'odd'}`}>
+    <div className={`rowCard ${print&&'odd'}`} style={{backgroundColor:getColors()}}>
       <div className="pigData">
         <p>{addZero(new Date(pig.added_date)).split('-').reverse().join('-')}</p>
         <p onClick={()=>onClick('EDIT')} className="underlined">{pig.code}</p>

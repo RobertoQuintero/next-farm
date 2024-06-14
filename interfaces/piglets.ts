@@ -17,4 +17,5 @@ export interface IPiglets {
   stage?:         string;
   stallion?:      string;
   days?:          number;
+
 }

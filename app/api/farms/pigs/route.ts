@@ -13,7 +13,7 @@ export const GET = async(req:Request) =>{
 
 export const POST = async(req:Request) =>{
   const body = await req.json();
-  const {id_pig,code,id_farm,id_pig_type,id_race,id_pig_stage,id_ubication,added_date,status,visible,created_at,id_stallion,id_weight_type,bar_code }= body as IPig;
+  const {id_pig,code,id_farm,id_pig_type,id_race,id_pig_stage,id_ubication,added_date,status,visible,created_at,id_stallion,id_weight_type,bar_code,flag }= body as IPig;
 
   if(!status){
     await db.query(`update MOD.Tasks set status=0 where id_pig=${id_pig}`)
@@ -28,6 +28,7 @@ export const POST = async(req:Request) =>{
       UPDATE MOD.Pigs
       SET code='${code}',
           id_farm='${id_farm}',
+          ${flag?`flag=${flag}`:'flag=NULL'},
           id_pig_type='${id_pig_type}',
           id_race='${id_race}',
           id_pig_stage='${id_pig_stage}',
@@ -57,7 +58,8 @@ export const POST = async(req:Request) =>{
         created_at,
         id_stallion,
         bar_code,
-        id_weight_type
+        id_weight_type,
+        flag
       )
       VALUES(
         @const,
@@ -73,7 +75,8 @@ export const POST = async(req:Request) =>{
         '${created_at}',
         '${id_stallion}',
         '${bar_code}',
-        '${id_weight_type}'
+        '${id_weight_type}',
+        ${flag?flag:'NULL'}
       )
       ${queryPig} WHERE MP.id_pig=@const
     end

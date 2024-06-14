@@ -76,7 +76,8 @@ export const UpdateBirthForm = () => {
 
     const newPig={
       ...pig,
-      id_pig_stage:is_normal?6:2
+      id_pig_stage:is_normal?6:2,
+      flag:+data.alive>8?1:Number(pig?.flag)?Number(pig?.flag)+1:2
     } as IPig
 
     const piglets={

@@ -20,7 +20,7 @@ export const UpdateTask = ({fromTask=false}:Props) => {
   const [addUbication, setAddUbication] = useState(false)
   const [newUbication, setNewUbication] = useState('')
   const [error, setError] = useState<string | undefined>(undefined)
-console.log(fromTask)
+
   const newUbications = () =>{
     const array=[] as IUbication[]
     for (const p of ubications.filter(f=>f.id_pig_type===3)) {
@@ -55,8 +55,8 @@ console.log(fromTask)
       id_birth:pig?births[births.length-1].id_birth:0
     } as ITask
 
-    // console.log(newTask)
-    // return
+    console.log(newTask)
+    return
 
     if(newTask.end_stage){
       if(newTask.id_pig){
