@@ -45,6 +45,8 @@ export const UpdateTask = ({fromTask=false}:Props) => {
   const [idUbication, setIdUbication] = useState(newUbications()[0].id_ubication)
 
   const onSubmit=async(data:ITask)=>{
+ 
+
     const date=buildDate(new Date())
     const newTask={
       ...task,
@@ -54,14 +56,6 @@ export const UpdateTask = ({fromTask=false}:Props) => {
       id_user:user?.id_user,
       id_birth:pig?births[births.length-1].id_birth:0
     } as ITask
-
-    // const searchedPig= pigs.find(p=>p.id_pig===newTask.id_pig)
-    //     const newPig={
-    //       ...searchedPig,
-    //       id_pig_stage:newTask.change_to_stage
-    //     } as IPig
-    // console.log({id_lot_piglets:0,id_user:user?.id_user!,id_pig:newPig.id_pig,id_pig_stage:newPig.id_pig_stage,id_farm:searchedPig?.id_farm!,added_date:addZero(new Date(newTask.start_date))})
-    // return
 
     if(newTask.end_stage){
       if(newTask.id_pig){
@@ -143,7 +137,7 @@ export const UpdateTask = ({fromTask=false}:Props) => {
         Promise.all([
           postPiglets(newLot),
           updateTasks(newTask),
-          createTasksToDo({id_lot_piglets:newLot.id_lot_piglets,id_user:user?.id_user!,id_pig:0,id_pig_stage:newLot.id_pig_stage,id_farm:newLot.id_farm,added_date:addZero(addedDate!)})
+          createTasksToDo({id_lot_piglets:newLot.id_lot_piglets,id_user:user?.id_user!,id_pig:0,id_pig_stage:newLot.id_pig_stage,id_farm:newLot.id_farm,added_date:addZero(new Date(buildDate(addedDate!)))})
         ]).then(async res=>{
           if(searchedPiglet&&!fromTask){
             await getTasks(searchedPiglet?.id_lot_piglets!,'lot')

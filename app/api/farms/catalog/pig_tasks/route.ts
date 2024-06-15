@@ -1,6 +1,6 @@
 import db from "@/database/connection";
 import { IPig, IPigTask, IPiglets } from "@/interfaces";
-import { buildDate,  serverError } from "@/utils";
+import { addZero, buildDate,  buildDateReverse,  serverError } from "@/utils";
 import { getRequestQuery } from "@/utils/getRequest";
 
 const query =`
@@ -126,14 +126,17 @@ export const POST = async(req:Request) =>{
     if(pigs.length){
       for (const pig of pigs) {
         let start_date=''
-        if(id_pig_stage===3||id_pig_stage===2||id_pig_stage===1){
-          start_date=buildDate(new Date(pig.crossing_date||new Date()))
+        if(id_pig_stage===2||id_pig_stage===1){
+          start_date=addZero(new Date(buildDateReverse(pig.added_date as string)))
+        }
+        if(id_pig_stage===3){
+          start_date=addZero(new Date(buildDateReverse(pig.crossing_date)))
         }
         if(id_pig_stage===4 || id_pig_stage===5){
-          start_date=buildDate(new Date(pig.confirm_date))
+          start_date=addZero(new Date(buildDateReverse(pig.confirm_date)))
         }
         if(id_pig_stage===6){
-          start_date=buildDate(new Date(pig.birth_date))
+          start_date=addZero(new Date(buildDateReverse(pig.birth_date)))
         }
 
         await db.query(`
@@ -194,9 +197,9 @@ export const POST = async(req:Request) =>{
           '',
           GETDATE(),
           '${false}',
-          dateadd(hour,24*${days}+6,'${buildDate(new Date(piglet.created_at))}'),
+          dateadd(hour,24*${days}+6,'${addZero(new Date(buildDateReverse(piglet.created_at as string)))}'),
           '${id_user}',
-          dateadd(hour,24*${days}+6,'${buildDate(new Date(piglet.created_at))}'),
+          dateadd(hour,24*${days}+6,'${addZero(new Date(buildDateReverse(piglet.created_at as string)))}'),
           '${piglet.id_lot_piglets}',
           '${true}' 
         )
