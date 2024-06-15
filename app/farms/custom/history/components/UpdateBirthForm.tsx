@@ -6,13 +6,13 @@ import { DatePickerElement, SaveButton } from '@/app/components'
 import { IBirth, IPig, IPiglets } from '@/interfaces'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { AuthContext } from '@/app/context/auth/AuthContext'
-import { addZero } from '@/utils'
+import { addZero, buildDate, buildDateReverse } from '@/utils'
 
 export const UpdateBirthForm = () => {
   const {user} = useContext(AuthContext)
   const {toggleModal} = useContext(UiContext)
   const {birth,birthTypes,farmsLoading,pig,postPig,postBirth,createTasksToDo,piggletCode,postNewPiglets,farmAction,getTasks} = useContext(FarmsContext)
-  const [date, setDate] = useState<Date | null>(new Date(birth?.birth_date!))
+  const [date, setDate] = useState<Date | null>(new Date(buildDateReverse(birth?.birth_date! as string)))
   const {
     register,
     handleSubmit,
@@ -62,7 +62,7 @@ export const UpdateBirthForm = () => {
       ...birth,
       dead:Number(data.dead),
       alive:Number(data.alive),
-      birth_date:addZero(date!),
+      birth_date:addZero(new Date(buildDate(date!))),
       comment:data.comment.trim(),
       id_user_birth:user?.id_user,
       id_birth_type:data.id_birth_type

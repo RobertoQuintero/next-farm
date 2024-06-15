@@ -8,8 +8,8 @@ export const POST = async(req:Request) =>{
 
   try {
 
-    const date = new Date(addZero(new Date()))
-    date.setHours(date.getHours()+6)
+    // const date = new Date(addZero(new Date()))
+    // date.setHours(date.getHours()+6)
 
     const tasks= await db.query(`
       SELECT * FROM CAT.Pig_tasks WHERE id_pig_stage=${id_pig_stage} and id_farm=${id_farm}

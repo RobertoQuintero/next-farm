@@ -55,7 +55,12 @@ export const UpdateTask = ({fromTask=false}:Props) => {
       id_birth:pig?births[births.length-1].id_birth:0
     } as ITask
 
-    // console.log(newTask)
+    // const searchedPig= pigs.find(p=>p.id_pig===newTask.id_pig)
+    //     const newPig={
+    //       ...searchedPig,
+    //       id_pig_stage:newTask.change_to_stage
+    //     } as IPig
+    // console.log({id_lot_piglets:0,id_user:user?.id_user!,id_pig:newPig.id_pig,id_pig_stage:newPig.id_pig_stage,id_farm:searchedPig?.id_farm!,added_date:addZero(new Date(newTask.start_date))})
     // return
 
     if(newTask.end_stage){
@@ -92,7 +97,7 @@ export const UpdateTask = ({fromTask=false}:Props) => {
         Promise.all([
           postPig(newPig),
           updateTasks(newTask),
-          createTasksToDo({id_lot_piglets:0,id_user:user?.id_user!,id_pig:newPig.id_pig,id_pig_stage:newPig.id_pig_stage,id_farm:searchedPig?.id_farm!,added_date:addZero(new Date(newPig.added_date))})
+          createTasksToDo({id_lot_piglets:0,id_user:user?.id_user!,id_pig:newPig.id_pig,id_pig_stage:newPig.id_pig_stage,id_farm:searchedPig?.id_farm!,added_date:addZero(new Date(newTask.start_date))})
         ]).then(async res=>{
           if(fromTask){
             const start=addZero(taskStartDate!) 

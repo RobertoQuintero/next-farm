@@ -3,7 +3,7 @@ import React, { SyntheticEvent, useContext, useState } from 'react'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { DatePickerElement, SaveButton } from '@/app/components'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
-import { addZero } from '@/utils'
+import { addZero, buildDate } from '@/utils'
 import { AuthContext } from '@/app/context/auth/AuthContext'
 
 export const UpdateCrossingForm = () => {
@@ -18,7 +18,7 @@ export const UpdateCrossingForm = () => {
     e.preventDefault()
 
     const data= {
-      crossing_date:addZero(date!),
+      crossing_date:addZero(new Date(buildDate(date!))),
       id_stallion:idStallion,
       id_pig:pig?.id_pig,
       id_user:user?.id_user,

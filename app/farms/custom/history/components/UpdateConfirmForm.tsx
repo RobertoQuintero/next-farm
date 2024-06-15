@@ -5,7 +5,7 @@ import { DatePickerElement, SaveButton } from '@/app/components'
 import { IBirth, IPig } from '@/interfaces'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { AuthContext } from '@/app/context/auth/AuthContext'
-import { addZero } from '@/utils'
+import { addZero, buildDateReverse } from '@/utils'
 
 
 export const UpdateConfirmForm = () => {
@@ -14,7 +14,7 @@ export const UpdateConfirmForm = () => {
   const {birth,birthTypes,farmsLoading,postPig,pig,postBirth,createTasksToDo,farmAction} = useContext(FarmsContext)
   const [comment, setComment] = useState('')
   const [birthType, setBirthType] = useState(birthTypes[0].id_birth_type)
-  const [date, setDate] = useState<Date | null>(new Date(birth?.confirm_date!))
+  const [date, setDate] = useState<Date | null>(new Date(buildDateReverse(birth?.confirm_date! as string)))
 
   const onSubmit=async(e:SyntheticEvent)=>{
     e.preventDefault()
