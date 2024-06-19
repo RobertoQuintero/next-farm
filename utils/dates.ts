@@ -10,7 +10,14 @@ export const addZero = (today:Date):string => {
 };
 
 export const buildDate=(date:Date)=>{
-  return `${addZero(date)} ${date.toLocaleTimeString().substring(0,8)}`
+  const hours=[date.getHours(),date.getMinutes(),date.getSeconds()]
+  const zeros=hours.map(d=>{
+    if(+d<10){
+      return `0${d}`
+    }
+    return d
+  }).join(':')
+  return `${addZero(date)} ${zeros}`
 }
 
 export const buildDateReverse=(date:string)=>{

@@ -54,6 +54,10 @@ export const PostUpdateGrowingPigs = () => {
       closed:true,
       id_user:user?.id_user!
     } as IPiglets
+
+    // console.log(newPiglet)
+    // console.log(newAdd)
+    // return
    
     Promise.all([
       postPiglets(newPiglet),
@@ -63,6 +67,8 @@ export const PostUpdateGrowingPigs = () => {
     })
     
   }
+
+  
   return (
     <form className='Form' onSubmit={handleSubmit(onSubmit)}>
          <TextField
@@ -86,7 +92,7 @@ export const PostUpdateGrowingPigs = () => {
         </TextField>
         <TextField
           size="small"
-          label='Etapas'
+          label='Etapa'
           fullWidth
           defaultValue={values.id_pig_stage}
           {...register('id_pig_stage')} 

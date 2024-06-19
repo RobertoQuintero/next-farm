@@ -44,7 +44,7 @@ export const TaskElementRow = ({task,report}:Props) => {
  };
 
   return (
-    <div  style={{order:task.done ||!task.status?50:1,display:'flex',fontSize:'14px'}}>
+    <div  style={{order:task.done ||!task.status?50:1,display:'flex',fontSize:'14px',padding:'.3rem 0'}} className='hover'>
       {/* <p style={{width:'90px'}} className='underlined' onClick={updateDate}>{new Date(task.start_date).toLocaleString().split(',')[0]}</p> */}
       <p style={{width:'90px'}} className={task.done||!task.status?'':'underlined'} onClick={updateDate}>{addZero(new Date(task.start_date)).split('-').reverse().join('-')}</p>
       {report?<p style={{width:'90px'}} className='underlined' onClick={()=>goPage(task.id_pig,task.id_lot_piglets)}>{task?.pig_ubication?task.pig_ubication:task.piglets_ubication}</p>:<></>}
