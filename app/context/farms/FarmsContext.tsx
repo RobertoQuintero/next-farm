@@ -71,6 +71,7 @@ interface ContextProps{
   taskPigletStartDate:Date | null;
   taskPigletEndDate:Date | null;
   searchedPigletTasks:ITask[]
+  general_ubication:IUbication | undefined;
   
 
   //methods
@@ -148,7 +149,9 @@ interface ContextProps{
   setTaskStartDate: (payload: Date | null) => void;
   setTaskEndDate: (payload: Date | null) => void;
   setPigletTaskStartDate: (payload: Date | null) => void;
-  setPigletTaskEndDate: (payload: Date | null) => void
+  setPigletTaskEndDate: (payload: Date | null) => void;
+  postInitGrowingPig: (payload: IGrowingPigs) => Promise<boolean>;
+  getGeneralUbication: (idFarm: number) => Promise<boolean>;
 }
 
 export const FarmsContext = createContext({} as ContextProps)

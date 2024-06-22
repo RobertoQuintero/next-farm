@@ -5,6 +5,7 @@ export interface IUbication {
   description:  string;
   status:       boolean;
   id_farm:      number;
+  is_general:boolean;
 }
 
 export interface IPigType {

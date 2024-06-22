@@ -11,6 +11,7 @@ const query=`
     CU.id_farm,
     CU.created_at,
     CU.updated_at,
+    CU.is_general,
     PT.description pig_type
   FROM CAT.Ubications CU
   left join CAT.pig_types PT
@@ -25,7 +26,7 @@ export const GET = async(req:Request) =>{
 
 export const POST = async(req:Request) =>{
   const body = await req.json();
-  const { id_ubication,created_at,description,id_farm,id_pig_type,status,updated_at}= body as IUbication;
+  const { id_ubication,created_at,description,id_farm,id_pig_type,status,updated_at,is_general}= body as IUbication;
 
   if(!id_ubication){
     try {
@@ -38,6 +39,9 @@ export const POST = async(req:Request) =>{
       return Response.json({ok:false,data:'Error el agregar registro'},{status:500})
     }  
   }
+  if(is_general){
+    await db.query(`update CAT.Ubications set is_general=0 where is_general=1`)
+  }
 
   return await postRequest(`  
     declare @const int 
@@ -49,6 +53,7 @@ export const POST = async(req:Request) =>{
           id_farm='${id_farm}',
           id_pig_type='${id_pig_type}',
           status='${status}',
+          is_general='${is_general}',
           updated_at='${updated_at}'
       WHERE id_ubication=${id_ubication}
       ${query} WHERE CU.id_ubication=${id_ubication}
@@ -62,6 +67,7 @@ export const POST = async(req:Request) =>{
         id_farm,
         id_pig_type,
         status,
+        is_general,
         updated_at
         )
         VALUES(
@@ -71,6 +77,7 @@ export const POST = async(req:Request) =>{
           '${id_farm}',
           '${id_pig_type}',
           '${status}',
+          '${is_general}',
           '${updated_at}'
       )
       ${query} WHERE CU.id_ubication=@const

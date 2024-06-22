@@ -17,10 +17,11 @@ import Cookies from 'js-cookie'
 const PigletsPage = () => {
   const {toggleModal} = useContext(UiContext)
   const {idFarm} = useContext(AuthContext)
-  const {piglets,setFarmAction,farmAction,getCode,farmsLoading,farmsError,piglet,postPiglets,getPiglets,setPiglet,ubications,getUbications,setPiglets} = useContext(FarmsContext)
+  const {piglets,setFarmAction,farmAction,getCode,farmsLoading,farmsError,piglet,postPiglets,getPiglets,setPiglet,ubications,getUbications,setPiglets,getGeneralUbication} = useContext(FarmsContext)
   const [print, setPrint] = useState(false)
   useEffect(() => {
     getPiglets(idFarm || Number(Cookies.get('id_farm')))
+    getGeneralUbication(idFarm || Number(Cookies.get('id_farm')))
   }, [])
 
   useEffect(() => {

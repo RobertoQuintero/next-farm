@@ -17,14 +17,14 @@ export const UbicationRow = ({ubication}:Props) => {
   };
 
   return (
-    <div className='rowCard'>
+    <div className='rowCard' style={{backgroundColor:ubication.is_general?'#93e1d8':''}}>
       <div className='ubicationRow'>
         <p>{new Date(ubication.updated_at).toLocaleString().split(',')[0]}</p>
         <p>{ubication.pig_type}</p>
         <p>{ubication.description}</p>
       </div>
       <div style={{display:'flex',alignItems:'center', gap:'.5rem'}}>
-      <RowButton onClick={()=>onClick('OPEN')} label="ver"/>
+      <RowButton onClick={()=>onClick('OPEN')} label="Editar"/>
       <RowButton onClick={()=>onClick('DELETE')} label="Borrar" color='red'/>
       </div>
     </div>

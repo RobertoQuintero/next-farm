@@ -47,7 +47,6 @@ export const RegisterForm = () => {
       <p className={styles.formTitle}>Registro</p>
         <TextField
           size='small'
-          fullWidth
           label='Nombre'
           type="text"
           {...register('name',{
@@ -58,7 +57,6 @@ export const RegisterForm = () => {
           />
         <TextField
           size='small'
-          fullWidth
           label='Email'
           type="email"
           {...register('email',{
@@ -69,7 +67,6 @@ export const RegisterForm = () => {
           />
         <TextField
           size='small'
-          fullWidth
           label='Password'
           type="password"
           {...register('password',{
@@ -80,7 +77,6 @@ export const RegisterForm = () => {
           />
           <TextField
             size='small'
-          fullWidth
           label='Dirección'
           type="text"
           {...register('address',{
@@ -102,7 +98,6 @@ export const RegisterForm = () => {
             />
           <TextField
             size='small'
-            fullWidth
             label='Teléfono'
             type="number"
             {...register('phone',{
@@ -115,7 +110,6 @@ export const RegisterForm = () => {
         <TextField
           size="small"
           label='Estado'
-          fullWidth
           value={state}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setState(+event.target.value);

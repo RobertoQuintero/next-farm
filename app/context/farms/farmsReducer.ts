@@ -70,6 +70,7 @@ import { IStallionMonths } from '@/interfaces/stallions';
         | {type:'[Farms] - setPigletTaskStartDate'; payload:Date | null }
         | {type:'[Farms] - setPigletTaskEndDate'; payload:Date | null }
         | {type:'[Farms] - setSearchedPigletTasks'; payload:ITask[] }
+        | {type:'[Farms] - setGeneralUbication'; payload:IUbication | undefined }
         
         
 export const usersReducer = (state:UsersState,action:UsersActionType):UsersState => {
@@ -428,6 +429,12 @@ export const usersReducer = (state:UsersState,action:UsersActionType):UsersState
       return {
         ...state,
         searchedPigletTasks:action.payload
+      }
+
+    case '[Farms] - setGeneralUbication':
+      return {
+        ...state,
+        general_ubication:action.payload
       }
   
     default:

@@ -3,7 +3,7 @@ import { AuthContext } from '@/app/context/auth/AuthContext'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { IUbication } from '@/interfaces'
-import { MenuItem, TextField } from '@mui/material'
+import { MenuItem, Switch, TextField } from '@mui/material'
 import React, { useContext } from 'react'
 import { useForm } from "react-hook-form"
 
@@ -22,9 +22,14 @@ export const PostUpdateUbication = () => {
     id_pig_type:ubication?ubication.id_pig_type:'3',
     description:ubication?ubication.description:'',
     status:ubication?ubication.status:true,
+    is_general:ubication?ubication.is_general:false,
     id_farm:ubication?ubication.id_farm:idFarm
   } as IUbication
 
+  const [checked, setChecked] = React.useState(values.is_general);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked);
+  };
 
   const onSubmit=async(data:IUbication)=>{
     const date = new Date()
@@ -33,6 +38,7 @@ export const PostUpdateUbication = () => {
     data.created_at=date
     data.status=values.status
     data.id_farm=values.id_farm
+    data.is_general=checked
   
     const ok= await postUbication(data)
     if(ok){
@@ -73,6 +79,17 @@ export const PostUpdateUbication = () => {
             :<div></div>
           }
         </TextField>
+        {
+          ubication?.id_pig_type===2
+            ?(<div style={{display:'flex', alignItems:'center',width:'100%',justifyContent:'flex-end'}}>
+              <p>{checked?'Es general':'No es general'}</p>
+              <Switch
+                checked={checked}
+                onChange={handleChange}
+                inputProps={{ 'aria-label': 'controlled' }}
+              />
+              </div>):<></>
+        }
         <SaveButton loading={farmsLoading}/>
     </form>
   )

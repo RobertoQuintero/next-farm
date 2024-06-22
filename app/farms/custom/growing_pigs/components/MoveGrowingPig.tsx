@@ -26,14 +26,15 @@ export const MoveGrowingPig = () => {
   const onSubmit=async(data:IGrowingPigs)=>{
     const newgrowing={
       ...growing_pig,
-      quantity:growing_pig?.quantity! - Number(data.quantity)
+      quantity:Number(growing_pig?.quantity) - Number(data.quantity),
+      status:!!(Number(growing_pig?.quantity) - Number(data.quantity)),
+      closed:!(Number(growing_pig?.quantity) - Number(data.quantity))
     } as IGrowingPigs
-    console.log(newgrowing)
 
     const growing= growing_pigs.find(g=>g.id_ubication===Number(data.id_ubication))
     const newGrowing2={
       ...growing,
-      quantity:growing?.quantity!+Number(data.quantity)
+      quantity:Number(growing?.quantity)+Number(data.quantity)
     } as IGrowingPigs
 
     
@@ -56,7 +57,11 @@ export const MoveGrowingPig = () => {
         defaultValue={values.quantity}
         {...register('quantity',{
           required:'Este campo es requerido',
+          min:1,
+          max:growing_pig?.quantity
         })}
+        error={!!errors.quantity}
+        helperText={errors.quantity?.message}
         />
         <TextField
           size="small"

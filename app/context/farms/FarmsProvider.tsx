@@ -79,7 +79,8 @@ export interface UsersState{
   searchedTasks:ITask[];
   taskPigletStartDate:Date | null;
   taskPigletEndDate:Date | null;
-  searchedPigletTasks:ITask[]
+  searchedPigletTasks:ITask[];
+  general_ubication:IUbication | undefined;
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -145,7 +146,8 @@ const UI_INITIAL_STATE:UsersState={
   searchedTasks:[],
   taskPigletStartDate:new Date(),
   taskPigletEndDate:new Date(),
-  searchedPigletTasks:[]
+  searchedPigletTasks:[],
+  general_ubication:undefined
 }
 
 export const FarmsProvider = ({children}:Props) => {
@@ -186,6 +188,7 @@ export const FarmsProvider = ({children}:Props) => {
       getFarmsRequest(`/farms/catalog/pig_stages`),
       getFarmsRequest(`/farms/catalog/stage_task_types`),
       getFarmsRequest(`/farms/catalog/pig_tasks?id_farm=${idFarm}`),
+      getFarmsRequest(`/farms/general?id_farm=${idFarm}`),
 
      ]).then((resp)=>{
       setPigTypes(resp[0].data as IPigType[])
@@ -201,6 +204,7 @@ export const FarmsProvider = ({children}:Props) => {
       setPigStages(resp[10].data as IPigStage[])
       setStageTaskTypes(resp[11].data as IStageTaskType[])
       setPigTasks(resp[12].data as IPigTask[])
+      setGeneralUbication((resp[13].data as IUbication[])[0] || undefined)
 
       setIsLoading(false)
      })
@@ -210,6 +214,20 @@ export const FarmsProvider = ({children}:Props) => {
       setIsLoading(false)
      })
   };
+
+  
+  const getGeneralUbication = async(idFarm:number) =>{
+      setIsLoading(true)
+       const {ok,data}=await getFarmsRequest(`/farms/general?id_farm=${idFarm}`)
+       if(ok){
+         setGeneralUbication((data as IUbication[])[0] || undefined)
+       }
+       else{
+        setError(data as string)
+       }
+       setIsLoading(false)
+       return ok
+    };
 
   const getPigs = async(payload:number) =>{
    setAccessError(undefined)
@@ -323,6 +341,19 @@ export const FarmsProvider = ({children}:Props) => {
          setIsLoading(false)
       };
 
+         
+         const postInitGrowingPig = async(payload:IGrowingPigs) =>{
+             setIsLoading(true)
+              const {ok,data}=await postFarmsRequest(`/farms/growing_pigs/init`,payload)
+              if(ok){
+               await getPiglets(payload.id_farm)
+              }
+              else{
+               setError(data as string)
+              }
+              setIsLoading(false)
+              return ok
+           };
 
    
    const getStallionMonths = async(payload:number) =>{
@@ -529,6 +560,15 @@ export const FarmsProvider = ({children}:Props) => {
    if(!userAccess.find(u=>u.id_access===10)&& user?.id_role!==1){
       setAccessError('Credenciales inválidas')
       return true 
+    }
+    if(payload.is_general){
+      const newUbications=state.ubications.map(u=>{
+         if(u.is_general){
+            u.is_general=false
+         }
+         return u
+      })
+      setUbications(newUbications)
     }
     return await getPostLoadingOrError('/farms/catalog/ubications',setUbications,payload,state.ubications,'id_ubication',true)
   };
@@ -1103,6 +1143,12 @@ export const FarmsProvider = ({children}:Props) => {
       payload
      })
   };
+  const setGeneralUbication = (payload: IUbication | undefined) =>{
+     dispatch({
+      type:'[Farms] - setGeneralUbication',
+      payload
+     })
+  };
 
   const getPostLoadingOrError = async<T,K extends keyof T>(
       endpoint:string,setState:(payload: T[]) => void,payload?:T,state?:T[],id?:K,wich?:boolean
@@ -1200,7 +1246,9 @@ export const FarmsProvider = ({children}:Props) => {
      setTaskStartDate,
      setTaskEndDate,
      setPigletTaskEndDate,
-     setPigletTaskStartDate
+     setPigletTaskStartDate,
+     postInitGrowingPig,
+     getGeneralUbication
     }}>
       {children}
     </FarmsContext.Provider>

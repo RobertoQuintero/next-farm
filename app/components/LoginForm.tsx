@@ -32,7 +32,6 @@ export const LoginForm = () => {
       <p className={styles.formTitle} >Login</p>
       <TextField
         size='small' 
-        fullWidth
         label='Email'
         placeholder="user@gmail.com" 
         type="email"
@@ -44,7 +43,6 @@ export const LoginForm = () => {
         />
       <TextField
         size='small' 
-        fullWidth
         label='Password'
         placeholder="******" 
         type="password"
