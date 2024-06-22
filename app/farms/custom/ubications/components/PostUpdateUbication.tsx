@@ -4,13 +4,14 @@ import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { IUbication } from '@/interfaces'
 import { MenuItem, Switch, TextField } from '@mui/material'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { useForm } from "react-hook-form"
 
 export const PostUpdateUbication = () => {
   const {ubication,pigTypes,farmsLoading,postUbication} = useContext(FarmsContext)
   const  {idFarm}= useContext(AuthContext)
   const {toggleModal} = useContext(UiContext)
+ 
   const {
     register,
     handleSubmit,
@@ -19,12 +20,13 @@ export const PostUpdateUbication = () => {
 
   const values={
     id_ubication:ubication?ubication.id_ubication:0,
-    id_pig_type:ubication?ubication.id_pig_type:'3',
+    id_pig_type:ubication?ubication.id_pig_type:3,
     description:ubication?ubication.description:'',
     status:ubication?ubication.status:true,
     is_general:ubication?ubication.is_general:false,
     id_farm:ubication?ubication.id_farm:idFarm
   } as IUbication
+  const [pigType, setPigType] = useState(values.id_pig_type)
 
   const [checked, setChecked] = React.useState(values.is_general);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,6 +41,7 @@ export const PostUpdateUbication = () => {
     data.status=values.status
     data.id_farm=values.id_farm
     data.is_general=checked
+    data.id_pig_type=pigType
   
     const ok= await postUbication(data)
     if(ok){
@@ -63,9 +66,10 @@ export const PostUpdateUbication = () => {
         <TextField
           size="small"
           label='Tipo'
-          fullWidth
-          defaultValue={values.id_pig_type}
-          {...register('id_pig_type')} 
+          value={pigType}
+          onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{
+            setPigType(+e.target.value)
+          }}
           select >
           {
             pigTypes.length
@@ -80,7 +84,7 @@ export const PostUpdateUbication = () => {
           }
         </TextField>
         {
-          ubication?.id_pig_type===2
+          ubication?.id_pig_type===2 || pigType===2
             ?(<div style={{display:'flex', alignItems:'center',width:'100%',justifyContent:'flex-end'}}>
               <p>{checked?'Es general':'No es general'}</p>
               <Switch
