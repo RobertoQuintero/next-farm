@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form"
 export const PostUpdatePig = () => {
   const {idFarm} = useContext(AuthContext)
   const {toggleModal} = useContext(UiContext)
-  const {farmsLoading,ubications,races,pig,postPig,stallions,getCode,code,weightTypes,pigs,postUbicationForm,postRace,postRaceForm} = useContext(FarmsContext)
+  const {farmsLoading,ubications,races,pig,postPig,stallions,getCode,code,weightTypes,pigs,postUbicationForm,postRace,postRaceForm,getUbications} = useContext(FarmsContext)
   const [addUbication, setAddUbication] = useState(false)
   const [newUbication, setNewUbication] = useState('')
   const [addRace, setAddRace] = useState(false)
@@ -82,12 +82,16 @@ export const PostUpdatePig = () => {
         id_farm:idFarm,
         id_pig_type:3,
         status:true,
-        updated_at:date
+        updated_at:date,
+        is_general:false
       } as IUbication
 
+      
       const {ok,data:d} = await postUbicationForm(ubication)
+
       if(ok){
         data.id_ubication=(d as IUbication).id_ubication 
+        await getUbications(idFarm!)
       }else{
         setError(d as string)
         return
@@ -216,9 +220,9 @@ export const PostUpdatePig = () => {
               newUbications().length
               ?newUbications().map(item=>(
                 <MenuItem 
-                  key={item.id_ubication} 
-                  value={item.id_ubication}>
-                  {item.description}
+                  key={item?.id_ubication} 
+                  value={item?.id_ubication}>
+                  {item?.description}
                 </MenuItem>
               ))
               :<div></div>

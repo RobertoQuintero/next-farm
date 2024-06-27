@@ -27,7 +27,7 @@ export const GET = async(req:Request) =>{
 export const POST = async(req:Request) =>{
   const body = await req.json();
   const { id_ubication,created_at,description,id_farm,id_pig_type,status,updated_at,is_general}= body as IUbication;
-
+  
   if(!id_ubication){
     try {
       const resp= await db.query(`select * from CAT.Ubications where status='true' and description='${description}'`)
