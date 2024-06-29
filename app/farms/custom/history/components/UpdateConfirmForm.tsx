@@ -26,9 +26,6 @@ export const UpdateConfirmForm = () => {
       confirm_date:addZero(date!),
       id_user_confirm:user?.id_user!,
     } as IBirth
-
-    // console.log(newBirth)
-    // return
     
     const is_normal=Number(newBirth.id_birth_type)===1
     

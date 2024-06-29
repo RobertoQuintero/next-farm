@@ -6,7 +6,7 @@ import { UiContext } from '@/app/context/ui/UiContext'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { CheckCircleOutline, HighlightOffOutlined } from '@mui/icons-material'
 import { useRouter } from 'next/navigation'
-import { addZero } from '@/utils'
+import { addZero, buildDateReverse } from '@/utils'
 
 interface Props{
   task:ITask;
@@ -46,7 +46,7 @@ export const TaskElementRow = ({task,report}:Props) => {
   return (
     <div  style={{order:task.done ||!task.status?50:1,display:'flex',fontSize:'14px',padding:'.3rem 0'}} className='hover'>
       {/* <p style={{width:'90px'}} className='underlined' onClick={updateDate}>{new Date(task.start_date).toLocaleString().split(',')[0]}</p> */}
-      <p style={{width:'90px'}} className={task.done||!task.status?'':'underlined'} onClick={updateDate}>{addZero(new Date(task.start_date)).split('-').reverse().join('-')}</p>
+      <p style={{width:'90px'}} className={task.done||!task.status?'':'underlined'} onClick={updateDate}>{addZero(new Date(buildDateReverse(task.start_date as string))).split('-').reverse().join('/')}</p>
       {report?<p style={{width:'90px'}} className='underlined' onClick={()=>goPage(task.id_pig,task.id_lot_piglets)}>{task?.pig_ubication?task.pig_ubication:task.piglets_ubication}</p>:<></>}
       <p style={{textTransform:'capitalize',width:'90px'}}>{task.name?.split(' ')[0]}</p>
       <p style={{width:'200px'}}>{task.description}</p>

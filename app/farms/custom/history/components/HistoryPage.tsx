@@ -104,9 +104,9 @@ const HistoryPage = () => {
           {
             farmAction==='BIRTH'?<UpdateBirthForm/>:<></>
           }
-          {
+          {/* {
             farmAction==='COMMENT'?<UpdateBirthForm/>:<></>
-          }
+          } */}
           {
             farmAction==='COMMENT-TASK'?<UpdateComment/>:<></>
           }

@@ -3,6 +3,7 @@ import React, { useContext } from 'react'
 import styles from './pig.module.css'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { useUi } from '@/app/context/ui/useUi'
+import { addZero, buildDateReverse } from '@/utils'
 
 
 interface Props{
@@ -21,13 +22,13 @@ export const BirthElementRow = ({birth,i}:Props) => {
 
   return (
     <div className={styles.birthRow}>
-      <p>{new Date(birth.crossing_date).toLocaleString().split(',')[0]}</p>
+      <p>{addZero(new Date(buildDateReverse(birth.crossing_date as string))).split('-').reverse().join('/')}</p>
       <p>{birth.fertilization_type}</p>
       <p>{birth.stallion}</p>
       {
         pig?.id_pig_stage===3&& !birth.closed&&i===births.length
-          ?<p onClick={()=>onConfirm('CONFIRM')} className={styles.underline}>{new Date(birth.confirm_date).toLocaleString().split(',')[0]}</p>
-          :<p >{new Date(birth.confirm_date).toLocaleString().split(',')[0]}</p>
+          ?<p onClick={()=>onConfirm('CONFIRM')} className={styles.underline}>{addZero(new Date(buildDateReverse(birth.confirm_date as string))).split('-').reverse().join('/')}</p>
+          :<p >{addZero(new Date(buildDateReverse(birth.confirm_date as string))).split('-').reverse().join('/')}</p>
       }
       {
         pig?.id_pig_stage===4&& !birth.closed&&i===births.length
@@ -37,8 +38,8 @@ export const BirthElementRow = ({birth,i}:Props) => {
       }
       {
         pig?.id_pig_stage===5&& !birth.closed&&i===births.length
-        ?<p onClick={()=>onConfirm('BIRTH')} className={styles.underline}>{new Date(birth.birth_date).toLocaleString().split(',')[0]}</p>
-        :<p>{new Date(birth.birth_date).toLocaleString().split(',')[0]}</p>
+        ?<p onClick={()=>onConfirm('BIRTH')} className={styles.underline}>{addZero(new Date(buildDateReverse(birth.birth_date as string))).split('-').reverse().join('/')}</p>
+        :<p>{addZero(new Date(buildDateReverse(birth.birth_date as string))).split('-').reverse().join('/')}</p>
         
       }
       
