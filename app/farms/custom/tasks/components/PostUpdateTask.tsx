@@ -3,7 +3,6 @@ import { AuthContext } from '@/app/context/auth/AuthContext'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { IPigTask} from '@/interfaces'
-import { compareObjects } from '@/interfaces/compareObjects'
 import { buildDate } from '@/utils'
 import {  MenuItem, Switch, TextField } from '@mui/material'
 import React, { useContext, useState } from 'react'
@@ -44,8 +43,7 @@ export const PostUpdateTask = () => {
   const [isMovement, setIsMovement] = useState(values.is_movement_task)
 
   const onSubmit=async(data:IPigTask)=>{
-      console.log('first')
-    // return
+  
     const date= buildDate(new Date())
     data.created_at=date
     data.id_pig_stage=pigStage

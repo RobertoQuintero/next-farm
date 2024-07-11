@@ -9,9 +9,11 @@ import { PostUpdateTask, TaskRow } from '.'
 import { IPigTask } from '@/interfaces'
 import Link from 'next/link'
 import OnRefreshButton from '../../components/OnRefreshButton'
+import { AuthContext } from '@/app/context/auth/AuthContext'
 
 const TasksPage = () => {
   const {toggleModal} = useContext(UiContext)
+  const {user} = useContext(AuthContext)
   const {tasks,setTask,setFarmAction,farmAction,farmsLoading,farmsError,task,postTask,pigTask,pigTasks,setPigTask,pigStages,getTasks} = useContext(FarmsContext)
   const [error, setError] = useState(false)
 
@@ -27,7 +29,15 @@ const TasksPage = () => {
   };
 
   const onDelete = async() =>{
-    const newTask={...pigTask, status:false} as IPigTask
+    const newTask={
+      ...pigTask,
+       status:false,
+       days_diff:0,
+       id_user:user?.id_user
+      } as IPigTask
+
+    // console.log(newTask)
+    // return
     const ok=await postTask(newTask)
     if(ok){
       toggleModal()

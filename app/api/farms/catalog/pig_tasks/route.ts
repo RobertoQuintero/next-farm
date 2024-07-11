@@ -43,7 +43,7 @@ export const POST = async(req:Request) =>{
   const {id_pig_task, created_at,days,description,id_farm,status,id_pig_stage,while_days,id_stage_task_type,change_to_stage,end_stage,is_movement_task,days_diff,id_pig_type,id_user,see_state}= body as IPigTask;
   let pigs=[] as IPig[]
   let piglets=[] as IPiglets[]
-  console.log({body})
+
   try {
 
     if(days_diff!==0 && id_pig_task!==0){
