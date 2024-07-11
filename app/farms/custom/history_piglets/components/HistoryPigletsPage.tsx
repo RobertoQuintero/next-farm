@@ -8,12 +8,12 @@ import { LossForm, PostNewTask, UpdateComment, UpdateDate, UpdateTask } from '..
 import Cookies from 'js-cookie'
 import { PostUpdateComment } from '../../history/components/PostUpdateComment'
 import { buildDate } from '@/utils'
-import { IComment } from '@/interfaces'
+import { IComment, ITask } from '@/interfaces'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { CommentsRow } from './CommentsRow'
 
 const HistoryPigletsPage = () => {
-  const {farmAction,piglet,setPiglet,getCode,farmsLoading,farmsError,comment,postComments} = useContext(FarmsContext)
+  const {farmAction,piglet,setPiglet,getCode,farmsLoading,farmsError,comment,postComments,task,updateTasks} = useContext(FarmsContext)
   const {toggleModal} = useContext(UiContext)
   
   useEffect(() => {
@@ -30,6 +30,19 @@ const HistoryPigletsPage = () => {
    } as IComment
 
     const ok= await postComments(newComment)
+    if(ok){
+     toggleModal()
+    }
+ };
+ const onDelete = async() =>{
+
+    const newTask={
+      ...task,
+      status:false,
+      id_birth:piglet?.id_birth
+    } as ITask
+
+    const ok= await updateTasks(newTask)
     if(ok){
      toggleModal()
     }
@@ -60,6 +73,9 @@ const HistoryPigletsPage = () => {
       }
       {
         farmAction==='ADD-TASK'?<PostNewTask/>:<></>
+      }
+      {
+        farmAction==='DELETE-TASK'?<DeleteComponent onDelete={onDelete} loading={farmsLoading} error={farmsError}/>:<></>
       }
       {
         farmAction==='CREATE-COMMENT' ||farmAction==='UPDATE-COMMENT'?<PostUpdateComment/>:<></>
