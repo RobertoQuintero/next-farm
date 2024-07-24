@@ -25,7 +25,7 @@ export const PostNewTask = () => {
   } as ITask
 
   const onSubmit=async(data:ITask)=>{
-    console.log(data)
+
     const task={
       id_task:0,
       id_pig:pig?pig.id_pig:null,

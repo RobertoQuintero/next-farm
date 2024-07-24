@@ -28,9 +28,8 @@ export const UpdateBirthForm = () => {
 
 
   const onSubmit=async(data:IBirth)=>{
-    console.log(data)
-    if(!data.alive &&data.id_birth_type!==2) return
-    
+    if(!data.alive &&data.id_birth_type===1) return
+      
     if(farmAction==='COMMENT'){
       const comment={...birth,comment:data.comment} as IBirth
     const ok= await postBirth(comment)

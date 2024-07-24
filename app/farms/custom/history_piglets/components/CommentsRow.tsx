@@ -16,7 +16,6 @@ export const CommentsRow = () => {
       getComments(piglet?.id_lot_piglets!,'piglet')
     }else{
       const newPig= JSON.parse(Cookies.get('piglet')!) as IPiglets
-      console.log(newPig)
       getComments(newPig.id_lot_piglets,'piglet')
     }
   }, [])
