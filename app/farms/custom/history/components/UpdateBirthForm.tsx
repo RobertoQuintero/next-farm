@@ -98,7 +98,7 @@ export const UpdateBirthForm = () => {
             postPig(newPig),
             postBirth(newBirth),
             is_normal&& createTasksToDo({id_pig:newPig.id_pig,id_pig_stage:newPig.id_pig_stage,id_user:user?.id_user!,id_lot_piglets:0,id_farm:newPig.id_farm,added_date:newBirth.birth_date as string}),
-            pig?.id_pig_stage===5&&postNewPiglets(piglets).then(async(resp)=>{
+            pig?.id_pig_stage===5&&is_normal&&postNewPiglets(piglets).then(async(resp)=>{
               if(resp){
                 await createTasksToDo({id_pig:0,id_pig_stage:7,id_user:user?.id_user!,id_lot_piglets:resp as number,id_farm:newPig.id_farm,added_date:newBirth.birth_date as string})
               }
