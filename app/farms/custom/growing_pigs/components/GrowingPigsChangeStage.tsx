@@ -11,8 +11,12 @@ import { useForm } from 'react-hook-form'
 
 export const GrowingPigsChangeStage = () => {
   const {toggleModal} = useContext(UiContext)
-  const {growing_pig,pigStages,farmsLoading,postGrowingPigs,ubications,growing_pigs} = useContext(FarmsContext)
+  const {growing_pig,pigStages,farmsLoading,postGrowingPigs,ubications,growing_pigs,postUbicationForm} = useContext(FarmsContext)
   const {idFarm,user} = useContext(AuthContext)
+  const [addUbication, setAddUbication] = useState(false)
+  const [newUbication, setNewUbication] = useState('')
+  const [error, setError] = useState<string | undefined>(undefined)
+
   const newUbications = () =>{
     const array=[] as IUbication[]
     for (const p of ubications.filter(f=>f.id_pig_type===2)) {
@@ -35,7 +39,7 @@ export const GrowingPigsChangeStage = () => {
   const values={
     id_growing_lot:growing_pig?growing_pig.id_growing_lot:0,
     average_weight:growing_pig?growing_pig.average_weight:'',
-    quantity:growing_pig?growing_pig.quantity:'',
+    quantity:growing_pig?growing_pig.quantity:0,
     id_pig_stage:growing_pig?growing_pig.id_pig_stage:pigStages.filter(p=>p.id_pig_type===2)[0].id_pig_stage,
     id_ubication:growing_pig?growing_pig.id_ubication:newUbications()[0]?.id_ubication,
     created_at:growing_pig?growing_pig?.created_at:buildDate(new Date()),
@@ -60,9 +64,33 @@ export const GrowingPigsChangeStage = () => {
     const growing={
       ...values,
       ...data,
+      quantity:values.quantity,
+      average_weight:Number(data.average_weight)?data.average_weight:0,
       start_date:buildDate(date!),
       exit_date:buildDate(newDate!)
-     } as IGrowingPigs
+    } as IGrowingPigs
+
+    if(addUbication){
+      const ubication={
+        id_ubication:0,
+        created_at:newDate,
+        description:newUbication.toUpperCase(),
+        id_farm:idFarm,
+        id_pig_type:2,
+        status:true,
+        updated_at:newDate,
+        is_general:false
+      } as IUbication
+
+      const {ok,data:d} = await postUbicationForm(ubication)
+      console.log(d)
+      if(ok){
+        growing.id_ubication=(d as IUbication).id_ubication 
+      }else{
+        setError(d as string)
+        return
+      }
+    }
 
     //  console.log(growing)
     //  return
@@ -75,15 +103,17 @@ export const GrowingPigsChangeStage = () => {
 
   return (
     <form className='Form' style={{width:'270px'}} onSubmit={handleSubmit(onSubmit)}>
-      {/* <TextField 
+      <TextField 
+        disabled
         size="small"
         fullWidth
         label='Cantidad'
         type="number"
         defaultValue={values.quantity}
         {...register('quantity',{min:1})}
-        /> */}
-      <TextField 
+        />
+      {
+        growing_pig&&<TextField 
         size="small"
         fullWidth
         label='Peso Promedio'
@@ -91,6 +121,7 @@ export const GrowingPigsChangeStage = () => {
         defaultValue={values.average_weight}
         {...register('average_weight',{min:1})}
         />
+      }
       <TextField
           size="small"
           label='Etapa'
@@ -109,6 +140,45 @@ export const GrowingPigsChangeStage = () => {
             :<div></div>
           }
         </TextField>
+        {addUbication?<></>:<p onClick={()=>setAddUbication(true)} style={{textAlign:'right', fontSize:'14px', textDecoration:'underline',cursor:'pointer'}}>Agregar</p>}
+        {
+          addUbication
+            ?<>
+              <TextField 
+                size="small"
+                fullWidth
+                label='Ubicación'
+                type="text"
+                value={newUbication}
+                onChange={(e:React.ChangeEvent<HTMLInputElement>)=>{
+                  setNewUbication(e.target.value)
+                }}
+              />
+              {error?<p style={{fontSize:'13px', color:'red', textAlign:'center'}}>{error}</p>:<></>}
+            </>
+            :<TextField
+            size="small"
+            label='Ubicación'
+            fullWidth
+            defaultValue={values.id_ubication}
+            {...register('id_ubication')} 
+            select >
+            {
+              newUbications().length
+              ?newUbications().map(item=>(
+                <MenuItem 
+                  key={item.id_ubication} 
+                  value={item.id_ubication}>
+                  {item.description}
+                </MenuItem>
+              ))
+              :<div></div>
+            }
+          </TextField>
+        }
+
+
+
       {/* <TextField
           size="small"
           label='Ubicación'

@@ -58,7 +58,8 @@ export const PostUpdatePiglets = () => {
       status:true,
       closed:false,
       close_date:newDate,
-      code:piggletCode
+      code:piggletCode,
+      
     } as IPiglets
 
     if(addUbication){
@@ -69,7 +70,8 @@ export const PostUpdatePiglets = () => {
         id_farm:idFarm,
         id_pig_type:1,
         status:true,
-        updated_at:newDate
+        updated_at:newDate,
+        is_general:false
       } as IUbication
 
       const {ok,data:d} = await postUbicationForm(ubication)

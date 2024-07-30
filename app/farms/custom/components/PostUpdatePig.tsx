@@ -105,7 +105,8 @@ export const PostUpdatePig = () => {
         description:newRace.toUpperCase(),
         id_farm:idFarm,
         status:true,
-        updated_at:date
+        updated_at:date,
+        
       } as IRace
 
       const {ok,data:d} = await postRaceForm(ubication)

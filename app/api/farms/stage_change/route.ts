@@ -1,6 +1,6 @@
 import db from "@/database/connection";
-import { IBirth, IPigTask } from "@/interfaces";
-import { addZero, buildDate, buildDateReverse } from "@/utils";
+import {  IPigTask } from "@/interfaces";
+import {  buildDate } from "@/utils";
 
 export const POST = async(req:Request) =>{
   const body = await req.json();
@@ -12,7 +12,7 @@ export const POST = async(req:Request) =>{
     // date.setHours(date.getHours()+6)
 
     const tasks= await db.query(`
-      SELECT * FROM CAT.Pig_tasks WHERE id_pig_stage=${id_pig_stage} and id_farm=${id_farm}
+      SELECT * FROM CAT.Pig_tasks WHERE id_pig_stage=${id_pig_stage} and id_farm=${id_farm} and status=1
     `) as unknown as IPigTask[]
 
 
@@ -70,6 +70,7 @@ export const POST = async(req:Request) =>{
       on PT.id_pig_task=MT.id_pig_task
       left join RH.Users RU
       on RU.id_user=MT.id_user
+      where MT.status=1
       order by id_task desc
     `) as unknown as []
 
