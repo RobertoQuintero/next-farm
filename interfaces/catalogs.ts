@@ -122,6 +122,8 @@ export interface IPigTask {
   days_diff?:number;
   id_user?:number;
   see_state:boolean;
+  stage?:string;
+  pig_type?:string;
 }
 
 

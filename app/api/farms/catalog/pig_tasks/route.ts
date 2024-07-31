@@ -35,7 +35,7 @@ export const GET = async(req:Request) =>{
   const {searchParams}= new URL(req.url)
     const id_farm=searchParams.get('id_farm')
 
-  return await getRequestQuery(`${query} where PT.status=1 and id_farm=${id_farm}`)
+  return await getRequestQuery(`${query} where PT.status=1 and id_farm=${id_farm} order by CP.id_pig_type desc`)
 }
 
 export const POST = async(req:Request) =>{

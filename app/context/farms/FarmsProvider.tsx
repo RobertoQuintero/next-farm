@@ -598,6 +598,16 @@ export const FarmsProvider = ({children}:Props) => {
     }
     return await getPostLoadingOrError('/farms/catalog/pig_tasks',setPigTasks,payload,state.pigTasks,'id_pig_task',true)
   };
+
+  const getPigTask = async(idFarm:number):Promise<boolean> =>{
+   if(!userAccess.find(u=>u.id_access===12)&& user?.id_role!==1){
+      setAccessError('Credenciales inválidas')
+      return true 
+    }
+    return await getPostLoadingOrError(`/farms/catalog/pig_tasks?id_farm=${idFarm}`,setPigTasks)
+  };
+
+
   const postNewTask = async(payload:ITask):Promise<boolean> =>{
    if(!userAccess.find(u=>u.id_access===5)&& user?.id_role!==1){
       setAccessError('Credenciales inválidas')
@@ -1248,7 +1258,8 @@ export const FarmsProvider = ({children}:Props) => {
      setPigletTaskEndDate,
      setPigletTaskStartDate,
      postInitGrowingPig,
-     getGeneralUbication
+     getGeneralUbication,
+     getPigTask
     }}>
       {children}
     </FarmsContext.Provider>

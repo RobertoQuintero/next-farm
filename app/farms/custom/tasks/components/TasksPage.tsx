@@ -10,11 +10,12 @@ import { IPigTask } from '@/interfaces'
 import Link from 'next/link'
 import OnRefreshButton from '../../components/OnRefreshButton'
 import { AuthContext } from '@/app/context/auth/AuthContext'
+import Cookies from 'js-cookie'
 
 const TasksPage = () => {
   const {toggleModal} = useContext(UiContext)
-  const {user} = useContext(AuthContext)
-  const {tasks,setTask,setFarmAction,farmAction,farmsLoading,farmsError,task,postTask,pigTask,pigTasks,setPigTask,pigStages,getTasks} = useContext(FarmsContext)
+  const {user,idFarm} = useContext(AuthContext)
+  const {setTask,setFarmAction,farmAction,farmsLoading,farmsError,postTask,pigTask,pigTasks,setPigTask,pigStages,getPigTask} = useContext(FarmsContext)
   const [error, setError] = useState(false)
 
   const onAdd = () =>{
@@ -47,7 +48,7 @@ const TasksPage = () => {
   };
 
   const onRefresh = async() =>{
-    // await getTasks(idFarm!||+Cookies.get('id_farm')!)
+    await getPigTask(idFarm!||+Cookies.get('id_farm')!)
     
   };
 
@@ -71,14 +72,16 @@ const TasksPage = () => {
         </div>
       </div>
       <div style={{paddingBottom:'2rem'}}>
-        <div style={{display:'flex',paddingLeft:'.5rem',fontSize:'14px', fontWeight:'bold'}}>
+        <div style={{display:'flex',paddingLeft:'.5rem',fontSize:'14px', fontWeight:'bold',gap:'.5rem', }}>
+          <p style={{width:'100px'}}>Tipo</p>
+          <p style={{width:'100px'}}>Etapa</p>
           <p style={{width:'250px'}}>Descripción</p>
-          <p style={{width:'130px'}}>Días</p>
+          <p style={{width:'120px'}}>Días</p>
           <p style={{width:'110px'}}>Cambio etapa</p>
           <p style={{width:'100px'}}>Movimiento</p>
         </div>
         {
-          pigTasks.filter(t=>t.status).length
+          pigTasks?.filter(t=>t.status).length
             ?pigTasks.filter(t=>t.status).map(a=><TaskRow task={a} key={a.id_pig_task}/>)
             :<EmptyPage title='Tareas'/>
         }

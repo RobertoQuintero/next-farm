@@ -20,8 +20,8 @@ export const TaskRow = ({task}:Props) => {
     <div className='rowCard'>
       <div style={{display:'flex',gap:'.5rem', fontSize:'14px'}}>
       {/* <p>{new Date(task.updated_at).toLocaleString().split(',')[0]}</p> */}
-      {/* <p style={{width:'100px'}}>{task.pig_type?.split(' ')[0]}</p> */}
-      {/* <p style={{width:'100px'}}>{task.stage}</p> */}
+      <p style={{width:'100px'}}>{task.pig_type?.split(' ')[0]}</p>
+      <p style={{width:'100px'}}>{task.stage}</p>
       <p style={{width:'250px'}}>{task.description}</p>
       <p style={{width:'130px',display:'flex',gap:'.2rem'}}>
         <span>a los</span> 
