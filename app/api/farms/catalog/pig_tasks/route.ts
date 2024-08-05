@@ -127,16 +127,16 @@ export const POST = async(req:Request) =>{
       for (const pig of pigs) {
         let start_date=''
         if(id_pig_stage===2||id_pig_stage===1){
-          start_date=addZero(new Date(buildDateReverse(pig.added_date as string)))
+          start_date= (pig.added_date as Date).toISOString().split('T')[0]
         }
         if(id_pig_stage===3){
-          start_date=addZero(new Date(buildDateReverse(pig.crossing_date)))
+          start_date=(pig.crossing_date as unknown as Date).toISOString().split('T')[0]
         }
         if(id_pig_stage===4 || id_pig_stage===5){
-          start_date=addZero(new Date(buildDateReverse(pig.confirm_date)))
+          start_date= (pig.confirm_date as unknown as Date).toISOString().split('T')[0] 
         }
         if(id_pig_stage===6){
-          start_date=addZero(new Date(buildDateReverse(pig.birth_date)))
+          start_date=(pig.birth_date as unknown as Date).toISOString().split('T')[0]
         }
 
         await db.query(`
@@ -173,7 +173,9 @@ export const POST = async(req:Request) =>{
     }
 
     if(piglets.length){
-      for (const piglet of piglets) {    
+      for (const piglet of piglets) { 
+        // console.log(addZero(new Date(buildDateReverse(piglet.created_at as string))))
+        console.log((piglet.created_at as Date).toISOString().split('T')[0])
         await db.query(`
         declare @const int 
         set @const=(SELECT isNull(max(id_task),0)+1  FROM MOD.Tasks)
@@ -197,9 +199,9 @@ export const POST = async(req:Request) =>{
           '',
           GETDATE(),
           '${false}',
-          dateadd(hour,24*${days}+6,'${addZero(new Date(buildDateReverse(piglet.created_at as string)))}'),
+          dateadd(hour,24*${days}+6,'${ (piglet.created_at as Date).toISOString().split('T')[0]}'),
           '${id_user}',
-          dateadd(hour,24*${days}+6,'${addZero(new Date(buildDateReverse(piglet.created_at as string)))}'),
+          dateadd(hour,24*${days}+6,'${(piglet.created_at as Date).toISOString().split('T')[0]}'),
           '${piglet.id_lot_piglets}',
           '${true}' 
         )
@@ -210,7 +212,8 @@ export const POST = async(req:Request) =>{
 
 
     return Response.json({
-      ok:true,
+      ok:false,
+      // data:{}
       data:resp[0]
       // data:pigs
     })

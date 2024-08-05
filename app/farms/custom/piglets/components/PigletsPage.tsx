@@ -20,9 +20,11 @@ const PigletsPage = () => {
   const {piglets,setFarmAction,farmAction,getCode,farmsLoading,farmsError,piglet,postPiglets,getPiglets,setPiglet,ubications,getUbications,setPiglets,getGeneralUbication} = useContext(FarmsContext)
   const [print, setPrint] = useState(false)
   useEffect(() => {
-    getPiglets(idFarm || Number(Cookies.get('id_farm')))
-    getGeneralUbication(idFarm || Number(Cookies.get('id_farm')))
-  }, [])
+    if(idFarm){
+      getPiglets(idFarm || Number(Cookies.get('id_farm')))
+      getGeneralUbication(idFarm || Number(Cookies.get('id_farm')))
+    }
+  }, [idFarm])
 
   useEffect(() => {
     if(!ubications.length){

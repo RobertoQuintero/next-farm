@@ -11,7 +11,7 @@ import { buildDate } from '@/utils'
 
 export const PostUpdatePiglets = () => {
   const {toggleModal} = useContext(UiContext)
-  const {farmsLoading,farmsError,ubications,piglet,pigStages,piggletCode,postNewPiglets,postPiglets,piglets,postUbicationForm} = useContext(FarmsContext)
+  const {farmsLoading,ubications,piglet,pigStages,piggletCode,postNewPiglets,piglets,postUbicationForm,createTasksToDo,getPiglets} = useContext(FarmsContext)
   const {user,idFarm} = useContext(AuthContext)
   const [date, setDate] = useState<Date | null>(new Date())
   const [addUbication, setAddUbication] = useState(false)
@@ -83,10 +83,15 @@ export const PostUpdatePiglets = () => {
       }
     }
 
-    const ok= await postPiglets(newPiglets)
-    if(ok){
-      toggleModal()
-    }
+     await postNewPiglets(newPiglets).then(async(resp)=>{
+      if(resp){
+        await createTasksToDo({id_pig:0,id_pig_stage:newPiglets.id_pig_stage,id_user:user?.id_user!,id_lot_piglets:resp as number,id_farm:newPiglets.id_farm,added_date:newPiglets.created_at as string})
+        await getPiglets(newPiglets.id_farm)
+        toggleModal()
+      }
+    })
+
+
   }
   return (
     <form className='Form' onSubmit={handleSubmit(onSubmit)}>

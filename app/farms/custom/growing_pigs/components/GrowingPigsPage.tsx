@@ -1,5 +1,5 @@
 'use client'
-import { BackButton, EmptyPage,DeleteComponent } from '@/app/components'
+import {  EmptyPage,DeleteComponent } from '@/app/components'
 import AppModal from '@/app/components/AppModal'
 import { AuthContext } from '@/app/context/auth/AuthContext'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
@@ -28,8 +28,11 @@ const GrowingPigsPage = () => {
   });
 
   useEffect(() => {
-    getGrowingPigs(idFarm!|| Number(Cookies.get('id_farm')))
-  }, [])
+    if(idFarm){
+      getGrowingPigs(idFarm!|| Number(Cookies.get('id_farm')))
+
+    }
+  }, [idFarm])
   
 
   const onAdd = () =>{
@@ -73,7 +76,6 @@ const GrowingPigsPage = () => {
   return (
     <>
      <div className='actionCreateContainer'>
-        {/* <BackButton/> */}
         <div></div>
         <Button 
           onClick={onAdd}

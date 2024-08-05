@@ -25,7 +25,12 @@ export const UpdatePiglets = () => {
   
 
   const onSubmit=async(data:IPiglets)=>{
+
     const newPiglet={...piglet,...data} as IPiglets
+    if(+newPiglet.id_pig_stage===pigStages.filter(p=>p.id_pig_type===1)[0].id_pig_stage){
+      toggleModal()
+      return
+    }
     // console.log(addZero(new Date(piglet?.created_at!)))
     // console.log(newPiglet)
     // return

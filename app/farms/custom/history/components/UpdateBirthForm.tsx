@@ -93,7 +93,7 @@ export const UpdateBirthForm = () => {
       closed:false,
       id_farm:pig?.id_farm
     } as IPiglets
-    
+     
           Promise.all([
             postPig(newPig),
             postBirth(newBirth),
