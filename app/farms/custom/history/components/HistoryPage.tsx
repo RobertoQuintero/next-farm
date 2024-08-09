@@ -33,6 +33,8 @@ const HistoryPage = () => {
        id_birth:pig?births[births.length-1].id_birth:0
       } as ITask
 
+      // console.log(newTask)
+      // return
      const ok= await updateTasks(newTask)
      if(ok){
       toggleModal()
@@ -93,7 +95,7 @@ const HistoryPage = () => {
             farmAction==='UPDATE-TASK'?<UpdateTask/>:<></>
           }
           {
-            farmAction==='DELETE-TASK'?<DeleteComponent onDelete={onDelete} loading={farmsLoading} error={farmsError}/>:<></>
+            farmAction==='DELETE-TASK'?<DeleteComponent onDelete={onDelete} loading={farmsLoading} error={farmsError} action='Rechazar'/>:<></>
           }
           {
             farmAction==='CONFIRM'?<UpdateConfirmForm/>:<></>

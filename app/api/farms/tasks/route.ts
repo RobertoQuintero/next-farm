@@ -50,11 +50,11 @@ export const POST = async(req:Request) =>{
   const {id_task,id_pig,id_pig_task,comment,created_at,done,end_date,id_user,start_date,status,id_lot_piglets,id_birth,see_state }= body as ITask;
 
   if(see_state&&!status){
-   await db.query(`
-   declare @birth int=(select top 1 id_birth from MOD.Births where id_pig=${id_pig} order by crossing_date desc)
-   update MOD.Births set id_birth_type=2 where id_birth=@birth
-   update MOD.Pigs set id_pig_stage=2 where id_pig=${id_pig}
-   `)
+  //  await db.query(`
+  //  declare @birth int=(select top 1 id_birth from MOD.Births where id_pig=${id_pig} order by crossing_date desc)
+  //  update MOD.Births set id_birth_type=2 where id_birth=@birth
+  //  update MOD.Pigs set id_pig_stage=2 where id_pig=${id_pig}
+  //  `)
   //  await db.query(`update MOD.Pigs set id_pig_stage=2 where id_pig=${id_pig}`)
   }
   

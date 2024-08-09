@@ -42,13 +42,13 @@ export const AuthProvider = ({children}:Props) => {
 
 
   useEffect(() => {
-    getResources()
     checkToken()
     if(state.logged){
       if(!state.user?.is_active){
         router.replace('/')
         return
       }
+      getResources()
 
     }
     setAccessError(undefined)

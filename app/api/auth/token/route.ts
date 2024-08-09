@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 export const GET = async (req: Request) => {
   const cookieStore = cookies();
   const token = cookieStore.get("jwt");
+
   if (!token) {
     return Response.json(
       {
@@ -17,6 +18,7 @@ export const GET = async (req: Request) => {
       }
     );
   }
+  
   let email = "";
   try {
     const jwtPayload = await isValidToken(token.value),
