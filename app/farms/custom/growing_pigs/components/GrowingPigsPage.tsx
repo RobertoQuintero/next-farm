@@ -15,7 +15,7 @@ import Cookies from 'js-cookie'
 
 const GrowingPigsPage = () => {
   const {toggleModal} = useContext(UiContext)
-  const {getGrowingPigs,growing_pigs,farmAction,farmsLoading,farmsError,postGrowingPigs,growing_pig,setGrowingPig,setFarmAction} = useContext(FarmsContext)
+  const {getGrowingPigs,growing_pigs,farmAction,farmsLoading,farmsError,postGrowingPigs,growing_pig,setGrowingPig,setFarmAction,setGrowingPigs} = useContext(FarmsContext)
   const {idFarm} = useContext(AuthContext)
   const [print, setPrint] = useState(false)
 
@@ -73,6 +73,65 @@ const GrowingPigsPage = () => {
     XLSX.writeFile(wb,'Crecimiento.xlsx')
   };
 
+  const compareDates=(a:IGrowingPigs, b:IGrowingPigs)=> {
+    if (new Date(a.start_date) < new Date(b.start_date)) {
+      return -1;
+    }
+    if (new Date(a.start_date) > new Date(b.start_date)) {
+      return 1;
+    }
+    return 0;
+  }
+
+  const compareExitDates=(a:IGrowingPigs, b:IGrowingPigs)=> {
+    if (new Date(a.exit_date) < new Date(b.exit_date)) {
+      return -1;
+    }
+    if (new Date(a.exit_date) > new Date(b.exit_date)) {
+      return 1;
+    }
+    return 0;
+  }
+
+  const  compareUbications=(a:IGrowingPigs, b:IGrowingPigs)=> {
+    if (a.ubication! < b.ubication!) {
+      return -1;
+    }
+    if (a.ubication! > b.ubication!) {
+      return 1;
+    }
+    return 0;
+  }
+  const  compareQuantities=(a:IGrowingPigs, b:IGrowingPigs)=> {
+    if (a.quantity! < b.quantity!) {
+      return -1;
+    }
+    if (a.quantity! > b.quantity!) {
+      return 1;
+    }
+    return 0;
+  }
+
+  const  compareWeight=(a:IGrowingPigs, b:IGrowingPigs)=> {
+    if (a.average_weight! < b.average_weight!) {
+      return -1;
+    }
+    if (a.average_weight! > b.average_weight!) {
+      return 1;
+    }
+    return 0;
+  }
+
+  const  compareStages=(a:IGrowingPigs, b:IGrowingPigs)=> {
+    if (a.pig_stage! < b.pig_stage!) {
+      return -1;
+    }
+    if (a.pig_stage! > b.pig_stage!) {
+      return 1;
+    }
+    return 0;
+  }
+
   return (
     <>
      <div className='actionCreateContainer'>
@@ -101,12 +160,12 @@ const GrowingPigsPage = () => {
         className='pigData'
         style={{padding:'0 0 0 .4rem',fontWeight:'bold'}}
         >
-        <p >Ingresado</p>
-        <p>Salida</p>
-        <p style={{width:'130px'}}>Ubicación</p>
-        <p>Cantidad</p>
-        <p>Peso prom.</p>
-        <p>Etapa</p>
+        <p  style={{cursor:'pointer'}} onClick={()=>setGrowingPigs(growing_pigs.sort(compareDates))}>Ingresado</p>
+        <p style={{cursor:'pointer'}} onClick={()=>setGrowingPigs(growing_pigs.sort(compareExitDates))}>Salida</p>
+        <p style={{width:'130px',cursor:'pointer'}}  onClick={()=>setGrowingPigs(growing_pigs.sort(compareUbications))}>Ubicación</p>
+        <p style={{cursor:'pointer'}} onClick={()=>setGrowingPigs(growing_pigs.sort(compareQuantities))}>Cantidad</p>
+        <p style={{cursor:'pointer'}} onClick={()=>setGrowingPigs(growing_pigs.sort(compareWeight))}>Peso prom.</p>
+        <p style={{cursor:'pointer'}} onClick={()=>setGrowingPigs(growing_pigs.sort(compareStages))}>Etapa</p>
       </div>
         {
           growing_pigs.filter(g=>!g.closed&&g.status).length

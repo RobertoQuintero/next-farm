@@ -581,7 +581,8 @@ export const FarmsProvider = ({children}:Props) => {
     setIsLoading(true)
          const {ok,data}=await postFarmsRequest('/farms/catalog/ubications',payload)
          if(ok){
-            
+            console.log(data)
+            setUbications([...state.ubications,data as IUbication])
          }
          else{
           setError(data as string)

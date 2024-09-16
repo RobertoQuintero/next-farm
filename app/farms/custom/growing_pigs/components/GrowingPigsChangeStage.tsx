@@ -41,7 +41,7 @@ export const GrowingPigsChangeStage = () => {
     average_weight:growing_pig?growing_pig.average_weight:'',
     quantity:growing_pig?growing_pig.quantity:0,
     id_pig_stage:growing_pig?growing_pig.id_pig_stage:pigStages.filter(p=>p.id_pig_type===2)[0].id_pig_stage,
-    id_ubication:growing_pig?growing_pig.id_ubication:newUbications()[0]?.id_ubication,
+    id_ubication:growing_pig?growing_pig.id_ubication:newUbications()[0]?.id_ubication||'',
     created_at:growing_pig?growing_pig?.created_at:buildDate(new Date()),
     start_date:growing_pig?new Date(buildDateReverse(growing_pig?.start_date! as string)):new Date(),
     id_farm:idFarm,
@@ -100,6 +100,9 @@ export const GrowingPigsChangeStage = () => {
       toggleModal()
      }
   };
+
+// console.log(newUbications())
+//   return <></>
 
   return (
     <form className='Form' style={{width:'270px'}} onSubmit={handleSubmit(onSubmit)}>
@@ -168,7 +171,8 @@ export const GrowingPigsChangeStage = () => {
               ?newUbications().map(item=>(
                 <MenuItem 
                   key={item.id_ubication} 
-                  value={item.id_ubication}>
+                  value={item.id_ubication}
+                  >
                   {item.description}
                 </MenuItem>
               ))

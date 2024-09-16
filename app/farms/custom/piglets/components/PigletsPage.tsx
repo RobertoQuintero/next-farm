@@ -119,6 +119,15 @@ const PigletsPage = () => {
     }
     return 0;
   }
+  const  compareDays=(a:IPiglets, b:IPiglets)=> {
+    if (a.days! < b.days!) {
+      return -1;
+    }
+    if (a.days! > b.days!) {
+      return 1;
+    }
+    return 0;
+  }
 
   return (
     <>
@@ -146,7 +155,7 @@ const PigletsPage = () => {
       <div>
       <div style={{display:'flex',fontWeight:'bold',fontSize:'14px',paddingLeft:'.5rem'}}>
         <p style={{width:'100px',cursor:'pointer'}} onClick={()=>setPiglets(piglets.sort(compareDates))}>Ingresado</p>
-        <p style={{width:'50px'}}>Días</p>
+        <p style={{width:'50px',cursor:'pointer'}} onClick={()=>setPiglets(piglets.sort(compareDays))} >Días</p>
         <p style={{width:'100px',cursor:'pointer'}} onClick={()=>setPiglets(piglets.sort(compareUbications))}>Ubicación</p>
         <p style={{width:'70px',cursor:'pointer'}} onClick={()=>setPiglets(piglets.sort(compareQuantities))}>Cantidad</p>
         <p style={{width:'70px',cursor:'pointer'}} onClick={()=>setPiglets(piglets.sort(compareStages))}>Etapa</p>
