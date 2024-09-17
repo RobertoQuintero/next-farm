@@ -152,7 +152,8 @@ interface ContextProps{
   setPigletTaskEndDate: (payload: Date | null) => void;
   postInitGrowingPig: (payload: IGrowingPigs) => Promise<boolean>;
   getGeneralUbication: (idFarm: number) => Promise<boolean>;
-  getPigTask: (idFarm: number) => Promise<boolean>
+  getPigTask: (idFarm: number) => Promise<boolean>;
+  setUbications: (payload: IUbication[]) => void
 }
 
 export const FarmsContext = createContext({} as ContextProps)

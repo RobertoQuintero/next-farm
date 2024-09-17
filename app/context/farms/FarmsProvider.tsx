@@ -1260,7 +1260,8 @@ export const FarmsProvider = ({children}:Props) => {
      setPigletTaskStartDate,
      postInitGrowingPig,
      getGeneralUbication,
-     getPigTask
+     getPigTask,
+     setUbications
     }}>
       {children}
     </FarmsContext.Provider>

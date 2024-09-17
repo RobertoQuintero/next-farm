@@ -13,7 +13,7 @@ import Cookies from 'js-cookie'
 
 const UbicationsPage = () => {
   const {toggleModal} = useContext(UiContext)
-  const {ubications,setUbication,setFarmAction,farmAction,farmsLoading,farmsError,ubication,postUbication,getUbications} = useContext(FarmsContext)
+  const {ubications,setUbication,setFarmAction,farmAction,farmsLoading,farmsError,ubication,postUbication,getUbications,setUbications} = useContext(FarmsContext)
   const {idFarm} = useContext(AuthContext)
   
   
@@ -39,6 +39,26 @@ const UbicationsPage = () => {
     
   };
 
+  const  compareTypes=(a:IUbication, b:IUbication)=> {
+    if (a.pig_type! < b.pig_type!) {
+      return -1;
+    }
+    if (a.pig_type! > b.pig_type!) {
+      return 1;
+    }
+    return 0;
+  }
+
+  const  compareUbications=(a:IUbication, b:IUbication)=> {
+    if (a.description! < b.description!) {
+      return -1;
+    }
+    if (a.description! > b.description!) {
+      return 1;
+    }
+    return 0;
+  }
+
   if(farmsLoading){
     return <LoadingComponent/>
   }
@@ -59,8 +79,8 @@ const UbicationsPage = () => {
       <div>
         <div className='ubicationRow uHeader'>
           <p>Modificado</p>
-          <p>Tipo</p>
-          <p>Ubicación</p>
+          <p  onClick={()=>setUbications(ubications.sort(compareTypes))}> <span style={{cursor:'pointer'}}>Tipo</span></p>
+          <p onClick={()=>setUbications(ubications.sort(compareUbications))}><span style={{cursor:'pointer'}}>Ubicación</span> </p>
         </div>
         {
           ubications.filter(u=>u.status).length
