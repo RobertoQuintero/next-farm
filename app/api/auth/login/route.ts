@@ -25,7 +25,7 @@ export const POST = async (req: Request) => {
   const { password, email } = body as IUser;
   try {
     const user = await db.query(`
-      SELECT * FROM RH.Users WHERE email='${email}' and status='true' 
+      SELECT * FROM RH.Users WHERE email='${email||''}' and status='true' 
     `);
 
     if (!user.length) {
@@ -37,7 +37,7 @@ export const POST = async (req: Request) => {
       );
     }
 
-    const validaPassword = bcrypt.compareSync(password, user[0].password);
+    const validaPassword = bcrypt.compareSync(password||'', user[0].password);
 
     if (!validaPassword) {
       return Response.json(

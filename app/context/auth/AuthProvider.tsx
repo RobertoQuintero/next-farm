@@ -40,6 +40,11 @@ export const AuthProvider = ({children}:Props) => {
   const [state, dispatch] = useReducer(authReducer, Auth_INITIAL_STATE)
   const router= useRouter()
 
+  useEffect(() => {
+    getResources()
+  }, [])
+  
+
 
   useEffect(() => {
     checkToken()
@@ -48,7 +53,7 @@ export const AuthProvider = ({children}:Props) => {
         router.replace('/')
         return
       }
-      getResources()
+      
 
     }
     setAccessError(undefined)
@@ -78,18 +83,18 @@ export const AuthProvider = ({children}:Props) => {
       getAuthRequest('/auth/states'),
      ])
      .then((resp)=>{
-      
+      console.log(resp)
       setStates(resp[0].data as IState[])
       setIsLoading(false)
      })
   };
 
   const logout = ()=>{
-    Cookies.remove('jwt')
     dispatch({
       type:'[auth] - logout',
-      payload:Auth_INITIAL_STATE
+      payload:{...Auth_INITIAL_STATE,states:state.states||[]}
     })
+    Cookies.remove('jwt')
   }
 
   const login = async(payload:IUser):Promise<boolean>=>{

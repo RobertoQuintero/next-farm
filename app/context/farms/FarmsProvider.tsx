@@ -253,7 +253,7 @@ export const FarmsProvider = ({children}:Props) => {
 
     const getCode = async(payload:string) =>{
         setIsLoading(true)
-         const {ok,data}=await getFarmsRequest(`/farms/code?id_farm=${idFarm}&pig=${payload}`)
+         const {ok,data}=await getFarmsRequest(`/farms/code?id_farm=${idFarm||0}&pig=${payload}`)
          if(ok){
             payload==='pig'?setCode(data as string):setPiggletCode(data as string)
          }

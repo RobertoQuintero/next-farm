@@ -39,7 +39,7 @@ export const GET = async (req: Request) => {
 
   try {
     const response = await db.query(`
-      SELECT * FROM RH.Users WHERE email='${email}'
+      SELECT * FROM RH.Users WHERE email='${email||''}'
     `);
 
     if (!response.length) {

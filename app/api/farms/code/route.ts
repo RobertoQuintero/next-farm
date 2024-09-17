@@ -3,11 +3,21 @@ import db from "@/database/connection";
 export const GET = async(req:Request) =>{
 
   const {searchParams}= new URL(req.url)
-  const id_farm=searchParams.get('id_farm')
+  const id_farm=searchParams.get('id_farm')||''
   const pig=searchParams.get('pig')
   let table=pig==='pig'?'Pigs':'Lot_Piglets'
 
   try {
+
+    if(!id_farm){
+      return Response.json({
+        ok:true,
+        data:''      
+      })
+    }
+
+
+
     let serial=''
     const resp=await db.query(`
     select top 1 p1.code from MOD.${table} as p1
