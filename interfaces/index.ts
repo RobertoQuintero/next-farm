@@ -7,4 +7,5 @@ export * from './product'
 export * from './comment'
 export * from './loss'
 export * from './question'
+export * from './report'
 

@@ -77,6 +77,8 @@ export interface IBirth {
   crossing_month?:string;
   birth_month?:string;
   id_farm?:number;
+  pig_stage?:string
+  month_name?:string
 }
 
 export interface ICrossing{

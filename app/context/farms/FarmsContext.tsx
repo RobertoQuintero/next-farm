@@ -1,5 +1,5 @@
 'use client'
-import { IAnswer, IBirth, IBirthType, IComment, ILoss, ILossReason, IPig, IPigStage, IPigTask, IPigType, IPigWeight, IPiglets, IProduct, IQuantity, IQuestion, IRace, IStageTaskType, IStallion, IStaticPig, ITask, ITaskType, IUbication, IfertilizationType } from '@/interfaces'
+import { IAnswer, IBirth, IBirthType, IComment, ILoss, ILossReason, IPig, IPigStage, IPigTask, IPigType, IPigWeight, IPiglets, IProduct, IQuantity, IQuestion, IRace, IReport, IStageTaskType, IStallion, IStaticPig, ITask, ITaskType, IUbication, IfertilizationType } from '@/interfaces'
 import { IFarm, IMonthBirth } from '@/interfaces/farm'
 import { IGrowingPigs } from '@/interfaces/growing_pigs'
 import { IStallionMonths } from '@/interfaces/stallions'
@@ -72,6 +72,7 @@ interface ContextProps{
   taskPigletEndDate:Date | null;
   searchedPigletTasks:ITask[]
   general_ubication:IUbication | undefined;
+  report:IReport | undefined
   
 
   //methods
@@ -153,7 +154,8 @@ interface ContextProps{
   postInitGrowingPig: (payload: IGrowingPigs) => Promise<boolean>;
   getGeneralUbication: (idFarm: number) => Promise<boolean>;
   getPigTask: (idFarm: number) => Promise<boolean>;
-  setUbications: (payload: IUbication[]) => void
+  setUbications: (payload: IUbication[]) => void;
+  getReport: (payload: number) => Promise<boolean>
 }
 
 export const FarmsContext = createContext({} as ContextProps)

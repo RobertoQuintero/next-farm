@@ -95,6 +95,7 @@ const FarmPage = () => {
     })
     return arr
   }
+
   
   if(farmsLoading && !isModalOpen){
     return <LoadingComponent/>

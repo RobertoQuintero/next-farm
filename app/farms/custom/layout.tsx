@@ -10,6 +10,7 @@ const links=[
   {href:'/farms/custom/statics',title:'Estadísticas'},
   {href:'/farms/custom/reports',title:'Reportes'},
   {href:'/farms/custom/stallions_report',title:'Reporte Sementales'},
+  {href:'/farms/custom/general',title:'Reporte General'},
   {href:'/farms/custom/products',title:'Productos'},
   {href:'/farms/custom/users',title:'Usuarios'},
   {href:'/farms/custom/roles',title:'Roles'},

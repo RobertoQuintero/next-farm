@@ -5,7 +5,7 @@ import {  usersReducer } from './farmsReducer'
 import { IFarm, IMonthBirth } from '@/interfaces/farm'
 import { getFarmsRequest, postFarmsRequest } from './farmsRequest'
 import { returnArray } from '../auth/authRequest'
-import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing, IPigWeight, IPigStage, IPigTask, IStageTaskType, IBirthType, IPiglets, IQuantity, IStaticPig, IProduct, IComment, ILoss, IQuestion, IAnswer } from '@/interfaces'
+import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing, IPigWeight, IPigStage, IPigTask, IStageTaskType, IBirthType, IPiglets, IQuantity, IStaticPig, IProduct, IComment, ILoss, IQuestion, IAnswer, IReport } from '@/interfaces'
 import { AuthContext } from '../auth/AuthContext'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
@@ -81,6 +81,7 @@ export interface UsersState{
   taskPigletEndDate:Date | null;
   searchedPigletTasks:ITask[];
   general_ubication:IUbication | undefined;
+  report:IReport | undefined
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -147,7 +148,8 @@ const UI_INITIAL_STATE:UsersState={
   taskPigletStartDate:new Date(),
   taskPigletEndDate:new Date(),
   searchedPigletTasks:[],
-  general_ubication:undefined
+  general_ubication:undefined,
+  report:undefined
 }
 
 export const FarmsProvider = ({children}:Props) => {
@@ -738,6 +740,19 @@ export const FarmsProvider = ({children}:Props) => {
        setIsLoading(false)
        return ok
     };
+
+  const getReport = async(payload:number) =>{
+      setIsLoading(true)
+       const {ok,data}=await postFarmsRequest(`/farms/general_report?id_farm=${payload}`,{})
+       if(ok){
+         setReport(data as IReport)
+       }
+       else{
+        setError(data as string)
+       }
+       setIsLoading(false)
+       return ok
+    };
   
 
   const postCrossingDate = async(payload:{id_stallion:number,crossing_date:string,id_pig:number,id_user:number,id_fertilization_type:number}) =>{
@@ -1161,6 +1176,13 @@ export const FarmsProvider = ({children}:Props) => {
      })
   };
 
+  const setReport = (payload: IReport | undefined) =>{
+     dispatch({
+      type:'[Farms] - setReport',
+      payload
+     })
+  };
+
   const getPostLoadingOrError = async<T,K extends keyof T>(
       endpoint:string,setState:(payload: T[]) => void,payload?:T,state?:T[],id?:K,wich?:boolean
    ) =>{
@@ -1261,7 +1283,8 @@ export const FarmsProvider = ({children}:Props) => {
      postInitGrowingPig,
      getGeneralUbication,
      getPigTask,
-     setUbications
+     setUbications,
+     getReport
     }}>
       {children}
     </FarmsContext.Provider>

@@ -6,6 +6,7 @@ import {
   GroupAddOutlined, 
   InventoryOutlined, 
   PlaylistAddCheckOutlined, 
+  QueryStatsOutlined, 
   RequestQuoteOutlined,
   SavingsOutlined,
   TaskAltOutlined} from '@mui/icons-material';
@@ -17,6 +18,11 @@ interface MenuLinkElement {
 }
 
 export const menuLinksArray:MenuLinkElement[]=[
+  {
+    label:'Reporte general',
+    href:'/farms/custom/general',
+    icon: <QueryStatsOutlined />
+  },
   {
     label:'Bitácora cerdas',
     href:'/farms/custom',

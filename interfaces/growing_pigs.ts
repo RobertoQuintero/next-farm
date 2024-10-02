@@ -13,4 +13,5 @@ export interface IGrowingPigs {
   id_farm:        number;
   pig_stage?:      string;
   ubication?:      string;
+  month_name?: string;
 }
