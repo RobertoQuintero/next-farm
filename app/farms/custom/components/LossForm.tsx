@@ -21,7 +21,7 @@ export const LossForm = () => {
 
   const values={
     id_loss:loss?loss.id_loss:0,
-    id_loss_reason:loss?loss.id_loss_reason:1,
+    id_loss_reason:loss?loss.id_loss_reason:lossReasons[0].id_loss_reason,
     quantity:loss?loss.quantity:'',
     id_growing_lot:loss?loss.id_growing_lot:growing_pig?growing_pig.id_growing_lot:0,
     id_lot_piglets:loss?loss.id_lot_piglets:piglet?piglet.id_lot_piglets:0,

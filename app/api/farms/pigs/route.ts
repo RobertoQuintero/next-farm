@@ -8,7 +8,7 @@ export const GET = async(req:Request) =>{
   const {searchParams}= new URL(req.url)
   const idFarm=searchParams.get('idFarm')
 
-  return await getRequestQuery(`${queryPig} WHERE MP.id_farm=${idFarm} and MP.status='true'`)
+  return await getRequestQuery(`${queryPig} WHERE MP.id_farm=${idFarm} and MP.status=1`)
 }
 
 export const POST = async(req:Request) =>{

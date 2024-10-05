@@ -57,7 +57,12 @@ export const PigCard = ({pig,print,report=false}:Props) => {
   return (
     <div className={`rowCard ${print&&'odd'}`} style={{backgroundColor:getColors()}}>
       <div className="pigData">
-        <p>{addZero(new Date(pig.added_date)).split('-').reverse().join('-')}</p>
+        {
+          pig.id_pig_stage===3||pig.id_pig_stage===4||pig.id_pig_stage===5
+            ?<p>{addZero(new Date(pig.next_birth!)).split('-').reverse().join('-')}</p>
+            :<p>{addZero(new Date(pig.added_date)).split('-').reverse().join('-')}</p>
+        }
+        
         <p onClick={()=>onClick('EDIT')} className="underlined">{pig.code}</p>
         <p>{pig.pig_ubication}</p>
         <p>{pig.pig_race}</p>

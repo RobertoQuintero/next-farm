@@ -60,24 +60,35 @@ export const POST = async(req:Request) =>{
       //   `) as unknown as IPig[]
 
       const births= await db.query(`
-          select
-          id_birth, 
-          birth_date,
-          crossing_date,
-          confirm_date,
-          MP.id_pig_stage,
-          mp.id_pig,
-          CP.description pig_stage,
-          MOD.setMonthNameAll(DATEPART(MONTH,birth_date))+' '+CONVERT(varchar,DATEPART(YEAR,birth_date)) month_name
-          from MOD.Births MB
-          left join MOD.Pigs MP
-          on MP.id_pig=MB.id_pig
-          left join CAT.Pig_stages CP
+          		  select 
+		  convert(datetime,MOD.getBirthDay(MP.id_pig,MP.id_pig_stage)) next_birth,
+		  MOD.setMonthNameAll(DATEPART(MONTH,convert(datetime,MOD.getBirthDay(MP.id_pig,MP.id_pig_stage))))+' '+CONVERT(varchar,DATEPART(YEAR,convert(datetime,MOD.getBirthDay(MP.id_pig,MP.id_pig_stage)))) month_name,
+		  CP.description pig_stage
+		  from MOD.Pigs MP
+		  left join CAT.Pig_stages CP
           on CP.id_pig_stage=MP.id_pig_stage
-          where MB.status=1 and birth_date>=GETDATE() and MP.id_farm=${id_farm} and id_birth_type=1
-          and MP.status=1 and MB.closed=0 and MP.id_pig_stage>2 and MP.id_pig_stage<6
-          order by birth_date
+		  where MP.id_farm=${id_farm} and MP.status=1 and MP.id_pig_stage>2 and MP.id_pig_stage<6 --and convert(datetime,MOD.getBirthDay(MP.id_pig,MP.id_pig_stage))>=GETDATE()
+		  order by next_birth
         `) as unknown as IBirth[]
+      // const births= await db.query(`
+      //     select
+      //     id_birth, 
+      //     birth_date,
+      //     crossing_date,
+      //     confirm_date,
+      //     MP.id_pig_stage,
+      //     mp.id_pig,
+      //     CP.description pig_stage,
+      //     MOD.setMonthNameAll(DATEPART(MONTH,birth_date))+' '+CONVERT(varchar,DATEPART(YEAR,birth_date)) month_name
+      //     from MOD.Births MB
+      //     left join MOD.Pigs MP
+      //     on MP.id_pig=MB.id_pig
+      //     left join CAT.Pig_stages CP
+      //     on CP.id_pig_stage=MP.id_pig_stage
+      //     where MB.status=1 and birth_date>=GETDATE() and MP.id_farm=${id_farm} and id_birth_type=1
+      //     and MP.status=1 and MB.closed=0 and MP.id_pig_stage>2 and MP.id_pig_stage<6
+      //     order by birth_date
+      //   `) as unknown as IBirth[]
 
         const pigs=[]
         const newBirths= [...new Set(births.map(g=>g.pig_stage))]

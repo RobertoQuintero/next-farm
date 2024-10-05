@@ -5,6 +5,7 @@ import Cookie from 'js-cookie'
 import { BarChart } from '@mui/x-charts'
 import { LoadingComponent } from '@/app/components'
 import { useReactToPrint } from 'react-to-print'
+import { MonthsData } from './MonthsData'
 
 const title={display:'inline-block',width:'200px'} as CSSProperties
 const quantity={display:'inline-block',width:'120px'} as CSSProperties
@@ -105,41 +106,7 @@ const GeneralPage = () => {
       </div>
      
       </div>
-      <div style={{display:'flex',gap:'5rem',flexWrap:'wrap'}}>
-        <div>
-        <p style={{fontWeight:'bold',padding:'1rem 0',fontSize:'1.2rem'}}>Crecimiento - Análisis salidas</p>
-        <div  style={{display:'flex',fontWeight:'bold'}}>
-            <p style={{width:'110px'}}>Mes</p>
-            <p>Cantidad</p>
-          </div>
-        {
-          report?.growing.map(r=><div key={r.month} style={{display:'flex'}}>
-            <p style={{width:'110px'}}>{r.month}</p>
-            <p>{r.quantity}</p>
-          </div>)
-        }
-        </div>
-        <div>
-        <p style={{fontWeight:'bold',padding:'1rem 0',fontSize:'1.2rem'}}>Gestación - Análisis partos</p>
-        
-        {
-          report?.pigs.map(r=><div key={r.stage} style={{padding:'0 0 1rem'}} >
-            <p style={{fontWeight:'bold'}}>- {r.stage} -</p>
-            <div  style={{display:'flex',fontWeight:'bold'}}>
-              <p style={{width:'110px'}}>Mes</p>
-              <p>Cantidad</p>
-            </div>
-            {
-              r.months.map(r=><div key={r.month} style={{display:'flex'}}>
-                <p style={{width:'110px'}}>{r.month}</p>
-                <p>{r.quantity}</p>
-              </div>)
-            }
-          </div>)
-        }
-        </div>
-
-      </div>
+      <MonthsData report={report}/>
     </div>
   )
 }
