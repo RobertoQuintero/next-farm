@@ -5,7 +5,7 @@ import {  usersReducer } from './farmsReducer'
 import { IFarm, IMonthBirth } from '@/interfaces/farm'
 import { getFarmsRequest, postFarmsRequest } from './farmsRequest'
 import { returnArray } from '../auth/authRequest'
-import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing, IPigWeight, IPigStage, IPigTask, IStageTaskType, IBirthType, IPiglets, IQuantity, IStaticPig, IProduct, IComment, ILoss, IQuestion, IAnswer, IReport } from '@/interfaces'
+import { IUbication, IStage, IPigType, IRace, IPig, IAccess, IRole, IRoleAccess, ITask, ITaskType, ILossReason, IfertilizationType, IStallion, IBirth, ICrossing, IPigWeight, IPigStage, IPigTask, IStageTaskType, IBirthType, IPiglets, IQuantity, IStaticPig, IProduct, IComment, ILoss, IQuestion, IAnswer, IReport, IPigLossType } from '@/interfaces'
 import { AuthContext } from '../auth/AuthContext'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
@@ -81,7 +81,8 @@ export interface UsersState{
   taskPigletEndDate:Date | null;
   searchedPigletTasks:ITask[];
   general_ubication:IUbication | undefined;
-  report:IReport | undefined
+  report:IReport | undefined;
+  pigLossTypes:IPigLossType[]
 }
 
 const UI_INITIAL_STATE:UsersState={
@@ -149,7 +150,8 @@ const UI_INITIAL_STATE:UsersState={
   taskPigletEndDate:new Date(),
   searchedPigletTasks:[],
   general_ubication:undefined,
-  report:undefined
+  report:undefined,
+  pigLossTypes:[]
 }
 
 export const FarmsProvider = ({children}:Props) => {
@@ -771,6 +773,20 @@ export const FarmsProvider = ({children}:Props) => {
        return ok
     };
 
+
+    const getPigLossTypes = async(payload:number) =>{
+      setIsLoading(true)
+       const {ok,data}=await postFarmsRequest(`/farms/losses_report?id_farm=${payload}`,{})
+       if(ok){
+         setPigLossTypes(data as IPigLossType[])
+       }
+       else{
+        setError(data as string)
+       }
+       setIsLoading(false)
+       return ok
+    };
+
   const setFarms = (payload:IFarm[]) =>{
      dispatch({
       type:'[Farms] - setFarms',
@@ -1183,6 +1199,13 @@ export const FarmsProvider = ({children}:Props) => {
      })
   };
 
+  const setPigLossTypes = (payload: IPigLossType[]) =>{
+     dispatch({
+      type:'[Farms] - setPigLossTypes',
+      payload
+     })
+  };
+
   const getPostLoadingOrError = async<T,K extends keyof T>(
       endpoint:string,setState:(payload: T[]) => void,payload?:T,state?:T[],id?:K,wich?:boolean
    ) =>{
@@ -1284,7 +1307,8 @@ export const FarmsProvider = ({children}:Props) => {
      getGeneralUbication,
      getPigTask,
      setUbications,
-     getReport
+     getReport,
+     getPigLossTypes
     }}>
       {children}
     </FarmsContext.Provider>

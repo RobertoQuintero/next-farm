@@ -7,21 +7,24 @@ import { BarChart } from '@mui/x-charts'
 import { AuthContext } from '@/app/context/auth/AuthContext'
 import { IPig } from '@/interfaces'
 import { MonthsData } from '../../general/components/MonthsData'
+import { LossesReport } from './LossesReport'
 
 
 const styles={border:'1px solid #ccc', padding:'1rem',borderRadius:'3px'} as CSSProperties
 
 const ReportsPage = () => {
-  const {pigs,getPigs,getReport,report} = useContext(FarmsContext)
+  const {pigs,getPigs,getReport,report,getPigLossTypes} = useContext(FarmsContext)
   const {idFarm} = useContext(AuthContext)
 
   useEffect(() => {
-    // if(!pigs.length){
-    // }
+    if(idFarm){
       Promise.all([
         getPigs(idFarm!),
-        getReport(idFarm!)  
+        getReport(idFarm!) , 
+        getPigLossTypes(idFarm!)
       ])
+    
+    }
   }, [idFarm])
   
 
@@ -118,7 +121,7 @@ const ReportsPage = () => {
         // colors={['#8A21EB','#8A21EB','#CB20EA','#4821EB','#EB2130','#D86FEB']}
       />
       <MonthsData report={report}/>
-
+      <LossesReport/>
       </div>
     </div>
     </>

@@ -23,3 +23,20 @@ export interface Report {
   pigs:     number;
   total:    number;
 }
+
+
+export interface IPigLossType {
+  pig_type:     string;
+  loss_reasons: LossReason[];
+}
+
+export interface LossReason {
+  loss_reason: string;
+  months:      Month[];
+}
+
+export interface Month {
+  month:           string;
+  losses_quantity: number;
+}
+

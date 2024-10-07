@@ -12,6 +12,8 @@ export interface ILoss {
   pig_type:    string;
   loss_reason:    string;
   quantity:number;
+  month?:string;
+  id_farm?:number
 }
 
 export interface ILossGet{
