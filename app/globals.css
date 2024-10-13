@@ -381,3 +381,16 @@ background: #d4d4d4;
 .hover:hover{
   background-color: #ccc;
 }
+
+.chartSize{
+  transform: scale(1);
+}
+
+@media screen and (max-width:580px) {
+  
+  .chartSize{
+   
+    transform-origin: left;
+    transform: scale(.7);
+  } 
+}

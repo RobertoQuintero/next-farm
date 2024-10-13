@@ -8,6 +8,9 @@ import { AuthContext } from '@/app/context/auth/AuthContext'
 import { IPig } from '@/interfaces'
 import { MonthsData } from '../../general/components/MonthsData'
 import { LossesReport } from './LossesReport'
+import { AccordionElement } from '@/app/components'
+import { HeaderInfo } from './HeaderInfo'
+import { ColorsElement } from './ColorsElement'
 
 
 const styles={border:'1px solid #ccc', padding:'1rem',borderRadius:'3px'} as CSSProperties
@@ -50,58 +53,99 @@ const ReportsPage = () => {
     return 0;
   }
 
+  const groupByMonth =(pigs:IPig[]) =>{
+     const months= [...new Set(pigs.map(p=>p.next_birth_month))]
+      return months.map(m=>{
+        return {
+          month:m,
+          quantity:pigs.filter(n=>n.next_birth_month===m).length,
+          pigs:pigs.filter(n=>n.next_birth_month===m)
+        }
+      })
+  };
+
+  
+
   return (
     <>
       <RowButton label='Pdf' onClick={handlePrint}/>
+        <ColorsElement/>
       <div style={{display:'flex', flexDirection:'column',gap:'.5rem',padding:'1rem .5rem 0'}} ref={componentRef}>
         <p style={{textAlign:'center',fontWeight:'bold'}}>Reporte Cerdas Gestantes</p>
-      <div style={{display:'flex', fontSize:'13px',fontWeight:'bold',padding:'0 0 0 1rem'}}>
-        <p style={{width:'100px'}}>Ingreso</p>
-        <p style={{width:'100px'}}>Código</p>
-        <p style={{width:'110px'}}>Ubicación</p>
-        <p style={{width:'120px'}}>Raza</p>
-        <p style={{width:'100px'}}>Estatus</p>
-        <p style={{width:'90px'}}>Parto</p>
-        <p style={{width:'110px'}}>Días al parto</p>
-        <p style={{width:'100px'}}>Hijos</p>
+      <div style={styles}>
+          <AccordionElement title={<h4>Vacías {empty}</h4>} >
+            <HeaderInfo/>
+              {
+                pigs.filter(p=>p.status&&p.id_pig_stage===2).map(p=><PigCard pig={p} report print key={p.id_pig}/>)
+              }
+            </AccordionElement>
       </div>
       <div style={styles}>
-        <h4>Vacías {empty}</h4>
-        {
-          pigs.filter(p=>p.status&&p.id_pig_stage===2).map(p=><PigCard pig={p} report print key={p.id_pig}/>)
-        }
+          <AccordionElement title={<h4>Montadas {mounted}</h4>} >
+          {
+             groupByMonth(pigs.filter(p=>p.status&&p.id_pig_stage===3).sort(compareDates)).map((m,i)=>(
+              <AccordionElement not_show title={`${m.month} - ${m.quantity}`} panel={i+1}>
+                <HeaderInfo stage/>
+                {
+                  m.pigs.map(p=><PigCard pig={p} report print key={p.id_pig}/>)
+                }
+              </AccordionElement>
+            ))
+          }
+        </AccordionElement>         
+        
       </div>
       <div style={styles}>
-        <h4>Montadas {mounted}</h4>
-        {
-          pigs.filter(p=>p.status&&p.id_pig_stage===3).sort(compareDates).map(p=><PigCard pig={p} report print key={p.id_pig}/>)
-        }
+        <AccordionElement title={<h4>Sin confirmar {un_confirm}</h4>} >
+        
+          {
+             groupByMonth(pigs.filter(p=>p.status&&p.id_pig_stage===4).sort(compareDates)).map((m,i)=>(
+              <AccordionElement not_show title={`${m.month} - ${m.quantity}`} panel={i+1}>
+                <HeaderInfo stage/>
+                {
+                  m.pigs.map(p=><PigCard pig={p} report print key={p.id_pig}/>)
+                }
+              </AccordionElement>
+            ))
+          }
+        </AccordionElement> 
       </div>
       <div style={styles}>
-        <h4>Sin confirmar {un_confirm}</h4>
-        {
-          pigs.filter(p=>p.status&&p.id_pig_stage===4).sort(compareDates).map(p=><PigCard pig={p} report print key={p.id_pig}/>)
-        }
+        <AccordionElement title={<h4>Cargadas {charged}</h4>} >
+          {
+             groupByMonth(pigs.filter(p=>p.status&&p.id_pig_stage===5).sort(compareDates)).map((m,i)=>(
+              <AccordionElement not_show title={`${m.month} - ${m.quantity}`} panel={i+1}>
+                <HeaderInfo stage/>
+                {
+                  m.pigs.map(p=><PigCard pig={p} report print key={p.id_pig}/>)
+                }
+              </AccordionElement>
+            ))
+          }
+        </AccordionElement> 
+      </div>
+      <div style={styles}>     
+        <AccordionElement title={<h4>Destetando {lactation}</h4>} >
+            <HeaderInfo/>
+              {
+                pigs.filter(p=>p.status&&p.id_pig_stage===6).map(p=><PigCard pig={p} print report key={p.id_pig}/>)
+              }
+            </AccordionElement>
       </div>
       <div style={styles}>
-        <h4>Cargadas {charged}</h4>
+        
+        <AccordionElement title={<h4>Inactivas {inactive}</h4>} >
+            <HeaderInfo/>
+              {
+                pigs.filter(p=>p.status&&(!p.is_active || p.id_pig_stage===1)).map(p=><PigCard pig={p} print key={p.id_pig}/>)
+              }
+            </AccordionElement>
         {
-          pigs.filter(p=>p.status&&p.id_pig_stage===5).sort(compareDates).map(p=><PigCard pig={p} report print key={p.id_pig}/>)
+          
         }
       </div>
-      <div style={styles}>
-        <h4>Destetando {lactation}</h4>
-        {
-          pigs.filter(p=>p.status&&p.id_pig_stage===6).map(p=><PigCard pig={p} print report key={p.id_pig}/>)
-        }
-      </div>
-      <div style={styles}>
-        <h4>Inactivas {inactive}</h4>
-        {
-          pigs.filter(p=>p.status&&(!p.is_active || p.id_pig_stage===1)).map(p=><PigCard pig={p} print key={p.id_pig}/>)
-        }
-      </div>
-      <div >
+      <div  style={{maxWidth:'100%'}}>
+        <div style={{maxWidth:600}}>
         <BarChart
         xAxis={[
           {
@@ -116,12 +160,15 @@ const ReportsPage = () => {
             color:'#EB21A9'
           },
         ]}
-        width={600}
+        sx={{width:'100%'}}
         height={300}
-        // colors={['#8A21EB','#8A21EB','#CB20EA','#4821EB','#EB2130','#D86FEB']}
       />
-      <MonthsData report={report}/>
-      <LossesReport/>
+
+        </div>
+      <div style={{display:'flex',flexDirection:'column', gap:'1rem',paddingBottom:'2rem'}}>
+        <MonthsData report={report}/>
+        <LossesReport/>
+      </div>
       </div>
     </div>
     </>

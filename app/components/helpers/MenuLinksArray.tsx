@@ -1,13 +1,13 @@
 import { 
   AccountBoxOutlined,
   AddTaskOutlined,
+  AssessmentOutlined,
   EqualizerOutlined,
   FormatListNumberedOutlined,
   GroupAddOutlined, 
   InventoryOutlined, 
   PlaylistAddCheckOutlined, 
   QueryStatsOutlined, 
-  RequestQuoteOutlined,
   SavingsOutlined,
   TaskAltOutlined} from '@mui/icons-material';
 
@@ -22,6 +22,11 @@ export const menuLinksArray:MenuLinkElement[]=[
     label:'Reporte general',
     href:'/farms/custom/general',
     icon: <QueryStatsOutlined />
+  },
+  {
+    label:'Reporte gestantes',
+    href:'/farms/custom/reports',
+    icon: <AssessmentOutlined />
   },
   {
     label:'Bitácora cerdas',

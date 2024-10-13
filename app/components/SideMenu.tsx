@@ -3,7 +3,7 @@ import React, { useContext } from 'react'
 import { UiContext } from '../context/ui/UiContext'
 import { MenuLink } from './MenuLink'
 import { menuLinksArray, ownerMenuLinksArray } from './helpers';
-import { BookmarkAddOutlined, EventAvailableOutlined, HomeOutlined, LoginOutlined, LogoutOutlined } from '@mui/icons-material';
+import { BookmarkAddOutlined,  HomeOutlined, LoginOutlined, LogoutOutlined } from '@mui/icons-material';
 import { AuthContext } from '../context/auth/AuthContext';
 import { useRouter } from 'next/navigation';
 import { AccordionElement } from '.';

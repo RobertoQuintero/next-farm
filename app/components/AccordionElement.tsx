@@ -5,14 +5,19 @@ import React from 'react'
 interface Props{
   children:React.ReactNode;
   title:string | React.ReactNode;
-  open?:boolean
+  open?:boolean;
+  panel?:number;
+  not_show?:boolean
 }
 
-export const AccordionElement = ({children,title,open=false}:Props) => {
+export const AccordionElement = ({children,title,open=false,panel=1,not_show=false}:Props) => {
   return (
     <Accordion defaultExpanded={open} sx={{boxShadow:'none',border:'none'}}>
     <AccordionSummary
-      expandIcon={<ExpandMoreIcon />}
+      aria-controls={`panel${panel}-content`}
+      id={`panel${panel}-header`}
+      expandIcon={!not_show?<ExpandMoreIcon/>:null}
+      
     >
       {title}
     </AccordionSummary>

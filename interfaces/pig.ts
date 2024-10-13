@@ -35,6 +35,7 @@ export interface IPig {
   false_charge:number;
   abortions:number;
   flag:number;
+  next_birth_month?:string;
 }
 
 export interface IStallion {

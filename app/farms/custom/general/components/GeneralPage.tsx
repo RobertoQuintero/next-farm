@@ -77,36 +77,30 @@ const GeneralPage = () => {
           <span style={title}>Total:</span><span style={quantity}>{report?.report.total.toLocaleString('en')}</span>
         </p>
       </div>
-      <div>
-
-      <BarChart
-      colors={['#3728D5','#C02EF2','#802EF2','#2E5BF2','#371763','#8638F4']}
-          xAxis={[
-            {
-              id: 'barCategories',
-              data: ['Lechones','Caja','30kg a 50kg','51kg a 80kg','Otros','Gestación'],
-              scaleType: 'band',
-            },
-          ]}
-          yAxis={[
-            {
-              tickNumber:5,
-              tickLabelStyle:{fontSize:'14px'},        
-              tickSize:3,
-            }
-          ]}
-          series={[
-            {
-              data: data().map(d=>d.value),
-            },
-          ]}
-          width={450}
-          height={300}
-        />
+      <div style={{width:'100%',maxWidth:'600px'}}>
+        <BarChart
+            xAxis={[
+              {
+                id: 'barCategories',
+                data: ['Lechones','Caja','30kg a 50kg','51kg a 80kg','Otros','Gestación'],
+                scaleType: 'band',
+              },
+            ]}
+            series={[
+              {
+                data: data().map(d=>d.value),
+                color:'#EB21A9'
+              },
+            ]}
+            sx={{width:'100%'}}
+            height={300}
+          />
+      </div>
+      <div style={{padding:'1rem 0'}}>
+        <MonthsData report={report}/>
       </div>
      
       </div>
-      <MonthsData report={report}/>
     </div>
   )
 }
