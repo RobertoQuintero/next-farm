@@ -11,7 +11,7 @@ interface Props{
 }
 
 export const GrowingPigCard = ({growingPig,print}:Props) => {
-  const {setFarmAction,setGrowingPig,growing_pigs} = useContext(FarmsContext)
+  const {setFarmAction,setGrowingPig,growing_pigs,setPiglet,setPig} = useContext(FarmsContext)
   const {toggleModal} = useContext(UiContext)
   const router=useRouter()
 
@@ -25,15 +25,24 @@ export const GrowingPigCard = ({growingPig,print}:Props) => {
      toggleModal()
   };
 
+  const onLoss = () =>{
+   setPig(undefined)
+   setPiglet(undefined)
+    setGrowingPig(growingPig)
+     setFarmAction('LOSS')
+     toggleModal()
+  };
+
   return (
     <div className={`rowCard ${print&&'odd'}`}>
       <div className="pigData">
-        <p>{new Date(growingPig.start_date).toLocaleString().split(',')[0]}</p>
-        <p>{new Date(growingPig.exit_date).toLocaleString().split(',')[0]}</p>
+        <p style={{width:'80px'}}>{new Date(growingPig.start_date).toLocaleString().split(',')[0]}</p>
+        <p style={{width:'80px'}}>{new Date(growingPig.exit_date).toLocaleString().split(',')[0]}</p>
         <p style={{width:'130px'}}>{growingPig.ubication}</p>
-        <p onClick={()=>growing_pigs.length>1?onClick('MOVE'):{}} className='underlined'>{growingPig.quantity}</p>
-        <p>{growingPig.average_weight}</p>
-        <p className='underlined' onClick={()=>onClick('STAGE')}>{growingPig.pig_stage}</p>
+        <p style={{width:'80px'}} onClick={()=>growing_pigs.length>1?onClick('MOVE'):{}} className='underlined'>{growingPig.quantity}</p>
+        <p style={{width:'80px'}}>{growingPig.average_weight}</p>
+        <p style={{width:'90px'}} className='underlined' onClick={()=>onClick('STAGE')}>{growingPig.pig_stage}</p>
+        <p style={{width:'90px',textAlign:'center',cursor:'pointer'}} onClick={onLoss}>-</p>
       </div>
       <div style={{display:print?'none':'flex', gap:'.2rem',paddingRight:'.5rem'}}>
         <RowButton onClick={()=>onClick('GO')} label="ver"/>

@@ -50,6 +50,7 @@ export interface IStallion {
   total_dead:number;
   false_charge:number;
   total_effective:number;
+  is_mix:boolean;
 }
 
 export interface IBirth {

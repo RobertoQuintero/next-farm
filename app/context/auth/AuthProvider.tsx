@@ -83,7 +83,6 @@ export const AuthProvider = ({children}:Props) => {
       getAuthRequest('/auth/states'),
      ])
      .then((resp)=>{
-      console.log(resp)
       setStates(resp[0].data as IState[])
       setIsLoading(false)
      })

@@ -8,7 +8,7 @@ import { Button } from '@mui/material'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { GrowingPigCard, GrowingPigsChangeStage, GrowingPigsCloseConfirm, MoveGrowingPig } from '.'
 import { IGrowingPigs } from '@/interfaces/growing_pigs'
-import { RowButton } from '../../components'
+import { LossForm, RowButton } from '../../components'
 import * as XLSX from 'xlsx'
 import { useReactToPrint } from 'react-to-print'
 import Cookies from 'js-cookie'
@@ -160,12 +160,13 @@ const GrowingPigsPage = () => {
         className='pigData'
         style={{padding:'0 0 0 .4rem',fontWeight:'bold'}}
         >
-        <p  style={{cursor:'pointer'}} onClick={()=>setGrowingPigs(growing_pigs.sort(compareDates))}>Ingresado</p>
-        <p style={{cursor:'pointer'}} onClick={()=>setGrowingPigs(growing_pigs.sort(compareExitDates))}>Salida</p>
+        <p  style={{cursor:'pointer',width:'80px'}} onClick={()=>setGrowingPigs(growing_pigs.sort(compareDates))}>Ingresado</p>
+        <p style={{cursor:'pointer',width:'80px'}} onClick={()=>setGrowingPigs(growing_pigs.sort(compareExitDates))}>Salida</p>
         <p style={{width:'130px',cursor:'pointer'}}  onClick={()=>setGrowingPigs(growing_pigs.sort(compareUbications))}>Ubicación</p>
-        <p style={{cursor:'pointer'}} onClick={()=>setGrowingPigs(growing_pigs.sort(compareQuantities))}>Cantidad</p>
-        <p style={{cursor:'pointer'}} onClick={()=>setGrowingPigs(growing_pigs.sort(compareWeight))}>Peso prom.</p>
-        <p style={{cursor:'pointer'}} onClick={()=>setGrowingPigs(growing_pigs.sort(compareStages))}>Etapa</p>
+        <p style={{cursor:'pointer',width:'80px'}} onClick={()=>setGrowingPigs(growing_pigs.sort(compareQuantities))}>Cantidad</p>
+        <p style={{cursor:'pointer',width:'80px'}} onClick={()=>setGrowingPigs(growing_pigs.sort(compareWeight))}>Peso prom.</p>
+        <p style={{cursor:'pointer',width:'90px'}} onClick={()=>setGrowingPigs(growing_pigs.sort(compareStages))}>Etapa</p>
+        <p style={{width:'90px',textAlign:'center'}} >Baja</p>
       </div>
         {
           growing_pigs.filter(g=>!g.closed&&g.status).length
@@ -205,6 +206,9 @@ const GrowingPigsPage = () => {
         }
         {
           farmAction==='DELETE'?<DeleteComponent onDelete={onDelete} loading={farmsLoading} error={farmsError}/>:<></>
+        }
+        {
+          farmAction==='LOSS'?<LossForm />:<></>
         }
       </AppModal>
     </>

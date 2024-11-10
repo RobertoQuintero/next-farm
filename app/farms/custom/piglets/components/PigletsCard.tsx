@@ -13,7 +13,7 @@ interface Props{
 
 export const PigletsCard = ({piglet,print}:Props) => {
   const {toggleModal}= useUi()
-  const {setFarmAction,setPiglet,setPig} = useContext(FarmsContext)
+  const {setFarmAction,setPiglet,setPig,setGrowingPig} = useContext(FarmsContext)
   const router= useRouter()
 
   const onClick = (action:string) =>{
@@ -28,6 +28,14 @@ export const PigletsCard = ({piglet,print}:Props) => {
     }
   };
 
+  const onLoss = () =>{
+    setPig(undefined)
+    setGrowingPig(undefined)
+     setPiglet(piglet)
+     setFarmAction('LOSS')
+     toggleModal()
+  };
+
   return (
     <div className={`rowCard ${print&&'odd'}`} style={{fontSize:'14px'}}>
       <div style={{display:'flex'}}>
@@ -36,6 +44,7 @@ export const PigletsCard = ({piglet,print}:Props) => {
         <p style={{width:'100px'}}>{piglet.ubication}</p>
         <p onClick={()=>onClick('EDIT')}  style={{width:'70px'}} className='underlined'>{piglet.quantity}</p>
         <p style={{width:'70px'}}>{piglet.stage}</p>
+        <p style={{width:'70px',textAlign:'center',cursor:'pointer'}} onClick={onLoss}>-</p>
       </div>
       <div style={{display:print?'none':'flex', gap:'.2rem',paddingRight:'.5rem'}}>
         <RowButton onClick={()=>onClick('GO')} label="ver"/>

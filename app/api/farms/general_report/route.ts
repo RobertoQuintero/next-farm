@@ -15,9 +15,10 @@ export const POST = async(req:Request) =>{
         declare @weight_2 int=isnull((select SUM(quantity) from MOD.Growing_pigs where average_weight>=51 and average_weight<=80 and status=1 and id_farm=${id_farm}),0)
         declare @others int=isnull((select sum(quantity) from MOD.Growing_pigs where status=1 and id_farm=${id_farm})-(@weight_1+@weight_2),0)
         declare @pigs int=isnull((select COUNT(*) from MOD.Pigs where status=1 and id_farm=${id_farm}),0)
+        declare @stallions int=isnull((select COUNT(*) from MOD.Stallions where status=1 and id_farm=${id_farm} and is_mix=0),0)
 
         select 
-        @piglets piglets,@box box,@weight_1 weight_1,@weight_2 weight_2,@others others,@pigs pigs,@piglets+@box+@weight_1+@weight_2+@others+@pigs total   
+        @piglets piglets,@box box,@weight_1 weight_1,@weight_2 weight_2,@others+@stallions others,@pigs pigs,@piglets+@box+@weight_1+@weight_2+@others+@pigs total   
       `) as unknown as Array<any>)[0]
 
 

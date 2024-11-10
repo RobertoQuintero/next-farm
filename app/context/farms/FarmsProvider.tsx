@@ -331,7 +331,6 @@ export const FarmsProvider = ({children}:Props) => {
     const getAllTasks = async({startDate,endDate,id_farm,id}:{startDate:string;endDate:string;id_farm:number;id:string}) =>{
         setIsLoading(true)
          const {ok,data}=await getFarmsRequest(`/farms/tasks/date?startDate=${startDate}&endDate=${endDate}&id_farm=${id_farm}&id=${id}`)
-         console.log(data)
          if(ok){
             if(id==='id_pig'){
                setSearchedTasks(data as ITask[])
@@ -585,7 +584,6 @@ export const FarmsProvider = ({children}:Props) => {
     setIsLoading(true)
          const {ok,data}=await postFarmsRequest('/farms/catalog/ubications',payload)
          if(ok){
-            console.log(data)
             setUbications([...state.ubications,data as IUbication])
          }
          else{

@@ -33,7 +33,6 @@ export const GET = async(req:Request) =>{
 export const POST = async(req:Request) =>{
   const body = await req.json();
   const { id_growing_lot,average_weight,closed,created_at,exit_date,id_farm,id_pig_stage,id_ubication,id_user,quantity,start_date,status}= body as IGrowingPigs;
-    console.log({ id_growing_lot,average_weight,closed,created_at,exit_date,id_farm,id_pig_stage,id_ubication,id_user,quantity,start_date,status})
   return await postRequest(`
   declare @const int 
   set @const=(SELECT isNull(max(id_growing_lot),0)+1  FROM MOD.Growing_pigs)

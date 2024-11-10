@@ -1,10 +1,10 @@
-import { SaveButton } from '@/app/components'
+import { SaveButton, SwitchElement } from '@/app/components'
 import { AuthContext } from '@/app/context/auth/AuthContext'
 import { FarmsContext } from '@/app/context/farms/FarmsContext'
 import { UiContext } from '@/app/context/ui/UiContext'
 import { IStallion } from '@/interfaces'
 import {   MenuItem,  TextField } from '@mui/material'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { useForm } from "react-hook-form"
 
 export const PostUpdateStallion = () => {
@@ -16,7 +16,7 @@ export const PostUpdateStallion = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<IStallion>()
-
+  
   const values={
     id_stallion:stallion?stallion.id_stallion:0,
     id_farm:stallion?stallion.id_farm:idFarm,
@@ -24,21 +24,26 @@ export const PostUpdateStallion = () => {
     status:stallion?stallion.status:true,
     id_ubication:stallion?stallion.id_ubication:0,
     id_race:stallion?stallion.id_race:races[0].id_race,
+    is_mix:stallion?stallion.is_mix:false,
   } as IStallion
+  const [checked, setChecked] = useState(values.is_mix)
 
 
   const onSubmit=async(data:IStallion)=>{
-    data.created_at= new Date()
-    data.id_farm=values.id_farm
-    data.status=values.status
-    data.id_stallion=values.id_stallion
-    data.id_ubication=values.id_ubication
+    const newStallion={
+      ...values,
+      ...data,
+      is_mix:checked
+    } as IStallion
 
-    const ok= await postStallion(data)
+    // console.log(newStallion)
+    // return
+    const ok= await postStallion(newStallion)
     if(ok){
       toggleModal()
     }
   }
+
   return (
     <form className='Form' onSubmit={handleSubmit(onSubmit)}>
       <TextField 
@@ -72,6 +77,7 @@ export const PostUpdateStallion = () => {
             :<div></div>
           }
         </TextField>
+        <SwitchElement checked={checked} setChecked={setChecked} text_true='Mezcla' text_false='Normal' />
         <SaveButton loading={farmsLoading}/>
     </form>
   )

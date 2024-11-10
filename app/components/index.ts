@@ -12,4 +12,5 @@ export * from "./LoadingComponent";
 export * from "./LoginForm";
 export * from "./Navbar";
 export * from "./RegisterForm";
+export * from "./SwitchElement";
 

@@ -4,7 +4,6 @@ import { IGrowingPigs } from "@/interfaces/growing_pigs";
 export const POST = async(req:Request) =>{
   const body = await req.json();
   const {id_farm,id_ubication,average_weight,closed,created_at,exit_date,id_pig_stage,id_user,quantity,start_date,status }= body as IGrowingPigs;
-console.log({id_farm,id_ubication,average_weight,closed,created_at,exit_date,id_pig_stage,id_user,quantity,start_date,status })
   
 try {
     const lot= await db.query(`

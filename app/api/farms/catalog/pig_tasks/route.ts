@@ -175,7 +175,6 @@ export const POST = async(req:Request) =>{
     if(piglets.length){
       for (const piglet of piglets) { 
         // console.log(addZero(new Date(buildDateReverse(piglet.created_at as string))))
-        console.log((piglet.created_at as Date).toISOString().split('T')[0])
         await db.query(`
         declare @const int 
         set @const=(SELECT isNull(max(id_task),0)+1  FROM MOD.Tasks)

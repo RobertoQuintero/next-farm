@@ -24,6 +24,8 @@ export const StallionRow = ({stallion}:Props) => {
         <p style={{width:'100px'}}>{stallion.total_alive}</p>
         <p style={{width:'100px'}}>{stallion.total_effective}</p>
         <p style={{width:'100px'}}>{stallion.false_charge}</p>
+        <p style={{width:'100px'}}>{stallion.is_mix?'Mezcla':'Normal'}</p>
+
       </div>
       <div>
       <div style={{display:'flex', gap:'.2rem',paddingRight:'.5rem'}}>

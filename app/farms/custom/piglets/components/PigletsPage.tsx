@@ -8,7 +8,7 @@ import { useContext, useEffect, useRef, useState } from 'react'
 import { PigletsCard, PostUpdateGrowingPigs, PostUpdatePiglets } from '.'
 import { IPiglets } from '@/interfaces'
 import { AuthContext } from '@/app/context/auth/AuthContext'
-import { RowButton } from '../../components'
+import { LossForm, RowButton } from '../../components'
 import * as XLSX from 'xlsx'
 import { useReactToPrint } from 'react-to-print'
 import { MovePiglets } from '../../history_piglets/components'
@@ -159,6 +159,7 @@ const PigletsPage = () => {
         <p style={{width:'100px',cursor:'pointer'}} onClick={()=>setPiglets(piglets.sort(compareUbications))}>Ubicación</p>
         <p style={{width:'70px',cursor:'pointer'}} onClick={()=>setPiglets(piglets.sort(compareQuantities))}>Cantidad</p>
         <p style={{width:'70px',cursor:'pointer'}} onClick={()=>setPiglets(piglets.sort(compareStages))}>Etapa</p>
+        <p style={{width:'70px',textAlign:'center'}}>Baja</p>
       </div>
         {
           piglets.filter(p=>!p.closed&&p.status).length
@@ -201,6 +202,11 @@ const PigletsPage = () => {
         {
           farmAction==='EDIT'
               ?<MovePiglets/>
+              :<></>
+        }
+        {
+          farmAction==='LOSS'
+              ?<LossForm/>
               :<></>
         }
       </AppModal>

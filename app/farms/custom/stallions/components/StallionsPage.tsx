@@ -58,6 +58,7 @@ const StallionsPage = () => {
         <p style={{width:'100px'}}>Hijos</p>
         <p style={{width:'100px'}}>Montas Efectivas</p>
         <p style={{width:'100px'}}>Cargas Falsas</p>
+        <p style={{width:'100px'}}>Mezcla</p>
       </div>
         {
           stallions.filter(s=>s.status).length
