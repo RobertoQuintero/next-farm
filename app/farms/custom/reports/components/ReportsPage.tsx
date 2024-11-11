@@ -76,7 +76,7 @@ const ReportsPage = () => {
           <AccordionElement title={<h4>Vacías {empty}</h4>} >
             <HeaderInfo/>
               {
-                pigs.filter(p=>p.status&&p.id_pig_stage===2).map(p=><PigCard pig={p} report print key={p.id_pig}/>)
+                pigs.filter(p=>p.status&&p.id_pig_stage===2&&p.is_active).map(p=><PigCard pig={p} report print key={p.id_pig}/>)
               }
             </AccordionElement>
       </div>
@@ -84,7 +84,7 @@ const ReportsPage = () => {
           <AccordionElement title={<h4>Montadas {mounted}</h4>} >
           {
              groupByMonth(pigs.filter(p=>p.status&&p.id_pig_stage===3).sort(compareDates)).map((m,i)=>(
-              <AccordionElement not_show title={`${m.month} - ${m.quantity}`} panel={i+1}>
+              <AccordionElement not_show title={`${m.month} - ${m.quantity}`} panel={i+1} key={i}>
                 <HeaderInfo stage/>
                 {
                   m.pigs.map(p=><PigCard pig={p} report print key={p.id_pig}/>)
@@ -100,7 +100,7 @@ const ReportsPage = () => {
         
           {
              groupByMonth(pigs.filter(p=>p.status&&p.id_pig_stage===4).sort(compareDates)).map((m,i)=>(
-              <AccordionElement not_show title={`${m.month} - ${m.quantity}`} panel={i+1}>
+              <AccordionElement not_show title={`${m.month} - ${m.quantity}`} panel={i+1} key={i}>
                 <HeaderInfo stage/>
                 {
                   m.pigs.map(p=><PigCard pig={p} report print key={p.id_pig}/>)
@@ -114,7 +114,7 @@ const ReportsPage = () => {
         <AccordionElement title={<h4>Cargadas {charged}</h4>} >
           {
              groupByMonth(pigs.filter(p=>p.status&&p.id_pig_stage===5).sort(compareDates)).map((m,i)=>(
-              <AccordionElement not_show title={`${m.month} - ${m.quantity}`} panel={i+1}>
+              <AccordionElement not_show title={`${m.month} - ${m.quantity}`} panel={i+1} key={i}>
                 <HeaderInfo stage/>
                 {
                   m.pigs.map(p=><PigCard pig={p} report print key={p.id_pig}/>)
