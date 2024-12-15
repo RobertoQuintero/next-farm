@@ -120,7 +120,7 @@ const GeneralPage = () => {
 
               </div>
               <PregnatPigsReport/>
-              <div style={{boxShadow:'0 0 2px rgba(0,0,0,0.5)',width:600}}>
+              <div style={{boxShadow:'0 0 2px rgba(0,0,0,0.5)',width:700}}>
                 <h3 style={{padding:'1rem 0 0 1rem'}}>Inventario</h3>
               <div style={{display:'flex',gap:'1rem',justifyContent:'space-evenly',padding:'1rem 2.5rem 0',fontWeight:'bold'}}>
                     {
@@ -146,13 +146,13 @@ const GeneralPage = () => {
                 ]}
                 // sx={{width:'500px'}}
                 height={300}
-                width={600}
+                width={700}
               /> 
               </div>
             <div style={{width:'100%'}}>
             {
               staticPigs.length
-                ?<div style={{boxShadow:'0 0 2px rgba(0,0,0,0.5)',width:600}}>
+                ?<div style={{boxShadow:'0 0 2px rgba(0,0,0,0.5)',width:700}}>
                   <h3 style={{padding:'1rem 0 0 1rem'}}>Gestantes</h3>
                   <div style={{display:'flex',gap:'1rem',justifyContent:'space-evenly',padding:'1rem 2.5rem 0',fontWeight:'bold'}}>
                     {
@@ -174,7 +174,7 @@ const GeneralPage = () => {
                         color:'#C16FF7'
                       },
                     ]}
-                    width={600}
+                    width={700}
                     height={300}
                   />
                 </div>
